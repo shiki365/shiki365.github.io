@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>shiki365 のツール置き場 | TRPG・マダミスのオンセ・配信で使える無料ツール</title>
+<meta name="description" content="TRPG やマダミスのオンラインセッション・配信で使う無料ツールの一覧です。場面転換のアニメーション、ココフォリアの前景に使う枠、OBS に映すステータスバー、Discord 連動のルームプレートなど。">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="shiki365 のツール置き場">
+<meta property="og:title" content="shiki365 のツール置き場">
+<meta property="og:description" content="TRPG やマダミスのオンラインセッション・配信で使う無料ツールを置いています。ブラウザで作る素材から、Discord 連動の OBS 用ソフトまで。">
+<meta property="og:url" content="https://shiki365.github.io/">
+<meta property="og:image" content="https://shiki365.github.io/ogp.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="shiki365 のツール置き場 － ステータスバーメーカー・前景フレームメーカー・場面転換素材メーカー・在室灯">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<style>
+  /* Same palette as the tools so moving between them feels like one site. */
+  :root {
+    color-scheme: dark;
+    --bg: #15161a; --panel: #1e1f26; --line: #303240; --line-soft: #282a36;
+    --fg: #e7e7ea; --muted: #9a9aa5; --accent: #6b70ff; --link: #a8abff;
+    --button: #575cf5; /* darker than --accent so white text passes 4.5:1 */
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body { margin: 0; background: var(--bg); color: var(--fg); line-height: 1.8;
+         font-family: "Yu Gothic UI", "Meiryo", system-ui, sans-serif; font-size: 15px; }
+  a { color: var(--link); }
+  a:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding-inline: 20px; }
+
+  header { border-bottom: 1px solid var(--line); padding-block: 44px 32px;
+           background: radial-gradient(ellipse 60% 120% at 0% 0%, #23254a, transparent 70%); }
+  h1 { margin: 0 0 8px; font-size: 28px; line-height: 1.4; }
+  .lead { margin: 0; color: var(--muted); max-width: 46em; }
+  .jump { display: flex; flex-wrap: wrap; gap: 4px 18px; margin: 14px 0 0; padding: 0; list-style: none; font-size: 14px; }
+
+  main section { padding-block: 40px 4px; }
+  h2 { font-size: 19px; margin: 0 0 4px; line-height: 1.5; }
+  .section-note { margin: 0 0 16px; color: var(--muted); font-size: 14px; }
+  .badges { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 20px; padding: 0; list-style: none; }
+  .badges li { border: 1px solid var(--line); border-radius: 999px; padding: 1px 12px;
+               font-size: 13px; background: var(--panel); }
+
+  .tools { display: grid; gap: 20px; margin: 0; padding: 0; list-style: none;
+           grid-template-columns: repeat(auto-fill, minmax(min(100%, 310px), 1fr)); }
+  .tool { display: flex; flex-direction: column; background: var(--panel);
+          border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+  .tool:hover { border-color: #464a6e; }
+  .thumb { display: block; aspect-ratio: 1200 / 630; background: #101116; border-bottom: 1px solid var(--line); }
+  .thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .tool-body { display: flex; flex-direction: column; gap: 10px; flex: 1; padding: 16px 18px 18px; }
+  h3 { margin: 0; font-size: 19px; line-height: 1.4; }
+  h3 a { color: var(--fg); text-decoration: none; }
+  h3 a:hover { text-decoration: underline; }
+  .label { display: inline-block; margin-left: 6px; padding: 0 8px; border: 1px solid #6b5a2e; border-radius: 999px;
+           color: #e3c77a; font-size: 12px; font-weight: 400; vertical-align: 3px; }
+  .when { margin: 0; color: var(--link); font-size: 14px; font-weight: 700; line-height: 1.6; }
+  .when span { display: inline-block; margin-right: 6px; padding: 0 7px; border-radius: 4px; vertical-align: 1px;
+               background: #2a2c4d; color: var(--fg); font-size: 11px; font-weight: 400; }
+  .desc { margin: 0; font-size: 14px; }
+  .spec { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 2px 12px; margin: 0;
+          padding: 8px 12px; border-radius: 8px; background: #191a20; font-size: 13px; line-height: 1.7; }
+  .spec dt { color: var(--muted); }
+  .spec dd { margin: 0; }
+  .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin-top: auto; padding-top: 6px; }
+  .btn { display: inline-block; padding: 9px 20px; border-radius: 8px; background: var(--button);
+         color: #fff; font-weight: 700; text-decoration: none; }
+  .btn:hover { background: #4a4fe0; }
+  .btn::after { content: " →"; }
+  .sub { color: var(--muted); font-size: 13px; }
+  .sub:hover { color: var(--fg); }
+
+  .steps { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; counter-reset: step;
+           grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); }
+  .steps li { counter-increment: step; position: relative; padding: 14px 16px 14px 56px;
+              background: var(--panel); border: 1px solid var(--line); border-radius: 10px; }
+  .steps li::before { content: counter(step); position: absolute; left: 16px; top: 15px; width: 28px; height: 28px;
+                      display: grid; place-items: center; border-radius: 50%; background: var(--button);
+                      color: #fff; font-weight: 700; line-height: 1; }
+  .steps b { display: block; line-height: 1.6; }
+  .steps span { color: var(--muted); font-size: 14px; }
+
+  .faq { display: grid; gap: 8px; }
+  .faq details { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; }
+  .faq summary { cursor: pointer; padding: 12px 16px; font-weight: 700; }
+  .faq details[open] summary { border-bottom: 1px solid var(--line-soft); }
+  .faq details p { margin: 0; padding: 10px 16px 14px; color: var(--muted); font-size: 14px; }
+  .faq details p + p { padding-top: 0; }
+
+  .contact { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none;
+             grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); }
+  .contact li { display: flex; flex-direction: column; gap: 8px; padding: 16px 18px;
+                background: var(--panel); border: 1px solid var(--line); border-radius: 10px; }
+  .contact h3 { font-size: 16px; }
+  .contact p { margin: 0; color: var(--muted); font-size: 14px; }
+  .contact .btn { align-self: flex-start; margin-top: auto; }
+  .contact-foot { margin: 14px 0 0; color: var(--muted); font-size: 13px; }
+
+  footer { margin-top: 48px; border-top: 1px solid var(--line); padding-block: 20px 40px;
+           color: var(--muted); font-size: 13px; }
+  footer p { margin: 0; }
+
+  @media (max-width: 480px) {
+    header { padding-block: 32px 24px; }
+    h1 { font-size: 23px; }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .tool, .btn { transition: border-color .15s, background-color .15s; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <h1>shiki365 のツール置き場</h1>
+    <p class="lead">TRPG やマダミスのオンラインセッション・配信で使うツールを置いています。どれも無料です。</p>
+    <ul class="jump" aria-label="このページの中の案内">
+      <li><a href="#browser-tools">ブラウザで使うツール</a></li>
+      <li><a href="#download-tools">ダウンロードして使うツール</a></li>
+      <li><a href="#faq">よくある質問</a></li>
+      <li><a href="#contact">不具合の報告・感想</a></li>
+    </ul>
+  </div>
+</header>
+
+<main class="wrap">
+  <section id="browser-tools" aria-labelledby="browser-tools-title">
+    <h2 id="browser-tools-title">ブラウザで使うツール</h2>
+    <p class="section-note">ページを開けばすぐに使えます。新しいものから並べています。</p>
+    <ul class="badges" aria-label="ブラウザで使うツールに共通">
+      <li>無料</li>
+      <li>会員登録なし</li>
+      <li>インストールなし</li>
+      <li>画像や入力内容はどこにも送られません</li>
+    </ul>
+
+    <ul class="tools">
+      <li class="tool">
+        <a class="thumb" href="https://shiki365.github.io/status-bar-maker/" tabindex="-1" aria-hidden="true">
+          <img src="thumbs/status-bar-maker.webp" alt="" width="640" height="336" decoding="async">
+        </a>
+        <div class="tool-body">
+          <h3><a href="https://shiki365.github.io/status-bar-maker/">ステータスバーメーカー</a></h3>
+          <p class="when"><span>こんなときに</span>配信画面に、キャラの HP や SAN 値を出したい</p>
+          <p class="desc">ココフォリアのキャラの HP・MP・SAN などを、OBS に好きなデザインで映すための CSS を作ります。ひな形 9 種から形・色・文字・ピンチの演出を選んで、コピーするだけ。数値はココフォリアと連動して動きます。</p>
+          <dl class="spec">
+            <dt>作れるもの</dt><dd>OBS の「カスタム CSS」</dd>
+            <dt>使う場所</dt><dd>OBS のブラウザソース</dd>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="https://shiki365.github.io/status-bar-maker/">ツールを開く</a>
+            <a class="sub" href="https://github.com/shiki365/status-bar-maker">ソースコード（GitHub）</a>
+          </div>
+        </div>
+      </li>
+
+      <li class="tool">
+        <a class="thumb" href="https://shiki365.github.io/foreground-frame-maker/" tabindex="-1" aria-hidden="true">
+          <img src="thumbs/foreground-frame-maker.webp" alt="" width="640" height="336" decoding="async">
+        </a>
+        <div class="tool-body">
+          <h3><a href="https://shiki365.github.io/foreground-frame-maker/">前景フレームメーカー</a></h3>
+          <p class="when"><span>こんなときに</span>盤面のまわりに、シナリオに合う枠をつけたい</p>
+          <p class="desc">ココフォリアの前景に使う「枠」画像を作ります。角の形・色・蔦や花などの飾りを組み合わせてデザインし、天気や時間帯などの差分もまとめて書き出せます。</p>
+          <dl class="spec">
+            <dt>作れるもの</dt><dd>PNG 画像（窓の部分が透明）。差分は ZIP でまとめて</dd>
+            <dt>使う場所</dt><dd>ココフォリアの前景</dd>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="https://shiki365.github.io/foreground-frame-maker/">ツールを開く</a>
+            <a class="sub" href="https://github.com/shiki365/foreground-frame-maker">ソースコード（GitHub）</a>
+          </div>
+        </div>
+      </li>
+
+      <li class="tool">
+        <a class="thumb" href="https://shiki365.github.io/scene-transition-maker/" tabindex="-1" aria-hidden="true">
+          <img src="thumbs/scene-transition-maker.webp" alt="" width="640" height="336" decoding="async">
+        </a>
+        <div class="tool-body">
+          <h3><a href="https://shiki365.github.io/scene-transition-maker/">場面転換素材メーカー</a></h3>
+          <p class="when"><span>こんなときに</span>暗転やワイプで、場面を切り替える演出を入れたい</p>
+          <p class="desc">暗転・ワイプ・アイリスなど 18 種類の場面転換アニメーションを作ります。背景が透明なまま動くので、セッション画面の上に重ねて使えます。</p>
+          <dl class="spec">
+            <dt>作れるもの</dt><dd>APNG（動く PNG 画像）</dd>
+            <dt>使う場所</dt><dd>ココフォリアなど、オンラインセッションの画面</dd>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="https://shiki365.github.io/scene-transition-maker/">ツールを開く</a>
+            <a class="sub" href="https://github.com/shiki365/scene-transition-maker">ソースコード（GitHub）</a>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <section id="download-tools" aria-labelledby="download-tools-title">
+    <h2 id="download-tools-title">ダウンロードして使うツール</h2>
+    <p class="section-note">パソコンに入れて動かすソフトです。BOOTH で無料配布しています。</p>
+
+    <ul class="tools">
+      <li class="tool">
+        <a class="thumb" href="https://sabunomisogi.booth.pm/items/8756779" tabindex="-1" aria-hidden="true">
+          <img src="thumbs/zaishitsutou.webp" alt="" width="640" height="336" decoding="async">
+        </a>
+        <div class="tool-body">
+          <h3><a href="https://sabunomisogi.booth.pm/items/8756779">在室灯</a><span class="label">ベータ版</span></h3>
+          <p class="when"><span>こんなときに</span>配信画面に、誰がどの部屋（通話）にいるかを出したい</p>
+          <p class="desc">Discord のボイスチャンネルに誰がいるかを、OBS の配信画面に自動で表示します。通話の部屋を移動すると、画面の名前も一緒に動きます。表示名は PC 名にでき、GM や見学者は盤面から隠せます。</p>
+          <dl class="spec">
+            <dt>種類</dt><dd>パソコンで動かすソフト（Discord と連動）</dd>
+            <dt>使う場所</dt><dd>OBS の配信画面</dd>
+            <dt>必要なもの</dt><dd>Node.js（無料）・OBS・Discord の Bot</dd>
+            <dt>対応 OS</dt><dd>Windows・macOS</dd>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="https://sabunomisogi.booth.pm/items/8756779">BOOTH で見る</a>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="steps-title">
+    <h2 id="steps-title">ブラウザのツールの使い方</h2>
+    <p class="section-note">ブラウザで使うツールは、どれもだいたい同じ手順です。在室灯の使い方は、配布ファイルに入っている説明書（README）を見てください。</p>
+    <ol class="steps">
+      <li><b>ツールを開く</b><span>インストールも会員登録もいりません。</span></li>
+      <li><b>ひな形を選んで、色や形を変える</b><span>変えた結果は、その場でプレビューに出ます。</span></li>
+      <li><b>保存して、ココフォリアや OBS に入れる</b><span>設定のしかたは、各ツールの画面の下に書いてあります。</span></li>
+    </ol>
+  </section>
+
+  <section id="faq" aria-labelledby="faq-title">
+    <h2 id="faq-title">よくある質問</h2>
+    <p class="section-note">質問を押すと答えが開きます。</p>
+    <div class="faq">
+      <details>
+        <summary>お金はかかりますか？</summary>
+        <p>かかりません。どのツールも無料です。ブラウザで使うツールは、会員登録やインストールもいらず、ページを開けばすぐに使えます。</p>
+      </details>
+      <details>
+        <summary>作った画像や CSS は、自由に使ってもいいですか？</summary>
+        <p>はい、自由に使えます。ただし、ツールに読み込んだ配布素材やフォントは、それぞれの利用規約に従ってください。細かい条件は、各ツールのページのいちばん下に書いています。</p>
+        <p>在室灯は、配布ファイルに入っている利用規約に従ってください。</p>
+      </details>
+      <details>
+        <summary>読み込んだ画像や入力した内容は、どこかに送られますか？</summary>
+        <p>ブラウザで使うツールでは、送られません。処理はすべて、お使いのブラウザの中だけで行われます。</p>
+      </details>
+      <details>
+        <summary>作りかけのデザインは残りますか？</summary>
+        <p>前景フレームメーカーとステータスバーメーカーは、作業中の内容をブラウザに自動で保存します。次に同じブラウザで開くと続きから始まります。</p>
+        <p>別のパソコンやブラウザで続けたいときは、ツールの中でプロジェクトファイルを保存し、移った先で読み込んでください。</p>
+      </details>
+      <details>
+        <summary>スマホでも使えますか？</summary>
+        <p>ブラウザで使うツールは設定の項目が多いため、画面の広いパソコンでの利用をおすすめします。</p>
+      </details>
+      <details>
+        <summary>ココフォリアや Discord の公式ツールですか？</summary>
+        <p>いいえ。個人が作った非公式のツールで、ココフォリアや Discord をはじめ、いずれのサービスとも関係ありません。ココフォリアの画面の作りが変わると、ステータスバーの表示が崩れることがあります。</p>
+      </details>
+      <details>
+        <summary>不具合を見つけたとき、要望があるときは？</summary>
+        <p>このページのいちばん下の「<a href="#contact">不具合の報告・感想</a>」から送れます。どれも匿名で、Google アカウントもいりません。</p>
+      </details>
+    </div>
+  </section>
+
+  <section id="contact" aria-labelledby="contact-title">
+    <h2 id="contact-title">不具合の報告・感想</h2>
+    <p class="section-note">どれも匿名で送れます。Google アカウントもいりません。</p>
+    <ul class="contact">
+      <li>
+        <h3>ブラウザのツールの不具合</h3>
+        <p>ステータスバーメーカー・前景フレームメーカー・場面転換素材メーカーで、うまく動かないところを見つけたときに。</p>
+        <a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLSdXyHj5EYg-6JEV71orw61fyTTml3Cy9D-BP_EuuMHX6oUNcQ/viewform">報告フォームを開く</a>
+      </li>
+      <li>
+        <h3>在室灯の不具合・動作報告</h3>
+        <p>うまく動いた報告も大歓迎です。どの環境で動いたかが分かるだけで、とても助かります。</p>
+        <a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLSfWWKM57Nc_EPcDXl3I3dBnmGVz-7EppYMJ-4bRETl0vyN2AQ/viewform">在室灯のフォームを開く</a>
+      </li>
+      <li>
+        <h3>感想・要望</h3>
+        <p>「こんな機能がほしい」「こう使っています」など、気軽にどうぞ。マシュマロで届きます。</p>
+        <a class="btn" href="https://marshmallow-qa.com/jisg2c3imbza76d">マシュマロを開く</a>
+      </li>
+    </ul>
+    <p class="contact-foot">個別のお返事はお約束できませんが、すべて目を通しています。GitHub を使っている方は、各ツールのリポジトリの Issues でも受け付けています。</p>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>掲載しているツールは、いずれも個人が作った<strong>非公式</strong>のツールです。</p>
+    <p>© 2026 shiki365（鯖の禊） ・ <a href="https://github.com/shiki365">GitHub</a> ・ <a href="https://sabunomisogi.booth.pm/">BOOTH</a></p>
+  </div>
+</footer>
+
+</body>
+</html>
