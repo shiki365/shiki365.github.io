@@ -56,6 +56,6 @@
 ## 公開
 
 リポジトリ名を `shiki365.github.io`（公開リポジトリ）にすると、`https://shiki365.github.io/` として公開される。
-Settings → Pages で、ブランチ `main`・フォルダ `/ (root)` を指定する。
+このユーザーサイトは、push しただけで Settings → Pages が「ブランチ `main`・フォルダ `/ (root)`」になった（手で設定する必要はなかった）。
 
 HTML は数分ほどキャッシュされることがあるので、更新直後の確認は `Ctrl+F5` で。
