@@ -17,6 +17,7 @@ SOURCES: dict[str, Path] = {
     "scene-transition-maker": WORK / "kokofolia-apng" / "docs" / "ogp.png",
     "foreground-frame-maker": WORK / "kokofolia-frame" / "ogp.png",
     "status-bar-maker": WORK / "kokofolia-statusbar" / "ogp.png",
+    "chat-window-maker": WORK / "kokofolia-chatwindow" / "ogp.png",
     "zaishitsutou": Path.home() / "kono-yami-obs-discord" / "store-images" / "02-howitworks.png",
 }
 
