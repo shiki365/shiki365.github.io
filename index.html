@@ -1,7 +1,10 @@
 <!doctype html>
-<html lang="ja">
+<html lang="ja" data-langs="ja en ko">
 <head>
 <meta charset="utf-8">
+<script src="i18n.v1.js"></script>
+<script src="lang.en.v1.js"></script>
+<script src="lang.ko.v1.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>shiki365 のツール置き場 | TRPG・マダミスのオンセ・配信で使える無料ツール</title>
 <meta name="description" content="TRPG やマダミスのオンラインセッション・配信で使う無料ツールの一覧です。場面転換のアニメーション、ココフォリアの前景に使う枠、OBS に映すステータスバー、Discord 連動のルームプレートなど。">
@@ -38,6 +41,8 @@
            background: radial-gradient(ellipse 60% 120% at 0% 0%, #23254a, transparent 70%); }
   h1 { margin: 0 0 8px; font-size: 28px; line-height: 1.4; }
   .lead { margin: 0; color: var(--muted); max-width: 46em; }
+  .lang-switch { margin: 0 0 14px; color: var(--muted); font-size: 13px; }
+  .lang-switch a[aria-current] { color: var(--fg); font-weight: 700; text-decoration: none; }
   .en-note { margin: 16px 0 0; color: var(--muted); font-size: 13px; line-height: 1.7; max-width: 44em; }
   .jump { display: flex; flex-wrap: wrap; gap: 4px 18px; margin: 14px 0 0; padding: 0; list-style: none; font-size: 14px; }
   /* Plain links, not X's widgets.js, so visiting the page loads nothing from X. */
@@ -126,6 +131,7 @@
 
 <header>
   <div class="wrap">
+    <p class="lang-switch" data-lang-switch></p>
     <h1>shiki365 のツール置き場</h1>
     <p class="lead">TRPG やマダミスのオンラインセッション・配信で使うツールを置いています。どれも無料です。</p>
     <ul class="jump" aria-label="このページの中の案内">
@@ -138,7 +144,7 @@
       <li><a href="https://x.com/intent/tweet?text=shiki365%20%E3%81%AE%E3%83%84%E3%83%BC%E3%83%AB%E7%BD%AE%E3%81%8D%E5%A0%B4%EF%BD%9CTRPG%E3%83%BB%E3%83%9E%E3%83%80%E3%83%9F%E3%82%B9%E3%81%AE%E3%82%AA%E3%83%B3%E3%82%BB%E3%83%BB%E9%85%8D%E4%BF%A1%E3%81%A7%E4%BD%BF%E3%81%88%E3%82%8B%E7%84%A1%E6%96%99%E3%83%84%E3%83%BC%E3%83%AB&amp;url=https%3A%2F%2Fshiki365.github.io%2F&amp;hashtags=%E3%82%B3%E3%82%B3%E3%83%95%E3%82%A9%E3%83%AA%E3%82%A2%2CTRPG%E9%85%8D%E4%BF%A1&amp;via=shiki36512" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>このページを X で共有</a></li>
       <li><a href="https://x.com/intent/follow?screen_name=shiki36512" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>@shiki36512 をフォロー</a></li>
     </ul>
-    <p class="en-note" lang="en">Free tools for CCFOLIA and online TRPG / murder-mystery streaming: scene-transition animations, foreground frames, and OBS status bars, chat windows and message boxes, plus a maker for CCFOLIA scenario texts with portraits. The browser tools need no sign-up and no install, and nothing you make is uploaded; the last one is a small app you download to link OBS with Discord. These pages are in Japanese only — your browser's translation works on them.</p>
+    <p class="en-note" lang="en" data-lang-only="ja">Free tools for CCFOLIA and online TRPG / murder-mystery streaming: scene-transition animations, foreground frames, and OBS status bars, chat windows and message boxes, plus a maker for CCFOLIA scenario texts with portraits. The browser tools need no sign-up and no install, and nothing you make is uploaded; the last one is a small app you download to link OBS with Discord. This page and the Scene Transition Maker are also in English and Korean (see the language links at the top); the other tools are in Japanese for now — your browser's translation works on them.</p>
   </div>
 </header>
 
@@ -159,7 +165,7 @@
           <img src="thumbs/scenario-text-maker.webp" alt="" width="640" height="336" decoding="async">
         </a>
         <div class="tool-body">
-          <h3><a href="https://shiki365.github.io/scenario-text-maker/">シナリオテキストメーカー</a></h3>
+          <h3><a href="https://shiki365.github.io/scenario-text-maker/">シナリオテキストメーカー</a><span class="label" data-lang-only="en ko">日本語のみ</span></h3>
           <p class="when"><span>こんなときに</span>NPC の台詞や探索箇所の描写を、ココフォリアのシナリオテキストにまとめて入れたい</p>
           <p class="desc">台本や描写の文章を貼ると、ココフォリアのシナリオテキストをまとめて作ります。台詞には話し手の立ち絵（表情の差分も）を、描写やハンドアウトには 1&nbsp;件ずつ好きな画像を付けられ、送るとメッセージボックスに画像が出ます。できた ZIP を、ルームデータとして読み込むだけです。</p>
           <dl class="spec">
@@ -178,7 +184,7 @@
           <img src="thumbs/message-box-maker.webp" alt="" width="640" height="336" decoding="async">
         </a>
         <div class="tool-body">
-          <h3><a href="https://shiki365.github.io/message-box-maker/">メッセージボックスメーカー</a></h3>
+          <h3><a href="https://shiki365.github.io/message-box-maker/">メッセージボックスメーカー</a><span class="label" data-lang-only="en ko">日本語のみ</span></h3>
           <p class="when"><span>こんなときに</span>配信画面に、立ち絵つきの台詞をノベルゲームのように出したい</p>
           <p class="desc">ココフォリアで発言するとルーム画面の下に出る、立ち絵つきのメッセージボックスを、OBS に好きなデザインで映すための CSS を作ります。ルームの盤面や駒は消えて、メッセージボックスだけが映ります。ひな形 7&nbsp;種（ノベルゲーム・古い紙・SF など）から、箱・名前の札・文字・立ち絵の置き方を選び、プレビューで発言を送って確かめてからコピーできます。</p>
           <dl class="spec">
@@ -197,7 +203,7 @@
           <img src="thumbs/chat-window-maker.webp" alt="" width="640" height="336" decoding="async">
         </a>
         <div class="tool-body">
-          <h3><a href="https://shiki365.github.io/chat-window-maker/">チャットウィンドウメーカー</a></h3>
+          <h3><a href="https://shiki365.github.io/chat-window-maker/">チャットウィンドウメーカー</a><span class="label" data-lang-only="en ko">日本語のみ</span></h3>
           <p class="when"><span>こんなときに</span>配信画面に、ダイスの結果や秘匿チャットを出したい</p>
           <p class="desc">ココフォリアのダイスの結果や秘匿チャットを、OBS に好きなデザインで映すための CSS を作ります。窓・見出し・文字・成否の色・動き（出してから数秒で消すこともできます）を選び、プレビューでメッセージを送って確かめてからコピーできます。</p>
           <dl class="spec">
@@ -216,7 +222,7 @@
           <img src="thumbs/status-bar-maker.webp" alt="" width="640" height="336" decoding="async">
         </a>
         <div class="tool-body">
-          <h3><a href="https://shiki365.github.io/status-bar-maker/">ステータスバーメーカー</a></h3>
+          <h3><a href="https://shiki365.github.io/status-bar-maker/">ステータスバーメーカー</a><span class="label" data-lang-only="en ko">日本語のみ</span></h3>
           <p class="when"><span>こんなときに</span>配信画面に、キャラの HP や SAN 値を出したい</p>
           <p class="desc">ココフォリアのキャラの HP・MP・SAN などを、OBS に好きなデザインで映すための CSS を作ります。ひな形 10&nbsp;種から形・色・文字・ピンチの演出を選んで、コピーするだけ。HP が減るほどバーにひびが入り、横に置いた宝石や花が壊れていく演出もあります。数値はココフォリアと連動して動きます。</p>
           <dl class="spec">
@@ -235,7 +241,7 @@
           <img src="thumbs/foreground-frame-maker.webp" alt="" width="640" height="336" decoding="async">
         </a>
         <div class="tool-body">
-          <h3><a href="https://shiki365.github.io/foreground-frame-maker/">前景フレームメーカー</a></h3>
+          <h3><a href="https://shiki365.github.io/foreground-frame-maker/">前景フレームメーカー</a><span class="label" data-lang-only="en ko">日本語のみ</span></h3>
           <p class="when"><span>こんなときに</span>盤面のまわりに、シナリオに合う枠をつけたい</p>
           <p class="desc">ココフォリアの前景に使う「枠」画像を作ります。角の形・色・蔦や花などの飾りを組み合わせてデザインし、天気や時間帯などの差分もまとめて書き出せます。</p>
           <dl class="spec">
@@ -280,7 +286,7 @@
           <img src="thumbs/zaishitsutou.webp" alt="" width="640" height="336" decoding="async">
         </a>
         <div class="tool-body">
-          <h3><a href="https://sabunomisogi.booth.pm/items/8756779">在室灯</a><span class="label">ベータ版</span></h3>
+          <h3><a href="https://sabunomisogi.booth.pm/items/8756779">在室灯</a><span class="label">ベータ版</span><span class="label" data-lang-only="en ko">日本語のみ</span></h3>
           <p class="when"><span>こんなときに</span>配信画面に、誰がどの部屋（通話）にいるかを出したい</p>
           <p class="desc">Discord のボイスチャンネルに誰がいるかを、OBS の配信画面に自動で表示します。通話の部屋を移動すると、画面の名前も一緒に動きます。表示名は PC 名にでき、GM や見学者は盤面から隠せます。</p>
           <dl class="spec">
@@ -339,7 +345,7 @@
       </details>
       <details>
         <summary>不具合を見つけたとき、要望があるときは？</summary>
-        <p>このページのいちばん下の「<a href="#contact">不具合の報告・感想</a>」から送れます。どれも匿名で、Google アカウントもいりません。</p>
+        <p data-i18n>このページのいちばん下の「<a href="#contact">不具合の報告・感想</a>」から送れます。どれも匿名で、Google アカウントもいりません。</p>
       </details>
     </div>
   </section>
@@ -381,7 +387,7 @@
 
 <footer>
   <div class="wrap">
-    <p>掲載しているツールは、いずれも個人が作った<strong>非公式</strong>のツールです。</p>
+    <p data-i18n>掲載しているツールは、いずれも個人が作った<strong>非公式</strong>のツールです。</p>
     <p>© 2026 shiki365（鯖の禊） ・ <a href="https://x.com/shiki36512">X</a> ・ <a href="https://github.com/shiki365">GitHub</a> ・<a href="https://sabunomisogi.booth.pm/">BOOTH</a> ・ <a href="https://sabunomisogi.booth.pm/items/8891048">開発を応援する</a></p>
   </div>
 </footer>

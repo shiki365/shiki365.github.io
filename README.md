@@ -10,11 +10,13 @@
 
 | ファイル | 中身 |
 | --- | --- |
-| `index.html` | 一覧ページ（CSS もこの中。JavaScript は無し） |
+| `index.html` | 一覧ページ（CSS もこの中。JavaScript は言語の切り替えだけ） |
+| `i18n.v1.js` | 日本語・英語・韓国語の切り替え。**各ツールにも同じファイルを置く**（元はここ） |
+| `lang.en.v1.js` / `lang.ko.v1.js` | このページの英語・韓国語の辞書。キーは日本語の文そのもの |
 | `thumbs/` | カードのサムネイル（640×336）。各ツールの `ogp.png` や BOOTH の商品画像を縮めたもの |
 | `ogp.png` | このサイトの URL を SNS に貼ったときのカード画像 |
 | `favicon.svg` | タブのアイコン |
-| `_dev/` | サムネイルと OGP 画像を作るためのファイル。`_` で始まるので GitHub Pages（Jekyll）では公開されない |
+| `_dev/` | サムネイルと OGP 画像を作るためのファイルと、辞書の漏れを調べる `i18n-check.js`。`_` で始まるので GitHub Pages（Jekyll）では公開されない |
 
 配色はツールと同じ（`--bg` `--panel` `--accent` など）。ボタンだけは白い文字が読みやすいよう、`--accent` より少し暗い `--button` にしている。
 
@@ -33,6 +35,21 @@
 - ブラウザのツールの不具合 … Google フォーム「shiki365 のツール 不具合報告フォーム」（鯖の禊の Google アカウントで作成。匿名・ログイン不要の設定）
 - 在室灯の不具合・動作報告 … 在室灯のベータ版フォーム（在室灯の README と同じもの。これも鯖の禊のアカウント）
 - 感想・要望 … マシュマロ（https://marshmallow-qa.com/jisg2c3imbza76d）
+
+## 言語（日本語・英語・韓国語）
+
+ページは日本語で書き、`i18n.v1.js` が表示のときに辞書で置き換える。使い方は `i18n.v1.js` の冒頭に書いてある。
+
+- 言語は `?lang=xx` → 前に選んだ言語（`localStorage` の `shiki365.lang`。`shiki365.github.io` のページすべてで共有）→ ブラウザの言語の順で決まる。日本語・韓国語のどちらでもないブラウザは英語
+- `<html data-langs="ja en ko">` に、そのページが対応している言語を書く。対応していない言語を選んでいたら日本語で出る
+- 文言を足したり変えたりしたら、辞書にも足して漏れを確かめる
+
+  ```powershell
+  node _dev\i18n-check.js .                       # このページ
+  node _dev\i18n-check.js ..\kokofolia-apng\docs  # ツール
+  ```
+
+- まだ訳していないツールのカードには、`<span class="label" data-lang-only="en ko">日本語のみ</span>` を付けている。訳したら外す
 
 ## ツールを増やすとき
 
