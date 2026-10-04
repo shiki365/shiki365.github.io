@@ -28,7 +28,10 @@ for (const term of terms) {
   for (const key of [JSON.stringify(term), '"' + escaped(term) + '"']) {
     for (let i = src.indexOf(key + ":"); i >= 0; i = src.indexOf(key + ":", i + key.length)) {
       const m = /^"((?:[^"\\]|\\.)*)"/.exec(src.slice(i + key.length + 1, i + key.length + 400));
-      if (m) values.push(JSON.parse('"' + m[1] + '"'));
+      // JS strings may escape quotes (\') where JSON may not.
+      if (m) {
+        try { values.push(JSON.parse('"' + m[1].replace(/\\'/g, "'") + '"')); } catch (err) { values.push(m[1]); }
+      }
     }
   }
   console.log(term, "=>", [...new Set(values)].join(" | "));

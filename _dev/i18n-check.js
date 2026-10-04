@@ -12,7 +12,8 @@
  * The rules mirror i18n.v1.js: text nodes and the attributes placeholder / title / aria-label /
  * alt / label that contain Japanese; elements with data-i18n as a whole (innerHTML);
  * script, style, textarea, code and pre are skipped. In scripts, every string literal with
- * Japanese is a key (outside comments), and so is the part before "：" (preset labels).
+ * Japanese is a key (outside comments; a template only when it has no ${...}), and so is the
+ * part before "：" (preset labels).
  * Texts that are only built at run time are not seen here: check those in the browser
  * with I18n.missing.
  */
@@ -25,7 +26,7 @@ if (!dir) { console.error("usage: node i18n-check.js <folder> [--keys]"); proces
 const showKeys = process.argv.includes("--keys");
 
 const norm = text => String(text).replace(/\s+/g, " ").trim();
-const JP = /[぀-ヿ㐀-鿿！-｠]/;
+const JP = /[぀-ヿ㐀-鿿！-；＝？-｠]/;   // as in i18n.v1.js
 const ATTRS = ["placeholder", "title", "aria-label", "alt", "label"];
 const SKIP = new Set(["script", "style", "textarea", "code", "pre"]);
 const VOID = new Set(["area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "source", "track", "wbr"]);
@@ -74,16 +75,100 @@ while ((m = tagRe.exec(body))) {
 }
 
 // ---- scripts
+
+/**
+ * The string literals of a script, in order: { value, template } where template is true for a
+ * `...` literal without ${...}. A small lexer keeps strings, templates (with nested ${...} code),
+ * regex literals and comments apart, so a "/* ====" string or a /"/ regex does not confuse it.
+ * A "/" starts a regex when the last code token cannot end an expression.
+ */
+function stringLiterals(src) {
+  const out = [];
+  let i = 0, last = "";                   // last: the last significant character of code
+  const stack = [];                       // brace depth of each open ${ ... }
+  const readQuoted = q => {
+    let value = "";
+    for (i++; i < src.length && src[i] !== q; i++) {
+      if (src[i] === "\\") { value += src[i] + src[i + 1]; i++; } else value += src[i];
+    }
+    i++;
+    return value;
+  };
+  // Reads template text up to "`" (end) or "${" (code inside); returns true when the template ended.
+  let templateText = "", templateHasCode = false;
+  const readTemplate = () => {
+    for (; i < src.length; i++) {
+      const c = src[i];
+      if (c === "\\") { templateText += c + src[i + 1]; i++; continue; }
+      if (c === "`") { i++; return true; }
+      if (c === "$" && src[i + 1] === "{") { i += 2; templateHasCode = true; return false; }
+      templateText += c;
+    }
+    return true;
+  };
+  const templates = [];                   // open templates around the current ${ } code
+  while (i < src.length) {
+    const c = src[i], d = src[i + 1];
+    if (/\s/.test(c)) { i++; continue; }
+    if (c === "/" && d === "*") { const e = src.indexOf("*/", i + 2); i = e < 0 ? src.length : e + 2; continue; }
+    if (c === "/" && d === "/") { while (i < src.length && src[i] !== "\n") i++; continue; }
+    if (c === '"' || c === "'") {
+      const raw = readQuoted(c);
+      let value;
+      try { value = JSON.parse('"' + raw.replace(/\'/g, "'") + '"'); } catch (err) { value = raw; }
+      out.push({ value, template: false });
+      last = c;
+      continue;
+    }
+    if (c === "`") {
+      i++;
+      templateText = ""; templateHasCode = false;
+      if (readTemplate()) { out.push({ value: templateText, template: !templateHasCode }); last = "`"; }
+      else { templates.push({ text: templateText }); stack.push(0); last = "{"; }
+      continue;
+    }
+    if (c === "/" && !/[\w$)\]"'`]/.test(last)) {
+      // Regex literal: up to the closing "/" outside a [...] class, then its flags.
+      let inClass = false;
+      for (i++; i < src.length; i++) {
+        const r = src[i];
+        if (r === "\\") { i++; continue; }
+        if (r === "[") inClass = true;
+        else if (r === "]") inClass = false;
+        else if (r === "/" && !inClass) break;
+      }
+      i++;
+      while (/[a-z]/i.test(src[i] || "")) i++;
+      last = ")";
+      continue;
+    }
+    if (stack.length) {
+      if (c === "{") stack[stack.length - 1]++;
+      else if (c === "}") {
+        if (stack[stack.length - 1] === 0) {
+          // Back into the template text.
+          stack.pop();
+          const t = templates.pop();
+          i++;
+          templateText = t.text; templateHasCode = true;
+          if (readTemplate()) { out.push({ value: templateText, template: false }); last = "`"; }
+          else { templates.push({ text: templateText }); stack.push(0); last = "{"; }
+          continue;
+        }
+        stack[stack.length - 1]--;
+      }
+    }
+    last = c;
+    i++;
+  }
+  return out;
+}
+
 const scripts = fs.readdirSync(dir).filter(f => f.endsWith(".js") && f !== "i18n.v1.js" && !/^lang\./.test(f));
 for (const file of scripts) {
-  let src = fs.readFileSync(path.join(dir, file), "utf8");
-  src = src.replace(/\/\*[\s\S]*?\*\//g, "").replace(/^\s*\/\/.*$/gm, "").replace(/([;,{(\[])\s*\/\/.*$/gm, "$1");
-  const lit = /"((?:[^"\\\n]|\\.)*)"|'((?:[^'\\\n]|\\.)*)'|`((?:[^`\\]|\\.)*)`/g;
-  while ((m = lit.exec(src))) {
-    const raw = m[1] ?? m[2] ?? m[3];
-    if (!JP.test(raw)) continue;
-    let value;
-    try { value = m[1] != null ? JSON.parse('"' + raw + '"') : raw; } catch (err) { value = raw; }
+  for (const { value, template } of stringLiterals(fs.readFileSync(path.join(dir, file), "utf8"))) {
+    // A template with ${...} only builds markup around texts, which are literals of their own.
+    if (!JP.test(value) || (value.includes("${") && !template)) continue;
     found(value, file);
     if (value.includes("：")) found(value.split("：")[0], file);
   }
@@ -104,7 +189,8 @@ for (const file of fs.readdirSync(dir).filter(f => /^lang\.[a-z]+\.v\d+\.js$/.te
   });
   const missing = [...keys.keys()].filter(k => !dict.has(k));
   const unused = [...dict.keys()].filter(k => !keys.has(k));
-  const leftover = [...dict].filter(([, v]) => JP.test(v.replace(/<[^>]*>/g, ""))).map(([k]) => k);
+  // Kana and kanji only: full-width signs such as the dice bot's "＞" belong in every language.
+  const leftover = [...dict].filter(([, v]) => /[぀-ヿ㐀-鿿]/.test(v.replace(/<[^>]*>/g, ""))).map(([k]) => k);
   console.log(`== ${code}: ${keys.size} keys, ${dict.size} entries, ${missing.length} missing, ${unused.length} unused`);
   for (const k of missing) console.log("  MISSING " + JSON.stringify(k) + "  (" + keys.get(k) + ")");
   for (const k of unused) console.log("  UNUSED  " + JSON.stringify(k));
