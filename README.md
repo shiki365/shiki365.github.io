@@ -49,7 +49,7 @@
   node _dev\i18n-check.js ..\kokofolia-apng\docs  # ツール
   ```
 
-- まだ訳していないツールのカードには、`<span class="label" data-lang-only="en ko">日本語のみ</span>` を付けている。訳したら外す
+- 訳していないもの（いまは在室灯だけ）のカードには、`<span class="label" data-lang-only="en ko">日本語のみ</span>` を付けている
 
 ## ツールを増やすとき
 

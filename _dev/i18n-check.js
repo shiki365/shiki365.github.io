@@ -26,7 +26,7 @@ if (!dir) { console.error("usage: node i18n-check.js <folder> [--keys]"); proces
 const showKeys = process.argv.includes("--keys");
 
 const norm = text => String(text).replace(/\s+/g, " ").trim();
-const JP = /[぀-ヿ㐀-鿿！-；＝？-｠]/;   // as in i18n.v1.js
+const JP = /[、-ヿ㐀-鿿！-；＝？-｠]/;   // as in i18n.v1.js
 const ATTRS = ["placeholder", "title", "aria-label", "alt", "label"];
 const SKIP = new Set(["script", "style", "textarea", "code", "pre"]);
 const VOID = new Set(["area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "source", "track", "wbr"]);
@@ -170,7 +170,8 @@ for (const file of scripts) {
     // A template with ${...} only builds markup around texts, which are literals of their own.
     if (!JP.test(value) || (value.includes("${") && !template)) continue;
     found(value, file);
-    if (value.includes("：")) found(value.split("：")[0], file);
+    // "label：description" (scene presets): the label alone is a key too. One colon, no quote before it.
+    if (/^[^：「」]+：[^：]+$/.test(value)) found(value.split("：")[0], file);
   }
 }
 
