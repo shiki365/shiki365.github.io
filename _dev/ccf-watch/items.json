@@ -1,0 +1,321 @@
+{
+  "$comment": "What the CSS tools and the room data tool rely on in CCFOLIA. Read by watch.js; see README.md (how to add an item).",
+  "site": "https://ccfolia.com/",
+  "bundle": "[^\"'\\s<>]*static/js/main\\.[a-z0-9]+\\.js",
+  "version": [
+    "[A-Z_]*VERSION:\"v?([0-9]+\\.[0-9]+\\.[0-9]+)\"",
+    "release:\"[^\"]*?v?([0-9]+\\.[0-9]+\\.[0-9]+)\""
+  ],
+  "tools": {
+    "status-bar-maker": {
+      "name": "ステータスバーメーカー",
+      "repo": "shiki365/status-bar-maker",
+      "check": "OBS で https://ccfolia.com/rooms/{ルームID}/characters/{キャラクターID} を開き、アイコン・バーの色と長さ・ラベルと数値・80% 以下の赤い数字・ピンチの演出が出るか"
+    },
+    "chat-window-maker": {
+      "name": "チャットウィンドウメーカー",
+      "repo": "shiki365/chat-window-maker",
+      "check": "OBS で https://ccfolia.com/rooms/{ルームID}/chat を開き、最新 N 件・ダイスだけ・成功／失敗の色・タブ名の見出し・秘匿タブの参加者のアイコンが出るか"
+    },
+    "message-box-maker": {
+      "name": "メッセージボックスメーカー",
+      "repo": "shiki365/message-box-maker",
+      "check": "OBS で https://ccfolia.com/rooms/{ルームID} を開き、メッセージボックスだけが残り、名前・本文・立ち絵・ダイスの結果の色が出て、閉じると消えるか"
+    },
+    "scenario-text-maker": {
+      "name": "シナリオテキストメーカー",
+      "repo": "shiki365/scenario-text-maker",
+      "check": "書き出した ZIP をテスト用のルームに読み込み、シナリオテキストと画像（ZIP に入れた画像と URL の画像）が入るか"
+    }
+  },
+  "items": [
+    {
+      "id": "page.root",
+      "what": "React の入れ物 #root（トップの HTML で探す）",
+      "selectors": ["#root", "#root > div", "#root > div > div", "html, body, #root"],
+      "uses": { "status-bar-maker": ["css.v1.js", "deco.v1.js"], "chat-window-maker": ["css.v1.js"], "message-box-maker": ["css.v1.js"] },
+      "in": "html",
+      "text": "id=\"root\""
+    },
+    {
+      "id": "route.characters",
+      "what": "キャラだけの画面の URL（/rooms/{ルームID}/characters/{キャラクターID}）",
+      "selectors": [],
+      "uses": { "status-bar-maker": ["model.v1.js", "css.v1.js"] },
+      "regex": "\"/rooms/:\\w+/characters/:\\w+\"|path:\"characters/:\\w+\""
+    },
+    {
+      "id": "route.chat",
+      "what": "チャットだけの画面の URL（/rooms/{ルームID}/chat）",
+      "selectors": [],
+      "uses": { "chat-window-maker": ["model.v1.js", "css.v1.js"] },
+      "regex": "\"/rooms/:\\w+/chat\"|path:\"chat\""
+    },
+    {
+      "id": "mui.snackbar",
+      "what": "通知の帯を消す .MuiSnackbar-root",
+      "selectors": [".MuiSnackbar-root"],
+      "uses": { "status-bar-maker": ["css.v1.js"], "chat-window-maker": ["css.v1.js"] },
+      "regex": "\"MuiSnackbar\",\\[\"root\""
+    },
+    {
+      "id": "mui.badge",
+      "what": "キャラのアイコンとイニシアチブ、タブの未読の印（.MuiBadge-root / -badge / -invisible）",
+      "selectors": [".MuiBadge-root", ".MuiBadge-root > .MuiBadge-badge", ".MuiBadge-root > .MuiBadge-invisible", ".MuiBadge-root + div", ".MuiTab-root .MuiBadge-root", ".MuiBadge-badge"],
+      "uses": { "status-bar-maker": ["css.v1.js"], "chat-window-maker": ["css.v1.js"] },
+      "regex": "\"MuiBadge\",\\[[^\\]]*\"badge\"[^\\]]*\"invisible\""
+    },
+    {
+      "id": "mui.avatar",
+      "what": "アイコンの画像（.MuiAvatar-root / .MuiAvatar-img）",
+      "selectors": [".MuiBadge-root > .MuiAvatar-root", ".MuiAvatar-root .MuiAvatar-root", ".MuiAvatar-img", ".MuiListItemAvatar-root .MuiAvatar-root"],
+      "uses": { "status-bar-maker": ["css.v1.js"], "chat-window-maker": ["css.v1.js"] },
+      "regex": "\"MuiAvatar\",\\[[^\\]]*\"img\""
+    },
+    {
+      "id": "mui.avatarGroup",
+      "what": "秘匿タブの参加者のアイコンの並び（.MuiAvatarGroup-root）",
+      "selectors": ["header > .MuiToolbar-root:not(:first-child) .MuiAvatarGroup-root"],
+      "uses": { "chat-window-maker": ["css.v1.js"] },
+      "regex": "\"MuiAvatarGroup\",\\[\"root\""
+    },
+    {
+      "id": "mui.drawer",
+      "what": "チャット画面の外枠（.MuiDrawer-paper）",
+      "selectors": [".MuiDrawer-paper", ".MuiDrawer-paper > header", ".MuiDrawer-paper > div.MuiPaper-root"],
+      "uses": { "chat-window-maker": ["css.v1.js"] },
+      "regex": "\"MuiDrawer\",\\[[^\\]]*\"paper\""
+    },
+    {
+      "id": "mui.listItem",
+      "what": "メッセージ 1 件の箱（.MuiListItem-root）",
+      "selectors": ["div[data-index] > .MuiListItem-root"],
+      "uses": { "chat-window-maker": ["css.v1.js"] },
+      "regex": "\"MuiListItem\",\\[\"root\""
+    },
+    {
+      "id": "mui.listItemAvatar",
+      "what": "メッセージのアイコンの列（.MuiListItemAvatar-root。システムは中が空の div）",
+      "selectors": [".MuiListItemAvatar-root", ".MuiListItemAvatar-root > div", ":has(.MuiListItemAvatar-root > div:empty)"],
+      "uses": { "chat-window-maker": ["css.v1.js"] },
+      "regex": "\"MuiListItemAvatar\",\\[\"root\""
+    },
+    {
+      "id": "mui.listItemText",
+      "what": "メッセージの名前と本文（.MuiListItemText-root / -primary / -secondary）",
+      "selectors": [".MuiListItemText-root", ".MuiListItemText-primary", ".MuiListItemText-secondary", ":has(.MuiListItemText-secondary > .MuiTypography-body2)"],
+      "uses": { "chat-window-maker": ["css.v1.js"] },
+      "regex": "\"MuiListItemText\",\\[[^\\]]*\"primary\"[^\\]]*\"secondary\""
+    },
+    {
+      "id": "mui.typography",
+      "what": "名前・ダイスの結果・時刻の文字（.MuiTypography-subtitle2 / -body2 / -caption）",
+      "selectors": [".MuiListItemText-secondary > .MuiTypography-body2", ".MuiListItemText-primary > .MuiTypography-caption", ".MuiListItemText-secondary > .MuiTypography-caption", ".MuiToolbar-root > .MuiTypography-subtitle2", ".MuiToolbar-root > .MuiTypography-body2"],
+      "uses": { "chat-window-maker": ["css.v1.js"], "message-box-maker": ["css.v1.js"] },
+      "regex": "\"MuiTypography\",\\[[^\\]]*\"subtitle2\"[^\\]]*\"body2\"[^\\]]*\"caption\""
+    },
+    {
+      "id": "mui.toolbar",
+      "what": "見出しの行（.MuiToolbar-root）",
+      "selectors": ["header > .MuiToolbar-root:first-child", "header > .MuiToolbar-root:not(:first-child)", "form > header > .MuiToolbar-root", "[role=\"status\"] > .MuiPaper-root > .MuiToolbar-root"],
+      "uses": { "chat-window-maker": ["css.v1.js"], "message-box-maker": ["css.v1.js"] },
+      "regex": "\"MuiToolbar\",\\[\"root\""
+    },
+    {
+      "id": "mui.iconButton",
+      "what": "見出しの行のボタン（.MuiIconButton-root。スキップ・閉じるなど）",
+      "selectors": [".MuiToolbar-root:first-child .MuiIconButton-root", ".MuiToolbar-root > .MuiIconButton-root"],
+      "uses": { "chat-window-maker": ["css.v1.js"], "message-box-maker": ["css.v1.js"] },
+      "regex": "\"MuiIconButton\",\\[\"root\""
+    },
+    {
+      "id": "mui.paper",
+      "what": "入力欄の箱とメッセージボックスの箱（.MuiPaper-root）",
+      "selectors": [".MuiDrawer-paper > div.MuiPaper-root", "[role=\"status\"] > .MuiPaper-root"],
+      "uses": { "chat-window-maker": ["css.v1.js"], "message-box-maker": ["css.v1.js"] },
+      "regex": "\"MuiPaper\",\\[\"root\""
+    },
+    {
+      "id": "mui.tabs",
+      "what": "チャットのタブの並び（.MuiTabs-root / -scroller / -indicator）",
+      "selectors": [".MuiTabs-root", ".MuiTabs-root > div:not(.MuiTabs-scroller)", ".MuiTabs-scroller", ".MuiTabs-indicator"],
+      "uses": { "chat-window-maker": ["css.v1.js"] },
+      "regex": "\"MuiTabs\",\\[[^\\]]*\"scroller\"[^\\]]*\"indicator\""
+    },
+    {
+      "id": "mui.tablist",
+      "what": "タブの並びの role（[role=\"tablist\"]）",
+      "selectors": ["[role=\"tablist\"]"],
+      "uses": { "chat-window-maker": ["css.v1.js"] },
+      "text": "role:\"tablist\""
+    },
+    {
+      "id": "mui.tab",
+      "what": "タブ 1 つと、開いているタブ（.MuiTab-root / .Mui-selected）",
+      "selectors": [".MuiTab-root", ".MuiTab-root.Mui-selected", ".MuiTab-root svg"],
+      "uses": { "chat-window-maker": ["css.v1.js"] },
+      "regex": "\"MuiTab\",\\[[^\\]]*\"selected\""
+    },
+    {
+      "id": "mui.stateClasses",
+      "what": "MUI の状態のクラス（Mui-selected などの元になる対応表）",
+      "selectors": [".Mui-selected"],
+      "uses": { "chat-window-maker": ["css.v1.js"] },
+      "regex": "focusVisible:\"focusVisible\"[^}]*selected:\"selected\""
+    },
+    {
+      "id": "mui.touchRipple",
+      "what": "タブを押したときの波紋（.MuiTouchRipple-root）",
+      "selectors": [".MuiTouchRipple-root"],
+      "uses": { "chat-window-maker": ["css.v1.js"] },
+      "regex": "\"MuiTouchRipple\",\\[\"root\""
+    },
+    {
+      "id": "mui.box",
+      "what": "タブ名の中の .MuiBox-root",
+      "selectors": [".MuiTab-root .MuiBox-root"],
+      "uses": { "chat-window-maker": ["css.v1.js"] },
+      "regex": "\"MuiBox-root\"|\"MuiBox\",\\[\"root\"\\]"
+    },
+    {
+      "id": "status.variantBar",
+      "what": "ステータスの並びに付く属性 variant=\"bar\"",
+      "selectors": ["[variant=\"bar\"]", "[variant=\"bar\"] > div", "[variant=\"bar\"] > div:nth-child(n)"],
+      "uses": { "status-bar-maker": ["css.v1.js", "deco.v1.js"] },
+      "text": "variant:\"bar\""
+    },
+    {
+      "id": "status.secondaryAt80",
+      "what": "現在値が最大値の 80% 以下で数字の span に付く color=\"secondary\"",
+      "selectors": ["[variant=\"bar\"] > div > div:nth-child(1) > :nth-child(2) > span[color=\"secondary\"]"],
+      "uses": { "status-bar-maker": ["deco.v1.js"] },
+      "regex": "\\.8[^;{}]{0,40}\"secondary\""
+    },
+    {
+      "id": "chat.roleLog",
+      "what": "メッセージ一覧の role（[role=\"log\"]）",
+      "selectors": [".MuiDrawer-paper > [role=\"log\"]", "[role=\"log\"] > div:last-child > div", "[role=\"log\"] > :not(div)"],
+      "uses": { "chat-window-maker": ["css.v1.js"] },
+      "text": "role:\"log\""
+    },
+    {
+      "id": "chat.dataIndex",
+      "what": "仮想スクロールのメッセージ 1 件に付く data-index",
+      "selectors": ["div[data-index]", "div[data-index]:nth-last-child(-n+N)", ":nth-last-child(-n+N of :has(...))"],
+      "uses": { "chat-window-maker": ["css.v1.js"] },
+      "text": "\"data-index\""
+    },
+    {
+      "id": "chat.overscan50",
+      "what": "仮想スクロールが前後 50 件ぶん描くこと（最新 N 件は 30 件まで、の前提）",
+      "selectors": ["div[data-index]:nth-last-child(-n+30)"],
+      "uses": { "chat-window-maker": ["css.v1.js"] },
+      "regex": "overscan:50\\b"
+    },
+    {
+      "id": "mbox.statusRegion",
+      "what": "メッセージボックスの外枠（role=\"status\" と aria-live=\"polite\"）",
+      "selectors": ["[role=\"status\"][aria-live=\"polite\"]", "[role=\"status\"][aria-live=\"polite\"]:not([style*=\"visibility: hidden\"])", "[role=\"status\"][aria-live=\"polite\"] > img"],
+      "uses": { "message-box-maker": ["css.v1.js"] },
+      "near": ["role:\"status\"", "\"aria-live\":\"polite\""],
+      "within": 300
+    },
+    {
+      "id": "theme.primary",
+      "what": "テーマの primary #2196f3。ダイスの成功のクラス css-1l6qhgm（body2 + この色のハッシュ）の元",
+      "selectors": [".css-1l6qhgm", ":has(.MuiListItemText-secondary > .css-1l6qhgm)", ".MuiTypography-body2.css-1l6qhgm"],
+      "uses": { "chat-window-maker": ["presets.v1.js", "css.v1.js"], "message-box-maker": ["presets.v1.js", "css.v1.js"] },
+      "regex": "#2196f3",
+      "flags": "i"
+    },
+    {
+      "id": "theme.secondary",
+      "what": "テーマの secondary #dc004e。ダイスの失敗のクラス css-1j13mke（body2 + この色のハッシュ）の元",
+      "selectors": [".css-1j13mke", ":has(.MuiListItemText-secondary > .css-1j13mke)", ".MuiTypography-body2.css-1j13mke"],
+      "uses": { "chat-window-maker": ["presets.v1.js", "css.v1.js"], "message-box-maker": ["presets.v1.js", "css.v1.js"] },
+      "regex": "#dc004e",
+      "flags": "i"
+    },
+    {
+      "id": "roomdata.dataJson",
+      "what": "ルームデータ ZIP の中の __data.json",
+      "selectors": [],
+      "uses": { "scenario-text-maker": ["roomdata.v1.js"] },
+      "text": "\"__data.json\""
+    },
+    {
+      "id": "roomdata.metaVersion",
+      "what": "__data.json の meta.version が \"1.1.0\" であること",
+      "selectors": [],
+      "uses": { "scenario-text-maker": ["roomdata.v1.js"] },
+      "regex": "version:\"1\\.1\\.0\""
+    },
+    {
+      "id": "roomdata.token",
+      "what": "ルームデータ ZIP の署名 .token（わざと合わせない前提）",
+      "selectors": [],
+      "uses": { "scenario-text-maker": ["roomdata.v1.js"] },
+      "text": "\".token\""
+    },
+    {
+      "id": "roomdata.sha256",
+      "what": "ZIP の画像の名前が中身の SHA-256 であること",
+      "selectors": [],
+      "uses": { "scenario-text-maker": ["roomdata.v1.js", "app.v1.js"] },
+      "regex": "\"SHA-256\"|\\bSHA256\\b"
+    },
+    {
+      "id": "roomdata.mimeExt",
+      "what": "画像の拡張子が mime の最初のもの（image/jpeg なら jpeg）であること",
+      "selectors": [],
+      "uses": { "scenario-text-maker": ["roomdata.v1.js"] },
+      "regex": "\"image/jpeg\":\\[\"jpeg\""
+    },
+    {
+      "id": "roomdata.imageFields",
+      "what": "読み込むときに画像として取り込む欄（iconUrl を含む 6 つ）が並んでいること",
+      "selectors": [],
+      "uses": { "scenario-text-maker": ["roomdata.v1.js"] },
+      "near": ["\"backgroundUrl\"", "\"foregroundUrl\"", "\"coverImageUrl\"", "\"imageUrl\"", "\"iconUrl\"", "\"thumbnail\""],
+      "within": 400
+    }
+  ],
+  "manual": [
+    {
+      "id": "status.structure",
+      "what": "バー 1 本の中の並び（ラベルと数値の div、下地と伸び縮みする部分の div）。nth-child で狙っている",
+      "selectors": ["> div:nth-child(1) > :nth-child(1)", "> div:nth-child(1) > :nth-child(2) > span", "> div:nth-child(2) > div:nth-child(1)", "> div:nth-child(2) > div:nth-child(2)"],
+      "uses": { "status-bar-maker": ["css.v1.js"] }
+    },
+    {
+      "id": "status.fillWidth",
+      "what": "伸び縮みする部分の style が \"width: 83.3333%;\" の形であること（残りの割合の判定）",
+      "selectors": [":has(> div:nth-child(2) > div:nth-child(2)[style^=\"width: 8\"])", ":where([style^=\"width: 0%\"])"],
+      "uses": { "status-bar-maker": ["deco.v1.js"] }
+    },
+    {
+      "id": "chat.structure",
+      "what": "チャット画面の並び（一覧 > div:last-child > div > div[data-index]、入力欄の form > header）",
+      "selectors": ["[role=\"log\"] > div:last-child > div > div[data-index]", "div[data-index] > hr", ".MuiDrawer-paper > div.MuiPaper-root > form > header", "header > .MuiToolbar-root:first-child > div:nth-of-type(1)", "header h6"],
+      "uses": { "chat-window-maker": ["css.v1.js"] }
+    },
+    {
+      "id": "result.classes",
+      "what": "ダイスの成否のクラス（emotion のハッシュ）。テーマの色が同じでも、MUI の版や文字の設定が変わると名前が変わる",
+      "selectors": [".css-1l6qhgm", ".css-1j13mke", ".css-ucj12"],
+      "uses": { "chat-window-maker": ["presets.v1.js"], "message-box-maker": ["presets.v1.js"] }
+    },
+    {
+      "id": "mbox.structure",
+      "what": "メッセージボックスの中の並び（立ち絵の img、箱の最初の div がダイスの画像、最後の div > p が本文）と、閉じたときの style=\"visibility: hidden\"",
+      "selectors": ["[role=\"status\"] > img", "> .MuiPaper-root > div:first-child", "> .MuiPaper-root > div:last-child > p", ":not([style*=\"visibility: hidden\"])"],
+      "uses": { "message-box-maker": ["css.v1.js"] }
+    },
+    {
+      "id": "roomdata.import",
+      "what": "ZIP の読み込み（notes の iconUrl が画像の URL に置き換わる、ID ごとの上書きで追加だけになる）",
+      "selectors": [],
+      "uses": { "scenario-text-maker": ["roomdata.v1.js"] }
+    }
+  ]
+}
