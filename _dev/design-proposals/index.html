@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<title>デザイン一新の案（3 方向）</title>
+<title>デザイン一新の案</title>
 <style>
   /* Neutral page on purpose: it should not favour any of the three proposals. */
   :root { color-scheme: dark; --bg: #18191c; --panel: #202226; --line: #34363c; --fg: #ececec; --muted: #a2a2a8; --link: #9fc3ff; }
@@ -33,9 +33,9 @@
 </head>
 <body>
 <div class="wrap">
-  <h1>デザイン一新の案（3 方向）</h1>
+  <h1>デザイン一新の案（3 方向 ＋ A に枠を足した版）</h1>
   <p class="lead">置き場サイトのトップと、チャットウィンドウメーカーの画面を、方向の違う 3 つの案で作りました。どれも本物のファイルのコピーで、変えたのは <code>&lt;style&gt;</code> だけです。チャットウィンドウメーカーはそのまま動きます（書き出す CSS は元と同じです）。</p>
-  <p class="lead">A 案と C 案には、ダークとライトの 2 種類があります。ふだんは OS の設定（ダークモード・ライトモード）に合わせて自動で切り替わり、URL の末尾に <code>?theme=light</code> <code>?theme=dark</code> を付けると OS に関係なく選べます（下のリンクは付けてあります）。</p>
+  <p class="lead">A 案・A+ 案・C 案には、ダークとライトの 2 種類があります。ふだんは OS の設定（ダークモード・ライトモード）に合わせて自動で切り替わり、URL の末尾に <code>?theme=light</code> <code>?theme=dark</code> を付けると OS に関係なく選べます（下のリンクは付けてあります）。</p>
   <p class="lead">言語は各画面の右上、または URL の末尾に <code>?lang=en</code> <code>?lang=ko</code> で切り替えられます（<code>?lang=en&amp;theme=light</code> のように並べても使えます）。見方と細かい決まりは <a href="README.md">README.md</a> にあります。</p>
 
   <div class="grid">
@@ -50,6 +50,28 @@
       </div>
       <ul class="links"><li><a href="a/hub/?theme=dark">置き場サイト（ダーク）</a></li><li><a href="a/chat-window/?theme=dark">チャットウィンドウメーカー（ダーク）</a></li><li><a href="a/hub/?theme=light">置き場サイト（ライト）</a></li><li><a href="a/chat-window/?theme=light">チャットウィンドウメーカー（ライト）</a></li></ul>
       <dl><dt>地</dt><dd>#111214 / 面 #17181b</dd><dt>差し色</dt><dd>琥珀 #e3a63b（ボタンは黒文字）</dd><dt>角</dt><dd>ほぼ直角（2px）</dd></dl>
+    </article>
+    <article>
+      <h2>A+ 案（枠 1px）<small>A に枠を足した・細め</small></h2>
+      <p>A 案の色と詰まり具合はそのままに、設定のパネル、プレビュー下のまとまり、置き場サイトの各ツールを、濃い色の 1px の枠で囲みました。入力欄とボタンも同じ枠の色にして、押せる場所の縁をはっきりさせています。プレビューは黒い縁と四隅の印でモニター風に。</p>
+      <div class="shots">
+        <a href="a-frame-1px/hub/?theme=dark"><img src="shots/a-frame-1px-hub.jpg" alt="A+ 案（枠 1px）の置き場サイト" width="1280" height="900" loading="lazy"></a>
+        <a href="a-frame-1px/chat-window/?theme=dark"><img src="shots/a-frame-1px-chat-window.jpg" alt="A+ 案（枠 1px）のチャットウィンドウメーカー" width="1280" height="900" loading="lazy"></a>
+        <a href="a-frame-1px/hub/?theme=light"><img src="shots/a-frame-1px-hub-light.jpg" alt="A+ 案（枠 1px）の置き場サイト（ライト）" width="1280" height="900" loading="lazy"></a>
+        <a href="a-frame-1px/chat-window/?theme=light"><img src="shots/a-frame-1px-chat-window-light.jpg" alt="A+ 案（枠 1px）のチャットウィンドウメーカー（ライト）" width="1280" height="900" loading="lazy"></a>
+      </div>
+      <ul class="links"><li><a href="a-frame-1px/hub/?theme=dark">置き場サイト（ダーク）</a></li><li><a href="a-frame-1px/chat-window/?theme=dark">チャットウィンドウメーカー（ダーク）</a></li><li><a href="a-frame-1px/hub/?theme=light">置き場サイト（ライト）</a></li><li><a href="a-frame-1px/chat-window/?theme=light">チャットウィンドウメーカー（ライト）</a></li></ul>
+    </article>
+    <article>
+      <h2>A+ 案（枠 2px）<small>A に枠を足した・太め</small></h2>
+      <p>中身は 1px の版と同じで、枠・入力欄・ボタンの縁だけを 2px にしました。C 案に近い、輪郭のはっきりした見た目です。1px の版と行き来して、太さだけを比べてください。</p>
+      <div class="shots">
+        <a href="a-frame-2px/hub/?theme=dark"><img src="shots/a-frame-2px-hub.jpg" alt="A+ 案（枠 2px）の置き場サイト" width="1280" height="900" loading="lazy"></a>
+        <a href="a-frame-2px/chat-window/?theme=dark"><img src="shots/a-frame-2px-chat-window.jpg" alt="A+ 案（枠 2px）のチャットウィンドウメーカー" width="1280" height="900" loading="lazy"></a>
+        <a href="a-frame-2px/hub/?theme=light"><img src="shots/a-frame-2px-hub-light.jpg" alt="A+ 案（枠 2px）の置き場サイト（ライト）" width="1280" height="900" loading="lazy"></a>
+        <a href="a-frame-2px/chat-window/?theme=light"><img src="shots/a-frame-2px-chat-window-light.jpg" alt="A+ 案（枠 2px）のチャットウィンドウメーカー（ライト）" width="1280" height="900" loading="lazy"></a>
+      </div>
+      <ul class="links"><li><a href="a-frame-2px/hub/?theme=dark">置き場サイト（ダーク）</a></li><li><a href="a-frame-2px/chat-window/?theme=dark">チャットウィンドウメーカー（ダーク）</a></li><li><a href="a-frame-2px/hub/?theme=light">置き場サイト（ライト）</a></li><li><a href="a-frame-2px/chat-window/?theme=light">チャットウィンドウメーカー（ライト）</a></li></ul>
     </article>
 
     <article>
