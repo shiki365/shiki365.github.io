@@ -2,6 +2,7 @@
 <html lang="ja" data-langs="ja en ko">
 <head>
 <meta charset="utf-8">
+<script>/* Proposal only: ?theme=light|dark overrides the OS color scheme. */ try { var m = location.search.match(/[?&]theme=(light|dark)(&|$)/); if (m) document.documentElement.dataset.theme = m[1]; } catch (e) {}</script>
 <script src="i18n.v1.js"></script>
 <script src="lang.en.v1.js"></script>
 <script src="lang.ko.v1.js"></script>
@@ -144,6 +145,28 @@
   }
   @media (prefers-reduced-motion: no-preference) {
     .btn, .jump a { transition: background-color .12s, color .12s; }
+  }
+
+  /* ---- Theme: colors that were written inline above, now as variables so a light theme can swap them. */
+  :root { --label-line: #6e5524; --label-fg: #f0c879; --desc-fg: #cfccc4; --thumb-bg: #0b0c0e; }
+  .label { border-color: var(--label-line); color: var(--label-fg); }
+  .desc { color: var(--desc-fg); }
+  .thumb { background: var(--thumb-bg); }
+
+  /* Light: follows the OS unless ?theme=dark; ?theme=light forces it (see the script in <head>). */
+  @media (prefers-color-scheme: light) { :root:not([data-theme=dark]) {
+    color-scheme: light;
+    --bg: #f4f4f1; --panel: #ffffff; --line: #d3d1ca; --line-soft: #e6e4de;
+    --fg: #1d1c19; --muted: #5d5b54; --accent: #8a5000; --link: #7a4600;
+    --button: #e3a63b; --button-fg: #1a1306; --button-hover: #d39628;
+    --label-line: #b08a3a; --label-fg: #6a4a00; --desc-fg: #3a3833; --thumb-bg: #e6e4de;
+  } }
+  :root[data-theme=light] {
+    color-scheme: light;
+    --bg: #f4f4f1; --panel: #ffffff; --line: #d3d1ca; --line-soft: #e6e4de;
+    --fg: #1d1c19; --muted: #5d5b54; --accent: #8a5000; --link: #7a4600;
+    --button: #e3a63b; --button-fg: #1a1306; --button-hover: #d39628;
+    --label-line: #b08a3a; --label-fg: #6a4a00; --desc-fg: #3a3833; --thumb-bg: #e6e4de;
   }
 </style>
 </head>

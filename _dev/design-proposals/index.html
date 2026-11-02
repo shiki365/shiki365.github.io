@@ -35,7 +35,8 @@
 <div class="wrap">
   <h1>デザイン一新の案（3 方向）</h1>
   <p class="lead">置き場サイトのトップと、チャットウィンドウメーカーの画面を、方向の違う 3 つの案で作りました。どれも本物のファイルのコピーで、変えたのは <code>&lt;style&gt;</code> だけです。チャットウィンドウメーカーはそのまま動きます（書き出す CSS は元と同じです）。</p>
-  <p class="lead">言語は各画面の右上、または URL の末尾に <code>?lang=en</code> <code>?lang=ko</code> で切り替えられます。見方と細かい決まりは <a href="README.md">README.md</a> にあります。</p>
+  <p class="lead">A 案と C 案には、ダークとライトの 2 種類があります。ふだんは OS の設定（ダークモード・ライトモード）に合わせて自動で切り替わり、URL の末尾に <code>?theme=light</code> <code>?theme=dark</code> を付けると OS に関係なく選べます（下のリンクは付けてあります）。</p>
+  <p class="lead">言語は各画面の右上、または URL の末尾に <code>?lang=en</code> <code>?lang=ko</code> で切り替えられます（<code>?lang=en&amp;theme=light</code> のように並べても使えます）。見方と細かい決まりは <a href="README.md">README.md</a> にあります。</p>
 
   <div class="grid">
     <article>
@@ -44,8 +45,10 @@
       <div class="shots">
         <a href="a/hub/"><img src="shots/a-hub.jpg" alt="A 案の置き場サイト" width="1280" height="900" loading="lazy"></a>
         <a href="a/chat-window/"><img src="shots/a-chat-window.jpg" alt="A 案のチャットウィンドウメーカー" width="1280" height="900" loading="lazy"></a>
+        <a href="a/hub/?theme=light"><img src="shots/a-hub-light.jpg" alt="A 案の置き場サイト（ライト）" width="1280" height="900" loading="lazy"></a>
+        <a href="a/chat-window/?theme=light"><img src="shots/a-chat-window-light.jpg" alt="A 案のチャットウィンドウメーカー（ライト）" width="1280" height="900" loading="lazy"></a>
       </div>
-      <ul class="links"><li><a href="a/hub/">置き場サイト</a></li><li><a href="a/chat-window/">チャットウィンドウメーカー</a></li></ul>
+      <ul class="links"><li><a href="a/hub/?theme=dark">置き場サイト（ダーク）</a></li><li><a href="a/chat-window/?theme=dark">チャットウィンドウメーカー（ダーク）</a></li><li><a href="a/hub/?theme=light">置き場サイト（ライト）</a></li><li><a href="a/chat-window/?theme=light">チャットウィンドウメーカー（ライト）</a></li></ul>
       <dl><dt>地</dt><dd>#111214 / 面 #17181b</dd><dt>差し色</dt><dd>琥珀 #e3a63b（ボタンは黒文字）</dd><dt>角</dt><dd>ほぼ直角（2px）</dd></dl>
     </article>
 
@@ -66,8 +69,10 @@
       <div class="shots">
         <a href="c/hub/"><img src="shots/c-hub.jpg" alt="C 案の置き場サイト" width="1280" height="900" loading="lazy"></a>
         <a href="c/chat-window/"><img src="shots/c-chat-window.jpg" alt="C 案のチャットウィンドウメーカー" width="1280" height="900" loading="lazy"></a>
+        <a href="c/hub/?theme=light"><img src="shots/c-hub-light.jpg" alt="C 案の置き場サイト（ライト）" width="1280" height="900" loading="lazy"></a>
+        <a href="c/chat-window/?theme=light"><img src="shots/c-chat-window-light.jpg" alt="C 案のチャットウィンドウメーカー（ライト）" width="1280" height="900" loading="lazy"></a>
       </div>
-      <ul class="links"><li><a href="c/hub/">置き場サイト</a></li><li><a href="c/chat-window/">チャットウィンドウメーカー</a></li></ul>
+      <ul class="links"><li><a href="c/hub/?theme=dark">置き場サイト（ダーク）</a></li><li><a href="c/chat-window/?theme=dark">チャットウィンドウメーカー（ダーク）</a></li><li><a href="c/hub/?theme=light">置き場サイト（ライト）</a></li><li><a href="c/chat-window/?theme=light">チャットウィンドウメーカー（ライト）</a></li></ul>
       <dl><dt>地</dt><dd>#0c0e11 / 面 #15181d</dd><dt>差し色</dt><dd>黄緑 #c6ee3a（黒文字）、赤い丸 #ff4f45</dd><dt>角</dt><dd>直角、2px の枠</dd></dl>
     </article>
   </div>

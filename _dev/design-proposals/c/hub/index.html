@@ -2,6 +2,7 @@
 <html lang="ja" data-langs="ja en ko">
 <head>
 <meta charset="utf-8">
+<script>/* Proposal only: ?theme=light|dark overrides the OS color scheme. */ try { var m = location.search.match(/[?&]theme=(light|dark)(&|$)/); if (m) document.documentElement.dataset.theme = m[1]; } catch (e) {}</script>
 <script src="i18n.v1.js"></script>
 <script src="lang.en.v1.js"></script>
 <script src="lang.ko.v1.js"></script>
@@ -131,6 +132,32 @@
   }
   @media (prefers-reduced-motion: no-preference) {
     .tool, .btn, .jump a { transition: border-color .12s, background-color .12s; }
+  }
+
+  /* ---- Theme: colors that were written inline above, now as variables so a light theme can swap them. */
+  :root { --stripe: #15181d; --desc-fg: #d3d8de; --hard: #000; }
+  header { background: repeating-linear-gradient(90deg, transparent 0 119px, var(--stripe) 119px 120px); }
+  .desc, .faq details p { color: var(--desc-fg); }
+  .tool { box-shadow: 6px 6px 0 var(--hard); }
+  .btn { box-shadow: 3px 3px 0 var(--hard); }
+  .btn:active { box-shadow: 1px 1px 0 var(--hard); }
+  @media (max-width: 600px) { .tool { box-shadow: 4px 4px 0 var(--hard); } }
+
+  /* Light: a printed broadcast rundown. Black 2px rules and black buttons with lime text, so the lime
+     stays the signal color without being used as text on white (it would fail contrast there). */
+  @media (prefers-color-scheme: light) { :root:not([data-theme=dark]) {
+    color-scheme: light;
+    --bg: #f1f2f4; --panel: #ffffff; --line: #c9ced6; --line-soft: #dfe3e8; --line-strong: #14171c;
+    --fg: #0c0e11; --muted: #4a5260; --accent: #3f6f00; --link: #2f5600;
+    --button: #0c0e11; --button-fg: #c6ee3a; --button-hover: #2a2f37;
+    --stripe: #e4e7ec; --desc-fg: #2a2f37; --hard: #14171c;
+  } }
+  :root[data-theme=light] {
+    color-scheme: light;
+    --bg: #f1f2f4; --panel: #ffffff; --line: #c9ced6; --line-soft: #dfe3e8; --line-strong: #14171c;
+    --fg: #0c0e11; --muted: #4a5260; --accent: #3f6f00; --link: #2f5600;
+    --button: #0c0e11; --button-fg: #c6ee3a; --button-hover: #2a2f37;
+    --stripe: #e4e7ec; --desc-fg: #2a2f37; --hard: #14171c;
   }
 </style>
 </head>

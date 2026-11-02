@@ -2,6 +2,7 @@
 <html lang="ja" data-langs="ja en ko">
 <head>
 <meta charset="utf-8">
+<script>/* Proposal only: ?theme=light|dark overrides the OS color scheme. */ try { var m = location.search.match(/[?&]theme=(light|dark)(&|$)/); if (m) document.documentElement.dataset.theme = m[1]; } catch (e) {}</script>
 <script src="i18n.v1.js"></script>
 <script src="lang.en.v1.js?v=2"></script>
 <script src="lang.ko.v1.js?v=2"></script>
@@ -182,6 +183,46 @@
   body .pcf-list button.pcf-item:hover { background: var(--control); }
   body .pcf-list button.pcf-item[aria-current=true] { background: #262d14; box-shadow: inset 4px 0 0 var(--accent); }
   @media (prefers-reduced-motion: reduce) { button.primary:active { transform: none; } }
+
+  /* ---- Theme: colors that were written inline above, now as variables so a light theme can swap them. */
+  :root { --tab-on-bg: var(--accent); --tab-on-fg: var(--button-fg); --hover-line: #6a7482;
+          --danger-bg: #4a1d1f; --pick: #262d14; --hard: #000; }
+  .tabbar button[aria-selected=true] { color: var(--tab-on-fg); background: var(--tab-on-bg); border-color: var(--tab-on-bg); }
+  select:hover, input[type=text]:hover, input[type=number]:hover, button:hover { border-color: var(--hover-line); }
+  button.primary:hover { border-color: var(--button-hover); }
+  button.danger:hover { background: var(--danger-bg); border-color: var(--tally); }
+  button.primary { box-shadow: 3px 3px 0 var(--hard); }
+  button.primary:active { box-shadow: 1px 1px 0 var(--hard); }
+  body .pcf-list button.pcf-item[aria-current=true] { background: var(--pick); }
+  /* Safe-area marks and the save strip keep the broadcast lime in both themes. */
+  .stage::after {
+    background:
+      linear-gradient(#c6ee3a, #c6ee3a) left top / 18px 2px no-repeat, linear-gradient(#c6ee3a, #c6ee3a) left top / 2px 18px no-repeat,
+      linear-gradient(#c6ee3a, #c6ee3a) right top / 18px 2px no-repeat, linear-gradient(#c6ee3a, #c6ee3a) right top / 2px 18px no-repeat,
+      linear-gradient(#c6ee3a, #c6ee3a) left bottom / 18px 2px no-repeat, linear-gradient(#c6ee3a, #c6ee3a) left bottom / 2px 18px no-repeat,
+      linear-gradient(#c6ee3a, #c6ee3a) right bottom / 18px 2px no-repeat, linear-gradient(#c6ee3a, #c6ee3a) right bottom / 2px 18px no-repeat; }
+  .source-url + .bar button.primary { background: #c6ee3a; border-color: #c6ee3a; color: #0c0e11; }
+  .source-url + .bar input[type=text] { background: #fff; color: #0c0e11; border-color: #0c0e11; }
+  .source-url + .bar button.primary:hover { background: #d8fa5c; border-color: #d8fa5c; }
+
+  /* Light: a printed broadcast rundown. Black 2px rules; the selected tab and the main button are black
+     with lime text, so lime stays the signal color without being used as text on white. */
+  @media (prefers-color-scheme: light) { :root:not([data-theme=dark]) {
+    color-scheme: light;
+    --bg: #f1f2f4; --panel: #ffffff; --line: #c9ced6; --line-soft: #dfe3e8; --line-strong: #14171c;
+    --fg: #0c0e11; --muted: #4a5260; --accent: #3f6f00; --link: #2f5600;
+    --button: #0c0e11; --button-fg: #c6ee3a; --button-hover: #2a2f37;
+    --field: #ffffff; --control: #e8ebef; --control-hover: #dce0e6; --warn: #8a4b00; --error: #b3261e;
+    --tab-on-bg: #0c0e11; --tab-on-fg: #c6ee3a; --hover-line: #4a5260; --danger-bg: #fde3e1; --pick: #eef6d6; --hard: #14171c;
+  } }
+  :root[data-theme=light] {
+    color-scheme: light;
+    --bg: #f1f2f4; --panel: #ffffff; --line: #c9ced6; --line-soft: #dfe3e8; --line-strong: #14171c;
+    --fg: #0c0e11; --muted: #4a5260; --accent: #3f6f00; --link: #2f5600;
+    --button: #0c0e11; --button-fg: #c6ee3a; --button-hover: #2a2f37;
+    --field: #ffffff; --control: #e8ebef; --control-hover: #dce0e6; --warn: #8a4b00; --error: #b3261e;
+    --tab-on-bg: #0c0e11; --tab-on-fg: #c6ee3a; --hover-line: #4a5260; --danger-bg: #fde3e1; --pick: #eef6d6; --hard: #14171c;
+  }
 </style>
 </head>
 <body>
