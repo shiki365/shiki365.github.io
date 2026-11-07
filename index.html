@@ -3,8 +3,9 @@
 <head>
 <meta charset="utf-8">
 <script src="i18n.v1.js"></script>
-<script src="lang.en.v1.js"></script>
-<script src="lang.ko.v1.js"></script>
+<script src="lang.en.v1.js?v=2"></script>
+<script src="lang.ko.v1.js?v=2"></script>
+<script src="theme.v1.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>shiki365 のツール置き場 | TRPG・マダミスのオンセ・配信で使える無料ツール</title>
 <meta name="description" content="TRPG やマダミスのオンラインセッション・配信で使う無料ツールの一覧です。場面転換のアニメーション、ココフォリアの前景に使う枠、OBS に映すステータスバー、Discord 連動のルームプレートなど。">
@@ -21,117 +22,202 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <style>
-  /* Same palette as the tools so moving between them feels like one site. */
+  /* Same look as the tools (2026-11 redesign, see _dev/design-proposals/): flat surfaces, square corners,
+     amber as the single signal color. Sections: base (dark) / theme hooks and light / frames / theme switch.
+     Colors are variables on :root, so the light theme only swaps their values. */
   :root {
     color-scheme: dark;
-    --bg: #15161a; --panel: #1e1f26; --line: #303240; --line-soft: #282a36;
-    --fg: #e7e7ea; --muted: #9a9aa5; --accent: #6b70ff; --link: #a8abff;
-    --button: #575cf5; /* darker than --accent so white text passes 4.5:1 */
+    --bg: #111214; --panel: #17181b; --line: #2c2e33; --line-soft: #222428;
+    --fg: #e6e3dc; --muted: #9b998f; --accent: #e3a63b; --link: #eab865;
+    --button: #e3a63b; --button-fg: #1a1306; --button-hover: #f0b752;
+    --mono: Consolas, "BIZ UDGothic", ui-monospace, monospace;
   }
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
   @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
-  body { margin: 0; background: var(--bg); color: var(--fg); line-height: 1.8;
-         font-family: "Yu Gothic UI", "Meiryo", system-ui, sans-serif; font-size: 15px; }
-  a { color: var(--link); }
-  a:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
-  .wrap { max-width: 1080px; margin: 0 auto; padding-inline: 20px; }
+  body { margin: 0; background: var(--bg); color: var(--fg); line-height: 1.75;
+         font-family: "Yu Gothic UI", "Meiryo", system-ui, sans-serif; font-size: 14px; counter-reset: sec; }
+  a { color: var(--link); text-underline-offset: 3px; }
+  a:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding-inline: 20px; }
 
-  header { border-bottom: 1px solid var(--line); padding-block: 44px 32px;
-           background: radial-gradient(ellipse 60% 120% at 0% 0%, #23254a, transparent 70%); }
-  h1 { margin: 0 0 8px; font-size: 28px; line-height: 1.4; }
-  .lead { margin: 0; color: var(--muted); max-width: 46em; }
-  .lang-switch { margin: 0 0 14px; color: var(--muted); font-size: 13px; }
+  header { border-bottom: 1px solid var(--line); padding-block: 22px 20px; }
+  .prefs { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 18px; margin: 0 0 18px; }
+  .lang-switch { margin: 0; color: var(--muted); font-size: 12px; font-family: var(--mono); }
   .lang-switch a[aria-current] { color: var(--fg); font-weight: 700; text-decoration: none; }
-  .en-note { margin: 16px 0 0; color: var(--muted); font-size: 13px; line-height: 1.7; max-width: 44em; }
-  .jump { display: flex; flex-wrap: wrap; gap: 4px 18px; margin: 14px 0 0; padding: 0; list-style: none; font-size: 14px; }
-  /* Plain links, not X's widgets.js, so visiting the page loads nothing from X. */
-  .social { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 0; padding: 0; list-style: none; }
-  .social a { display: inline-flex; align-items: center; gap: 8px; padding: 4px 14px; border: 1px solid var(--line);
-              border-radius: 999px; background: var(--panel); color: var(--fg); font-size: 14px; text-decoration: none; }
-  .social a:hover { border-color: #464a6e; }
-  .social svg { width: 13px; height: 13px; fill: currentColor; flex: none; }
+  h1 { margin: 0; font-size: 22px; line-height: 1.4; letter-spacing: .02em; }
+  h1::before { content: ""; display: inline-block; width: 10px; height: 10px; margin-right: 10px;
+               background: var(--accent); vertical-align: 2px; }
+  .lead { margin: 4px 0 0; color: var(--muted); max-width: 52em; }
+  .en-note { margin: 12px 0 0; padding-left: 12px; border-left: 2px solid var(--line); color: var(--muted);
+             font-size: 12.5px; line-height: 1.7; max-width: 60em; }
+  .jump { display: flex; flex-wrap: wrap; gap: 0; margin: 16px 0 0; padding: 0; list-style: none; font-size: 13px;
+          border: 1px solid var(--line); width: fit-content; max-width: 100%; }
+  .jump li + li { border-left: 1px solid var(--line); }
+  .jump a { display: block; padding: 4px 14px; color: var(--fg); text-decoration: none; }
+  .jump a:hover { background: var(--panel); color: var(--link); }
+  .social { display: flex; flex-wrap: wrap; gap: 4px 18px; margin: 12px 0 0; padding: 0; list-style: none; }
+  .social a { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-size: 13px; text-decoration: none; }
+  .social a:hover { color: var(--fg); }
+  .social svg { width: 12px; height: 12px; fill: currentColor; flex: none; }
 
-  main section { padding-block: 40px 4px; }
-  h2 { font-size: 19px; margin: 0 0 4px; line-height: 1.5; }
-  .section-note { margin: 0 0 16px; color: var(--muted); font-size: 14px; }
-  .badges { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 20px; padding: 0; list-style: none; }
-  .badges li { border: 1px solid var(--line); border-radius: 999px; padding: 1px 12px;
-               font-size: 13px; background: var(--panel); }
+  main section { padding-block: 36px 0; }
+  h2 { counter-increment: sec; display: flex; align-items: baseline; gap: 12px; font-size: 17px; margin: 0;
+       line-height: 1.5; padding-bottom: 6px; border-bottom: 1px solid var(--line); }
+  h2::before { content: counter(sec, decimal-leading-zero); color: var(--accent); font-family: var(--mono);
+               font-size: 13px; font-weight: 400; }
+  .section-note { margin: 8px 0 14px; color: var(--muted); font-size: 13px; }
+  .badges { display: flex; flex-wrap: wrap; gap: 4px 0; margin: 0 0 14px; padding: 0; list-style: none; font-size: 12.5px; color: var(--muted); }
+  .badges li::before { content: "✓ "; color: var(--accent); }
+  .badges li + li { margin-left: 12px; padding-left: 12px; border-left: 1px solid var(--line); }
 
-  .tools { display: grid; gap: 20px; margin: 0; padding: 0; list-style: none;
-           grid-template-columns: repeat(auto-fill, minmax(min(100%, 310px), 1fr)); }
-  .tool { display: flex; flex-direction: column; background: var(--panel);
-          border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
-  .tool:hover { border-color: #464a6e; }
-  .thumb { display: block; aspect-ratio: 1200 / 630; background: #101116; border-bottom: 1px solid var(--line); }
+  /* Tools as rows of a ledger, not cards. */
+  .tools { display: grid; margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
+  .tool { display: grid; grid-template-columns: 232px minmax(0, 1fr); gap: 18px; padding: 16px 0;
+          border-bottom: 1px solid var(--line); }
+  .tool:hover { background: linear-gradient(90deg, var(--panel), transparent 80%); }
+  .thumb { display: block; aspect-ratio: 1200 / 630; background: #0b0c0e; border: 1px solid var(--line); align-self: start; }
   .thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
-  .tool-body { display: flex; flex-direction: column; gap: 10px; flex: 1; padding: 16px 18px 18px; }
-  h3 { margin: 0; font-size: 19px; line-height: 1.4; }
+  .tool-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 300px); gap: 6px 24px; align-content: start; }
+  .tool-body > * { grid-column: 1; }
+  .tool-body > .spec { grid-column: 2; grid-row: 1 / span 3; }
+  .tool-body > .actions { grid-column: 1 / -1; }
+  h3 { margin: 0; font-size: 17px; line-height: 1.45; }
   h3 a { color: var(--fg); text-decoration: none; }
-  h3 a:hover { text-decoration: underline; }
-  .label { display: inline-block; margin-left: 6px; padding: 0 8px; border: 1px solid #6b5a2e; border-radius: 999px;
-           color: #e3c77a; font-size: 12px; font-weight: 400; vertical-align: 3px; }
-  .when { margin: 0; color: var(--link); font-size: 14px; font-weight: 700; line-height: 1.6; }
-  .when span { display: inline-block; margin-right: 6px; padding: 0 7px; border-radius: 4px; vertical-align: 1px;
-               background: #2a2c4d; color: var(--fg); font-size: 11px; font-weight: 400; }
-  .desc { margin: 0; font-size: 14px; }
-  .spec { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 2px 12px; margin: 0;
-          padding: 8px 12px; border-radius: 8px; background: #191a20; font-size: 13px; line-height: 1.7; }
-  .spec dt { color: var(--muted); }
-  .spec dd { margin: 0; }
-  .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin-top: auto; padding-top: 6px; }
-  .btn { display: inline-block; padding: 9px 20px; border-radius: 8px; background: var(--button);
-         color: #fff; font-weight: 700; text-decoration: none; }
-  .btn:hover { background: #4a4fe0; }
+  h3 a:hover { color: var(--link); text-decoration: underline; }
+  .label { display: inline-block; margin-left: 8px; padding: 0 6px; border: 1px solid #6e5524;
+           color: #f0c879; font-size: 11px; font-weight: 400; vertical-align: 2px; line-height: 1.6; }
+  .when { margin: 0; color: var(--fg); font-size: 13.5px; font-weight: 700; line-height: 1.6; }
+  .when span { display: inline-block; margin-right: 8px; color: var(--accent); font-size: 11px; font-weight: 400;
+               font-family: var(--mono); }
+  .when span::after { content: " ›"; }
+  .desc { margin: 0; font-size: 13.5px; color: #cfccc4; }
+  .spec { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 0 12px; margin: 0; align-self: start;
+          font-size: 12.5px; line-height: 1.6; border-left: 1px solid var(--line); padding-left: 14px; }
+  .spec dt { color: var(--muted); padding-block: 3px; }
+  .spec dd { margin: 0; padding-block: 3px; }
+  .spec dt:not(:first-of-type), .spec dt:not(:first-of-type) + dd { border-top: 1px dotted var(--line); }
+  .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; padding-top: 6px; }
+  .btn { display: inline-block; padding: 5px 16px; background: var(--button); color: var(--button-fg);
+         font-weight: 700; font-size: 13px; text-decoration: none; border-radius: 2px; }
+  .btn:hover { background: var(--button-hover); }
   .btn::after { content: " →"; }
-  .sub { color: var(--muted); font-size: 13px; }
+  .sub { color: var(--muted); font-size: 12.5px; }
   .sub:hover { color: var(--fg); }
 
-  .steps { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; counter-reset: step;
+  .steps { display: grid; margin: 0; padding: 0; list-style: none; counter-reset: step; border: 1px solid var(--line);
            grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); }
-  .steps li { counter-increment: step; position: relative; padding: 14px 16px 14px 56px;
-              background: var(--panel); border: 1px solid var(--line); border-radius: 10px; }
-  .steps li::before { content: counter(step); position: absolute; left: 16px; top: 15px; width: 28px; height: 28px;
-                      display: grid; place-items: center; border-radius: 50%; background: var(--button);
-                      color: #fff; font-weight: 700; line-height: 1; }
+  .steps li { counter-increment: step; padding: 12px 16px 14px; border-right: 1px solid var(--line); margin-right: -1px; }
+  .steps li::before { content: "STEP " counter(step, decimal-leading-zero); display: block; color: var(--accent);
+                      font-family: var(--mono); font-size: 11px; }
   .steps b { display: block; line-height: 1.6; }
-  .steps span { color: var(--muted); font-size: 14px; }
+  .steps span { color: var(--muted); font-size: 13px; }
 
-  .faq { display: grid; gap: 8px; }
-  .faq details { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; }
-  .faq summary { cursor: pointer; padding: 12px 16px; font-weight: 700; }
-  .faq details[open] summary { border-bottom: 1px solid var(--line-soft); }
-  .faq details p { margin: 0; padding: 10px 16px 14px; color: var(--muted); font-size: 14px; }
-  .faq details p + p { padding-top: 0; }
+  .faq { display: grid; border-top: 1px solid var(--line); }
+  .faq details { border-bottom: 1px solid var(--line); }
+  .faq summary { cursor: pointer; padding: 9px 4px; font-weight: 700; list-style: none; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::before { content: "+"; display: inline-block; width: 1.4em; color: var(--accent); font-family: var(--mono); }
+  .faq details[open] summary::before { content: "−"; }
+  .faq summary:hover { color: var(--link); }
+  .faq details p { margin: 0; padding: 0 4px 10px 1.6em; color: var(--muted); font-size: 13.5px; }
 
-  .contact { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none;
+  .contact { display: grid; margin: 0; padding: 0; list-style: none; border: 1px solid var(--line);
              grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); }
-  .contact li { display: flex; flex-direction: column; gap: 8px; padding: 16px 18px;
-                background: var(--panel); border: 1px solid var(--line); border-radius: 10px; }
-  .contact h3 { font-size: 16px; }
-  .contact p { margin: 0; color: var(--muted); font-size: 14px; }
+  .contact li { display: flex; flex-direction: column; gap: 6px; padding: 14px 16px; border-right: 1px solid var(--line); margin-right: -1px; }
+  .contact h3 { font-size: 15px; }
+  .contact p { margin: 0; color: var(--muted); font-size: 13px; }
   .contact .btn { align-self: flex-start; margin-top: auto; }
-  .contact-foot { margin: 14px 0 0; color: var(--muted); font-size: 13px; }
+  .contact-foot { margin: 10px 0 0; color: var(--muted); font-size: 12.5px; }
 
-  footer { margin-top: 48px; border-top: 1px solid var(--line); padding-block: 20px 40px;
-           color: var(--muted); font-size: 13px; }
+  footer { margin-top: 48px; border-top: 1px solid var(--line); padding-block: 16px 36px; color: var(--muted); font-size: 12.5px; }
   footer p { margin: 0; }
 
-  @media (max-width: 480px) {
-    header { padding-block: 32px 24px; }
-    h1 { font-size: 23px; }
+  @media (max-width: 860px) {
+    .tool-body { grid-template-columns: minmax(0, 1fr); }
+    .tool-body > .spec { grid-column: 1; grid-row: auto; border-left: 0; padding-left: 0; }
+  }
+  @media (max-width: 600px) {
+    .tool { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+    .thumb { max-width: 320px; }
+    .steps li, .contact li { border-right: 0; margin-right: 0; border-bottom: 1px solid var(--line); }
+    .steps li:last-child, .contact li:last-child { border-bottom: 0; }
+    .jump { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); width: auto; border-width: 1px 0 0 1px; }
+    .jump li + li { border-left: 0; }
+    .jump li { border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
   }
   @media (prefers-reduced-motion: no-preference) {
-    .tool, .btn { transition: border-color .15s, background-color .15s; }
+    .btn, .jump a { transition: background-color .12s, color .12s; }
   }
+
+  /* ---- Theme: colors that were written inline above, now as variables so a light theme can swap them. */
+  :root { --label-line: #6e5524; --label-fg: #f0c879; --desc-fg: #cfccc4; --thumb-bg: #0b0c0e; }
+  .label { border-color: var(--label-line); color: var(--label-fg); }
+  .desc { color: var(--desc-fg); }
+  .thumb { background: var(--thumb-bg); }
+
+  /* Light: follows the OS, unless a choice made with the switch (theme.v1.js) sets data-theme. */
+  @media (prefers-color-scheme: light) { :root:not([data-theme=dark]) {
+    color-scheme: light;
+    --bg: #f4f4f1; --panel: #ffffff; --line: #d3d1ca; --line-soft: #e6e4de;
+    --fg: #1d1c19; --muted: #5d5b54; --accent: #8a5000; --link: #7a4600;
+    --button: #e3a63b; --button-fg: #1a1306; --button-hover: #d39628;
+    --label-line: #b08a3a; --label-fg: #6a4a00; --desc-fg: #3a3833; --thumb-bg: #e6e4de;
+  } }
+  :root[data-theme=light] {
+    color-scheme: light;
+    --bg: #f4f4f1; --panel: #ffffff; --line: #d3d1ca; --line-soft: #e6e4de;
+    --fg: #1d1c19; --muted: #5d5b54; --accent: #8a5000; --link: #7a4600;
+    --button: #e3a63b; --button-fg: #1a1306; --button-hover: #d39628;
+    --label-line: #b08a3a; --label-fg: #6a4a00; --desc-fg: #3a3833; --thumb-bg: #e6e4de;
+  }
+
+  /* ---- Frames: clear outer frames around each group.
+     --fw is the frame width; --frame passes 3:1 against the background (WCAG 1.4.11). */
+  :root { --frame: #6a6d75; --bezel: #000; }
+  @media (prefers-color-scheme: light) { :root:not([data-theme=dark]) { --frame: #8a887f; --bezel: #262521; } }
+  :root[data-theme=light] { --frame: #8a887f; --bezel: #262521; }
+  :root { --fw: 1px; }
+  /* Each tool becomes a framed block; the inner layout stays A's ledger row. */
+  .tools { gap: 14px; border-top: 0; }
+  .tool { padding: 16px; border: var(--fw) solid var(--frame); background: var(--panel); }
+  .tool:hover { background: var(--panel); border-color: var(--fg); }
+  .thumb { border: var(--fw) solid var(--frame); }
+  .jump, .steps, .contact { border: var(--fw) solid var(--frame); background: var(--panel); }
+  .jump li + li { border-left: var(--fw) solid var(--frame); }
+  .steps li, .contact li { border-right: var(--fw) solid var(--frame); margin-right: calc(var(--fw) * -1); }
+  .faq { border: var(--fw) solid var(--frame); border-bottom: 0; background: var(--panel); }
+  .faq details { border-bottom: var(--fw) solid var(--frame); }
+  .faq summary { padding-inline: 12px; }
+  .faq details p { padding-right: 12px; padding-left: calc(12px + 1.6em); }
+  .tool-body > .spec { border-left-color: var(--frame); }
+  @media (max-width: 600px) {
+    .tool { padding: 12px; }
+    .jump li + li { border-left: 0; }
+    .jump { border-width: var(--fw) 0 0 var(--fw); }
+    .jump li { border-right: var(--fw) solid var(--frame); border-bottom: var(--fw) solid var(--frame); }
+    .steps li, .contact li { border-right: 0; margin-right: 0; border-bottom: var(--fw) solid var(--frame); }
+    .steps li:last-child, .contact li:last-child { border-bottom: 0; }
+  }
+
+  /* ---- Theme switch (theme.v1.js fills [data-theme-switch]): looks like the language links. */
+  .theme-switch { margin: 0; color: var(--muted); font-size: 12px; font-family: var(--mono); }
+  .theme-switch::before { content: "◐ " / ""; }
+  .theme-switch button { background: none; border: 0; padding: 0; font: inherit; color: var(--link);
+                         text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+  .theme-switch button:hover { color: var(--fg); }
+  .theme-switch button[aria-pressed=true] { color: var(--fg); font-weight: 700; text-decoration: none; }
+  .theme-switch button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 </style>
 </head>
 <body>
 
 <header>
   <div class="wrap">
-    <p class="lang-switch" data-lang-switch></p>
+    <div class="prefs">
+      <p class="lang-switch" data-lang-switch></p>
+      <p class="theme-switch" data-theme-switch></p>
+    </div>
     <h1>shiki365 のツール置き場</h1>
     <p class="lead">TRPG やマダミスのオンラインセッション・配信で使うツールを置いています。どれも無料です。</p>
     <ul class="jump" aria-label="このページの中の案内">
