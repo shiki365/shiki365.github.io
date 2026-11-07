@@ -4,8 +4,10 @@
  *
  *   node _dev/i18n-check.js <folder> [--keys]
  *
- * Reads <folder>/index.html, every *.js in <folder> except i18n.v1.js and lang.*.js, and the
- * dictionaries <folder>/lang.<code>.v1.js. Prints, for each language, the keys the page has
+ * Reads <folder>/index.html, every *.js in <folder> except i18n.v1.js and lang.*.js, the scripts
+ * index.html loads from another folder (<script src="../other-tool/data.v1.js">: data shared with
+ * another tool, translated with this page's dictionaries), and the dictionaries
+ * <folder>/lang.<code>.v1.js. Prints, for each language, the keys the page has
  * but the dictionary lacks (MISSING) and the dictionary keys nothing uses (UNUSED).
  * --keys prints every key instead, one JSON string per line (a start for a new dictionary).
  *
@@ -16,6 +18,8 @@
  * part before "：" (preset labels).
  * Texts that are only built at run time are not seen here: check those in the browser
  * with I18n.missing.
+ * A script whose first comment says "i18n:off" is data that stays Japanese in every language
+ * (proper nouns, fixed legal texts) and is skipped; the page must not pass its texts to t().
  */
 "use strict";
 const fs = require("fs");
@@ -165,8 +169,18 @@ function stringLiterals(src) {
 }
 
 const scripts = fs.readdirSync(dir).filter(f => f.endsWith(".js") && f !== "i18n.v1.js" && !/^lang\./.test(f));
+// Scripts the page loads from another folder (relative paths only; not URLs).
+for (const m of html.matchAll(/<script\b[^>]*\bsrc="([^"]+)"/g)) {
+  const src = m[1].split(/[?#]/)[0];
+  if (/^([a-z]+:|\/)/i.test(src)) continue;
+  const file = path.relative(dir, path.resolve(dir, src));
+  if (file.startsWith("..") && fs.existsSync(path.join(dir, file)) && !scripts.includes(file)) scripts.push(file);
+}
 for (const file of scripts) {
-  for (const { value, template } of stringLiterals(fs.readFileSync(path.join(dir, file), "utf8"))) {
+  const src = fs.readFileSync(path.join(dir, file), "utf8");
+  const head = /^\s*\/\*[\s\S]*?\*\//.exec(src);
+  if (head && /\bi18n:off\b/.test(head[0])) continue;
+  for (const { value, template } of stringLiterals(src)) {
     // A template with ${...} only builds markup around texts, which are literals of their own.
     if (!JP.test(value) || (value.includes("${") && !template)) continue;
     found(value, file);
