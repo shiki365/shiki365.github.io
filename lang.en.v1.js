@@ -137,6 +137,21 @@ I18n.add("en", {
   "© 2026 shiki365（鯖の禊） ・": "© 2026 shiki365 (鯖の禊) ·",
   "・": "·",
 
+  // ---- doujinshi tools (2026-11-07)
+  "同人誌の印刷所さがし": "Doujinshi Printer Finder",
+  "同人誌をどこの印刷所で刷るか、条件と値段で比べて決めたい": "Choosing which printer to use for your doujinshi by comparing conditions and prices",
+  "同人誌の印刷所 22 社を、判型・部数・予算と、入稿・支払い・納品の条件で絞り込み、基本のセットの値段の目安が安い順に並べます。各社の情報は公式ページで確かめたものだけで、根拠のページを添えています。印刷所ごとの紹介ページから、表紙入稿メーカーをその印刷所の設定で開けます。":
+    "Filters 22 Japanese doujinshi printers by trim size, copies, budget and ordering, payment and delivery options, and lists them by the estimated price of each printer's base set, cheapest first. Every fact was checked on the printer's own pages and links to its source. Each printer's page can open Cover Print Maker with that printer's settings.",
+  "わかること": "Shows",
+  "条件に合う印刷所と値段の目安、各社の原稿の決まりと背幅": "Matching printers with price estimates, and each printer's file rules and spine width",
+  "印刷所を選ぶとき": "When choosing a printer",
+  "表紙入稿メーカー": "Cover Print Maker",
+  "同人誌の表紙の絵を、印刷所に入稿できるデータにしたい": "Turning doujinshi cover art into a file you can send to the printer",
+  "表紙の絵から、表4・背・表1 を 1 枚につないだ入稿用の表紙データ（塗り足しつき・CMYK の PDF）を作ります。印刷所 22 社の塗り足しと背幅の計算に対応し、描く人に渡すガイド画像も書き出せます。色の変換には、自分で用意した ICC プロファイルを使います。":
+    "Joins the back cover, spine and front cover into one print-ready cover file (a CMYK PDF with bleed). It knows the bleed and spine-width rules of 22 Japanese printers and can export guide images for the artist. Color conversion uses an ICC profile you provide.",
+  "入稿用の PDF（CMYK）、描く人用のガイド画像（PNG）": "Print-ready PDF (CMYK) and guide images for the artist (PNG)",
+  "同人誌の印刷所への入稿": "Sending files to a doujinshi printer",
+
   // ---- i18n.v1.js
   "訳の誤りを知らせる": "Report a translation error",
 });

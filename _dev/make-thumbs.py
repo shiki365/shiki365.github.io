@@ -14,6 +14,8 @@ SIZE = (640, 336)  # 2x the card width on a desktop, same ratio as OGP (1200x630
 
 # thumbnail name -> source image. Sources with another ratio are centre-cropped.
 SOURCES: dict[str, Path] = {
+    "doujin-printer-finder": WORK / "doujin-printer-finder" / "ogp.png",
+    "cover-print-maker": WORK / "doujin-cover" / "ogp.png",
     "scenario-text-maker": WORK / "kokofolia-scenariotext" / "ogp.png",
     "scene-transition-maker": WORK / "kokofolia-apng" / "docs" / "ogp.png",
     "foreground-frame-maker": WORK / "kokofolia-frame" / "ogp.png",
