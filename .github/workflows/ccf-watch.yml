@@ -1,0 +1,55 @@
+# Checks CCFOLIA's bundle (main.*.js) for what the CSS tools and the room data tool rely on, and
+# opens an issue when something goes missing or the bundle changes. See _dev/ccf-watch/README.md.
+name: ccf-watch
+
+on:
+  schedule:
+    # 22:17 UTC = 07:17 JST. Off the hour, since scheduled runs at :00 are often delayed.
+    - cron: "17 22 * * *"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Issue を立てずに、結果を Summary に出すだけにする（記録も残さない）"
+        type: boolean
+        default: false
+
+permissions:
+  issues: write
+  contents: read
+
+concurrency:
+  group: ccf-watch
+  cancel-in-progress: false
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          sparse-checkout: _dev/ccf-watch
+          persist-credentials: false
+
+      # The record of the last run lives in the Actions cache, not in a commit: a commit to main
+      # rebuilds the public site. Every run saves a new entry; restore-keys picks the newest.
+      - name: Restore the last record
+        uses: actions/cache/restore@v4
+        with:
+          path: .ccf-watch-state
+          key: ccf-watch-state-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: ccf-watch-state-
+
+      - name: Check CCFOLIA's bundle
+        run: node _dev/ccf-watch/watch.js --state .ccf-watch-state/state.json
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DRY_RUN: ${{ inputs.dry_run }}
+
+      # Also after a failure: watch.js leaves the old record untouched when a post to GitHub fails.
+      - name: Save the record
+        if: always() && hashFiles('.ccf-watch-state/state.json') != ''
+        uses: actions/cache/save@v4
+        with:
+          path: .ccf-watch-state
+          key: ccf-watch-state-${{ github.run_id }}-${{ github.run_attempt }}
