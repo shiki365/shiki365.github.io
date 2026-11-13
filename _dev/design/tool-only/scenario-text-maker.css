@@ -9,7 +9,11 @@
   .card { background: var(--panel); border: 1px solid var(--frame); padding: 12px 14px; display: grid;
           grid-template-columns: minmax(0, 1fr); gap: 10px; min-width: 0; }
   .card-head { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; }
-  .card-head h2 { margin: 0; color: var(--accent); font-size: 12px; font-weight: 700; letter-spacing: .06em; }
+  /* Card titles look like the section names on the left: the mark, then the name. */
+  .card-head h2 { margin: 0; color: var(--fg); font-size: 12px; font-weight: 700; letter-spacing: .08em; }
+  .card-head h2::before { content: ""; display: inline-block; width: 6px; height: 6px; margin: 0 9px 0 2px;
+    background: var(--accent); transform: rotate(45deg); vertical-align: 1px; }
+  fieldset > .btns { margin-top: 8px; }
   .card .note { padding-bottom: 0; }
   .note .warn { color: var(--warn); }
   .summary { color: var(--muted); font-size: 12px; }

@@ -5,9 +5,11 @@
 
   textarea { resize: vertical; min-height: 84px; line-height: 1.5; }
   input[type=radio] { accent-color: var(--accent); width: 14px; height: 14px; vertical-align: -3px; margin: 0 4px 0 0; }
-  .unit { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px; align-items: center; color: var(--muted); }
+  /* The unit after a number has a set width, so the boxes above and below line up. */
+  .unit { display: grid; grid-template-columns: minmax(0, 1fr) minmax(2.8em, auto); gap: 6px; align-items: center; color: var(--muted); }
   .choice { display: flex; flex-wrap: wrap; gap: 6px 14px; }
   .choice label { cursor: pointer; }
+  fieldset > .choice { margin-top: 8px; }
   .buttons { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
   .desc a, .checks a { color: var(--link); }
   .finder-link { border-left: 2px solid var(--accent); padding-left: 8px; }
@@ -41,7 +43,9 @@
   .canvas-wrap { border: 1px solid var(--line); overflow: hidden;
                  background: repeating-conic-gradient(#2a2b33 0 25%, #23242b 0 50%) 0 0 / 16px 16px; }
   #preview { display: block; width: 100%; height: auto; }
-  .checks h2 { margin: 0 0 6px; color: var(--accent); font-size: 12px; font-weight: 700; letter-spacing: .06em; }
+  .checks h2 { margin: 0 0 6px; color: var(--fg); font-size: 12px; font-weight: 700; letter-spacing: .08em; }
+  .checks h2::before { content: ""; display: inline-block; width: 6px; height: 6px; margin: 0 9px 0 2px;
+    background: var(--accent); transform: rotate(45deg); vertical-align: 1px; }
   .checks ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
   .checks li { display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: 6px; line-height: 1.6; }
   .checks li::before { content: "・"; color: var(--muted); }

@@ -130,7 +130,7 @@
   /* ---- Steps, questions, contact */
   .steps { display: grid; gap: 14px; margin: 0; padding: 0; list-style: none; counter-reset: step;
            grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); }
-  .steps li { counter-increment: step; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 0 14px; padding: 12px 14px 14px;
+  .steps li { counter-increment: step; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 0 14px; align-content: start; padding: 12px 14px 14px;
               background: var(--panel); border: 1px solid var(--frame); border-radius: 6px; }
   .steps li::before { content: counter(step); grid-row: 1 / span 2; align-self: start; color: var(--accent);
                       font-family: var(--mono); font-size: 30px; font-weight: 700; line-height: 1.1; }
