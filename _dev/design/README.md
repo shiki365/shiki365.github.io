@@ -10,21 +10,22 @@
 
 - デザインは **「緑青（ろくしょう）」**（案を比べたときの名前は F 案）に決めました。決めるまでの経緯と、選ばなかった案は `_dev/design-proposals/` にあります。
 - ダークとライトの両方を持ち、ページ上部の「自動 / ダーク / ライト」で切り替えます（`theme.v1.js`）。
-- **緑青は、置き場サイトと 8 つのツールの PR に入れてあります**（2026-11-13）。どれも未マージで、公開中のページは元の見た目のままです。マージしたら、下の表の「今の状態」を「公開済み」に直してください。
+- **緑青は、置き場サイトと 8 つのツールで公開済みです**（2026-11-13 に 9 つの PR をマージ）。
+- SNS のカード画像（各ツールの `ogp.png`）と、置き場サイトのツールの絵（`thumbs/*.webp`）も緑青に合わせて作り直しました（`ogp/make-ogp.js`。下の「カード画像を作り直すとき」）。
 
 | 対象 | リポジトリ | PR | 今の状態 | 入れ方 |
 | --- | --- | --- | --- | --- |
-| 置き場サイト | shiki365.github.io | [#2](https://github.com/shiki365/shiki365.github.io/pull/2) | 緑青（`hub.css`） | `apply.js . --hub` |
-| チャットウィンドウメーカー | chat-window-maker | [#2](https://github.com/shiki365/chat-window-maker/pull/2) | 緑青（v1.13） | `apply.js` |
-| メッセージボックスメーカー | message-box-maker | [#1](https://github.com/shiki365/message-box-maker/pull/1) | 緑青（v1.4） | `apply.js` |
-| ステータスバーメーカー | status-bar-maker | [#1](https://github.com/shiki365/status-bar-maker/pull/1) | 緑青（v1.8） | `apply.js`（ツールだけの部分あり） |
-| 前景フレームメーカー | foreground-frame-maker | [#1](https://github.com/shiki365/foreground-frame-maker/pull/1) | 緑青（v2.4） | `apply.js`（ツールだけの部分あり） |
-| 場面転換素材メーカー | scene-transition-maker | [#1](https://github.com/shiki365/scene-transition-maker/pull/1) | 緑青（v2.5） | `apply.js`（対象は `docs/`。ツールだけの部分あり） |
-| シナリオテキストメーカー | scenario-text-maker | [#1](https://github.com/shiki365/scenario-text-maker/pull/1) | 緑青（v1.5） | `apply.js`（ツールだけの部分あり） |
-| 表紙入稿メーカー | cover-print-maker | [#1](https://github.com/shiki365/cover-print-maker/pull/1) | 緑青（v1.1。切り替えボタンも新しく入った） | `apply.js --version v1.1` |
-| 同人誌の印刷所さがし | doujin-printer-finder | [#1](https://github.com/shiki365/doujin-printer-finder/pull/1) | 緑青（v1.1。切り替えボタンも新しく入った） | `apply.js --version v1.1` |
+| 置き場サイト | shiki365.github.io | [#2](https://github.com/shiki365/shiki365.github.io/pull/2) | 公開済み（`hub.css`） | `apply.js . --hub` |
+| チャットウィンドウメーカー | chat-window-maker | [#2](https://github.com/shiki365/chat-window-maker/pull/2) | 公開済み（v1.13） | `apply.js` |
+| メッセージボックスメーカー | message-box-maker | [#1](https://github.com/shiki365/message-box-maker/pull/1) | 公開済み（v1.4） | `apply.js` |
+| ステータスバーメーカー | status-bar-maker | [#1](https://github.com/shiki365/status-bar-maker/pull/1) | 公開済み（v1.8） | `apply.js`（ツールだけの部分あり） |
+| 前景フレームメーカー | foreground-frame-maker | [#1](https://github.com/shiki365/foreground-frame-maker/pull/1) | 公開済み（v2.4） | `apply.js`（ツールだけの部分あり） |
+| 場面転換素材メーカー | scene-transition-maker | [#1](https://github.com/shiki365/scene-transition-maker/pull/1) | 公開済み（v2.5） | `apply.js`（対象は `docs/`。ツールだけの部分あり） |
+| シナリオテキストメーカー | scenario-text-maker | [#1](https://github.com/shiki365/scenario-text-maker/pull/1) | 公開済み（v1.5） | `apply.js`（ツールだけの部分あり） |
+| 表紙入稿メーカー | cover-print-maker | [#1](https://github.com/shiki365/cover-print-maker/pull/1) | 公開済み（v1.1。切り替えボタンも新しく入った） | `apply.js --version v1.1` |
+| 同人誌の印刷所さがし | doujin-printer-finder | [#1](https://github.com/shiki365/doujin-printer-finder/pull/1) | 公開済み（v1.1。切り替えボタンも新しく入った） | `apply.js --version v1.1` |
 
-どの PR も、作業用のブランチは `claude/awesome-carson-brtset` です。9 つの PR はすべて未マージです。
+どの PR も、作業用のブランチは `claude/awesome-carson-brtset` でした。9 つともマージ済みです。
 
 ## デザインの決まり
 
@@ -89,6 +90,7 @@
 | `new-tool.js` | 新しいツールのフォルダを、ひな形から作る |
 | `template/` | 新しいツールのひな形（ページの骨組み、最小限の `app.v1.js`、訳の入った辞書） |
 | `check/` | 確かめるためのスクリプト（下の「確かめ方」） |
+| `ogp/` | SNS のカード画像（`ogp.png`）と、置き場サイトのツールの絵（`thumbs/*.webp`）を作るスクリプト |
 
 共通の部品の `i18n.v1.js`（言語）と `theme.v1.js`（明るさ）は、このリポジトリの直下が原本です。各ツールには同じファイルを置きます。
 
@@ -174,10 +176,9 @@ node _dev\design\apply.js ..\cover-print-maker --version v1.1
 
 ### 残っていること
 
-- **マージして公開すること。** 9 つの PR は、なるべく同じ日にまとめてマージしてください。表紙入稿メーカーと同人誌の印刷所さがしはデータを分け合っているので、特に 2 つは一緒に。マージしたら、上の表の「今の状態」を直します。
 - **目で確かめること（機械では測れないもの）**: Windows の Yu Gothic UI での文字の詰まり具合、Firefox と Safari でのプルダウンの矢印と色の欄、スマホの実機でのスライダー。ツールごとの部品は、緑青を入れた状態でダークとライトを見て大きな崩れがないことまで確かめました。細かい整えは、実機で見てから。
 - **ヘッドレスでは試していないこと**: 画像・フォントのファイル選択、ドラッグ＆ドロップ、PC のフォント一覧、プロジェクトファイルの読み込み。どれも JS は変えていません。
-- 各ツールの `ogp.png` と置き場サイトの `_dev/ogp.html`（SNS のカード画像）は、前の配色のままです。作り直すかは別に決めてください。
+- 置き場サイトの `_dev/ogp.html` は、前の配色のカード画像の原本です。今は `ogp/make-ogp.js` が代わりなので、使っていません。
 - 選ばなかった案のフォルダ（`_dev/design-proposals/` の `a/` `a-frame-2px/` `b/` `c/` など）を残すか消すか。公開はされないので、残しても害はありません。
 
 ## 確かめ方
@@ -222,6 +223,23 @@ node _dev\design\check\same-cover.js        # 表紙入稿メーカー（絵は�
 - Windows の Yu Gothic UI での文字の詰まり具合
 - Firefox と Safari でのプルダウンの矢印と色の欄
 - ツールごとの部品を、ダークとライトの両方で 1 画面ずつ
+
+## カード画像を作り直すとき
+
+SNS に貼ったときに出る画像（各ツールの `ogp.png`、1200×630）と、置き場サイトに並ぶツールの絵（`thumbs/<リポジトリ名>.webp`、640×336）は、同じ 1 枚から作ります。ツールの実物をヘッドレスのブラウザで開き、プリセットを選んだ見本を撮って、緑青のカードに並べます。
+
+```bash
+# 全部（リポジトリを同じフォルダに横に並べておく）
+node _dev/design/ogp/make-ogp.js
+
+# 一部だけ
+node _dev/design/ogp/make-ogp.js status-bar-maker hub
+```
+
+- Playwright と Python の Pillow、太字の日本語フォント（Noto Sans CJK）が要ります。ページ自体には関係ありません。
+- 載せるプリセットや文言は、`make-ogp.js` の中のツールごとの段落で決めています。新しいツールは、そこに 1 段落足します。
+- **同人誌の印刷所さがしのカードには、実在の印刷所の名前と値段を出しません**（「印刷所 A」「〇〇,〇〇〇円」の絵にしてあります）。
+- 画像を差し替えても、SNS 側が古い画像を覚えていることがあります。
 
 ## `tool.css` を直すとき
 
