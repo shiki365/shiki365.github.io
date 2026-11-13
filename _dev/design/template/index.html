@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="ja" data-langs="ja en ko">
+<head>
+<meta charset="utf-8">
+<script src="i18n.v1.js"></script>
+<script src="lang.en.v1.js"></script>
+<script src="lang.ko.v1.js"></script>
+<script src="theme.v1.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{NAME}} | shiki365 のツール置き場</title>
+<meta name="description" content="ここに、検索結果に出る説明を書きます。">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<style>
+  /* Filled with _dev/design/tool.css by new-tool.js (and again by apply.js). Rules for this tool only go
+     after the shared block, under a comment that starts with "---- This tool only". */
+</style>
+</head>
+<body>
+
+<header>
+  <div class="topline">
+    <a class="home-link" href="https://shiki365.github.io/">‹ shiki365 のツール置き場</a>
+    <div class="prefs">
+      <p class="lang-switch" data-lang-switch></p>
+      <p class="theme-switch" data-theme-switch></p>
+    </div>
+  </div>
+  <h1>{{NAME}}</h1>
+  <p>ここに、このツールの説明を書きます。</p>
+</header>
+
+<main>
+  <!-- Left: settings. One <section data-tab-panel> for each tab, one <fieldset> for each group. -->
+  <div class="panel">
+    <nav class="tabbar" role="tablist">
+      <button type="button" role="tab" data-tab="look" aria-selected="true">見た目</button>
+      <button type="button" role="tab" data-tab="save" aria-selected="false">保存</button>
+    </nav>
+
+    <section data-tab-panel="look">
+      <fieldset>
+        <legend>デザインのひな形</legend>
+        <div class="row wide"><span class="pair" style="grid-template-columns: 1fr auto;">
+          <select id="design" aria-label="デザインのひな形"><option>標準</option></select>
+          <button type="button" id="applyDesign">適用</button>
+        </span></div>
+        <p class="desc">ここに、この設定の説明を書きます。</p>
+      </fieldset>
+
+      <fieldset>
+        <legend>見た目</legend>
+        <div class="row"><label for="size">大きさ</label>
+          <span class="with-value"><input type="range" id="size" min="8" max="48" step="1" value="16"><output id="sizeOut"></output></span></div>
+        <div class="row"><label for="radius">角丸</label>
+          <span class="with-value"><input type="range" id="radius" min="0" max="40" step="1" value="8"><output id="radiusOut"></output></span></div>
+        <div class="row"><label for="color">色</label><input type="color" id="color" value="#5ccfc0"></div>
+        <div class="row"><label for="bg">背景</label>
+          <span class="color-alpha"><input type="color" id="bg" value="#10141a"><input type="range" id="bgAlpha" min="0" max="1" step="0.01" value="0.7" aria-label="背景"><output id="bgAlphaOut"></output></span></div>
+        <div class="row"><label for="text">文字</label><input type="text" id="text" placeholder="例: DICE ROLL"></div>
+        <div class="row"><label></label><label class="check"><input type="checkbox" id="shadow"> 影を付ける</label></div>
+      </fieldset>
+    </section>
+
+    <section data-tab-panel="save" hidden>
+      <fieldset>
+        <legend>プロジェクト</legend>
+        <div class="row wide"><span class="btns">
+          <button type="button" id="saveProject">プロジェクトを保存</button>
+          <button type="button" id="openProject">開く</button>
+          <button type="button" class="danger" id="resetAll">最初からやり直す</button>
+        </span></div>
+        <p class="desc">作業内容はこのブラウザに自動で保存されます。</p>
+      </fieldset>
+    </section>
+  </div>
+
+  <!-- Right: preview, then what is done with the result, then the instructions. -->
+  <div class="stage-wrap">
+    <div class="bar">
+      <span class="seg" id="bgSeg" aria-label="プレビューの背景">
+        <button type="button" data-bg="scene" aria-pressed="true">色つき</button>
+        <button type="button" data-bg="checker" aria-pressed="false">市松</button>
+        <button type="button" data-bg="dark" aria-pressed="false">暗い</button>
+        <button type="button" data-bg="light" aria-pressed="false">明るい</button>
+      </span>
+      <span class="spacer"></span>
+      <button type="button" class="small" id="undo" title="元に戻す (Ctrl+Z)">↶ 戻す</button>
+      <button type="button" class="small" id="redo" title="やり直す (Ctrl+Y)">↷ 進む</button>
+    </div>
+    <div class="stage bg-scene" id="stage">
+      <span class="stage-info" id="stageInfo">ここにプレビューが出ます</span>
+    </div>
+
+    <div class="tester">
+      <h2>ここに、プレビューで試すためのボタンを置きます</h2>
+      <div class="btns">
+        <button type="button" class="small">保存</button>
+      </div>
+    </div>
+
+    <div class="bar">
+      <input type="text" id="fileBase" aria-label="ファイル名" placeholder="ファイル名">
+      <span class="spacer"></span>
+      <button type="button" id="download">保存</button>
+      <button type="button" class="primary" id="copy">コピー</button>
+    </div>
+    <p class="status" id="status" role="status">読み込み中...</p>
+
+    <div class="note">
+      <h2>使い方</h2>
+      <ol>
+        <li>ここに、使い方を書きます。</li>
+      </ol>
+    </div>
+  </div>
+</main>
+
+<footer>
+  ブラウザだけで動く無料ツールです。<br>
+  <span data-i18n>いずれのサービスとも関係のない<strong>非公式</strong>のツールです。</span><br>
+  <a href="https://shiki365.github.io/">ほかのツールも見る（shiki365 のツール置き場）</a> ・ <a href="https://shiki365.github.io/#contact">不具合の報告・感想</a> ・ <a href="https://marshmallow-qa.com/jisg2c3imbza76d">ほしいツールの要望（マシュマロ）</a> ・ <a href="https://sabunomisogi.booth.pm/items/8891048">開発を応援する（BOOTH）</a><br>
+  <span>v1.0</span> ・ <span>最終更新</span> {{DATE}}
+</footer>
+
+<script src="app.v1.js"></script>
+</body>
+</html>

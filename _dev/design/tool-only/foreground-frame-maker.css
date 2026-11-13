@@ -1,0 +1,55 @@
+  /* ---- This tool only (foreground frame maker): canvas preview, colour pickers, items, variants. */
+  textarea { resize: vertical; min-height: 52px; line-height: 1.5; }
+  /* The preview is the frame image itself, drawn on canvases sized by app.v3.js (aspect-ratio, max-width):
+     no padding or minimum height. */
+  .stage { display: block; width: 100%; margin: 0 auto; padding: 0; min-height: 0;
+           background-size: cover; background-position: center; }
+  .stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .stage #preview { touch-action: none; }
+  .stage #preview:focus-visible { outline-offset: -2px; }
+  .stage.bg-scenery, .stage.bg-dark { background-color: #2a2b31; }
+  .stage.bg-checker { background-size: 32px 32px; background-position: 0 0, 16px 16px; }
+  .stage.bg-image { background-color: #000; }
+  canvas:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .seg.big button { padding: 6px 14px; font-size: 13px; }
+
+  .colors4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+  .colors4 label { display: grid; gap: 2px; color: var(--muted); font-size: 11px; text-align: center; }
+  .colorref { display: flex; gap: 6px; }
+  .colorref select { flex: 1; min-width: 0; }
+  .colorref input[type=color] { width: 52px; flex: none; }
+
+  /* On / off blocks and chips: the chosen one gets the amber edge, as in the tab bar. */
+  .switch { display: flex; gap: 8px; align-items: center; padding: 9px 12px; border: 1px solid var(--frame);
+            cursor: pointer; font-weight: 700; }
+  .switch:has(input:checked) { border-color: var(--accent); background: var(--raised); box-shadow: inset 2px 0 0 var(--accent); }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border: 1px solid var(--frame); cursor: pointer; }
+  .chip:has(input:checked) { border-color: var(--accent); background: var(--raised); }
+
+  .item-list { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 4px; }
+  .item-row { display: grid; grid-template-columns: 20px minmax(0, 1fr) auto; gap: 8px; align-items: center;
+              padding: 5px 6px; border: 1px solid var(--line); cursor: pointer; }
+  .item-row.with-thumb { grid-template-columns: 20px 36px minmax(0, 1fr) auto; }
+  .item-row[aria-selected=true] { border-color: var(--accent); background: var(--raised); box-shadow: inset 2px 0 0 var(--accent); }
+  /* Thumbnails of transparent images sit on a dark checker in both themes, like the preview. */
+  .item-row .thumb-mini { width: 36px; height: 26px; object-fit: contain; display: grid; place-items: center;
+                          font-weight: 700; color: #d6d6dc;
+                          background: repeating-conic-gradient(#3a3b46 0 25%, #2a2b33 0 50%) 0 0 / 10px 10px; }
+  .item-row .name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .item-row .tag { color: var(--muted); font-size: 11px; margin-left: 6px; }
+  .item-row .btns { flex-wrap: nowrap; gap: 4px; }
+  .item-row .btns button { padding: 2px 7px; }
+  .font-list { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 4px; }
+  .font-list li { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+
+  /* Variant thumbnails under the preview. */
+  .thumbs { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+  .thumbs button { padding: 6px; display: grid; gap: 4px; background: var(--panel); }
+  .thumbs button[aria-pressed=true] { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+  .thumbs canvas { width: 100%; height: auto; display: block;
+                   background: repeating-conic-gradient(#3a3b46 0 25%, #2a2b33 0 50%) 0 0 / 14px 14px; }
+  .drop-hint { position: fixed; inset: 0; display: grid; place-items: center; background: rgba(17, 18, 20, .78);
+               color: #fff; font-size: 20px; font-weight: 700; z-index: 10; pointer-events: none; }
+  /* Corners: boxes 6px, parts 4px, as in the shared block. */
+  .switch, .chip, .item-row, .thumbs button { border-radius: 4px; }

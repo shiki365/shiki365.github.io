@@ -1,0 +1,65 @@
+/*!
+ * lang.en.v1.js - English for {{NAME}} ({{NAME_EN}}).
+ * Keys are the Japanese texts of the page and scripts (see i18n.v1.js).
+ */
+I18n.add("en", {
+  "{{NAME}} | shiki365 のツール置き場": "{{NAME_EN}} | shiki365's tools",
+  "‹ shiki365 のツール置き場": "‹ shiki365's tools",
+  "{{NAME}}": "{{NAME_EN}}",
+  "ここに、このツールの説明を書きます。": "Describe this tool here.",
+  "見た目": "Look",
+  "保存": "Save",
+  "デザインのひな形": "Design template",
+  "標準": "Standard",
+  "適用": "Apply",
+  "ここに、この設定の説明を書きます。": "Describe this setting here.",
+  "大きさ": "Size",
+  "角丸": "Corner radius",
+  "色": "Color",
+  "背景": "Background",
+  "文字": "Text",
+  "例: DICE ROLL": "e.g. DICE ROLL",
+  "影を付ける": "Add a shadow",
+  "プロジェクト": "Project",
+  "プロジェクトを保存": "Save project",
+  "開く": "Open",
+  "最初からやり直す": "Start over",
+  "作業内容はこのブラウザに自動で保存されます。": "Your work is saved in this browser automatically.",
+  "プレビューの背景": "Preview background",
+  "色つき": "Colored",
+  "市松": "Checker",
+  "暗い": "Dark",
+  "明るい": "Light",
+  "元に戻す (Ctrl+Z)": "Undo (Ctrl+Z)",
+  "↶ 戻す": "↶ Undo",
+  "やり直す (Ctrl+Y)": "Redo (Ctrl+Y)",
+  "↷ 進む": "↷ Redo",
+  "ここにプレビューが出ます": "The preview appears here",
+  "ここに、プレビューで試すためのボタンを置きます": "Put the buttons for trying things in the preview here",
+  "ファイル名": "File name",
+  "コピー": "Copy",
+  "読み込み中...": "Loading...",
+  "使い方": "How to use",
+  "ここに、使い方を書きます。": "Write how to use it here.",
+  "ブラウザだけで動く無料ツールです。": "A free tool that runs in your browser.",
+  "いずれのサービスとも関係のない<strong>非公式</strong>のツールです。": "It is an <strong>unofficial</strong> tool, not connected with any service.",
+  "ほかのツールも見る（shiki365 のツール置き場）": "More tools (shiki365's tools)",
+  "・": "·",
+  "不具合の報告・感想": "Report a bug / feedback",
+  "ほしいツールの要望（マシュマロ）": "Request a tool (Marshmallow)",
+  "開発を応援する（BOOTH）": "Support the development (BOOTH)",
+  "最終更新": "Last updated",
+
+  // ---- app.v1.js
+  "準備ができました。": "Ready.",
+
+  // ---- i18n.v1.js
+  "訳の誤りを知らせる": "Report a translation error",
+
+  // ---- theme.v1.js
+  "画面の明るさ": "Appearance",
+  "自動": "Auto",
+  "ダーク": "Dark",
+  "ライト": "Light",
+  "パソコンやスマホの設定に合わせる": "Follow your device's setting",
+});

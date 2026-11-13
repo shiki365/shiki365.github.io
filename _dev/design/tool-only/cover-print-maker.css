@@ -1,0 +1,53 @@
+  /* ---- This tool only (cover print maker): picture slots, the canvas view and the checklist on the right. */
+  :root { --ok: #5fd08a; --bad: #ff7a7a; }
+  @media (prefers-color-scheme: light) { :root:not([data-theme=dark]) { --ok: #1f7a45; --bad: #b3261e; } }
+  :root[data-theme=light] { --ok: #1f7a45; --bad: #b3261e; }
+
+  textarea { resize: vertical; min-height: 84px; line-height: 1.5; }
+  input[type=radio] { accent-color: var(--accent); width: 14px; height: 14px; vertical-align: -3px; margin: 0 4px 0 0; }
+  .unit { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px; align-items: center; color: var(--muted); }
+  .choice { display: flex; flex-wrap: wrap; gap: 6px 14px; }
+  .choice label { cursor: pointer; }
+  .buttons { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .desc a, .checks a { color: var(--link); }
+  .finder-link { border-left: 2px solid var(--accent); padding-left: 8px; }
+  details summary { cursor: pointer; color: var(--fg); }
+  code { word-break: break-all; font-family: var(--mono); }
+  .icc-name { color: var(--fg); font-weight: 700; word-break: break-all; }
+  .off { display: none !important; }
+  progress { width: 100%; height: 6px; accent-color: var(--accent); }
+  .panel > .status { margin-top: 10px; line-height: 1.6; min-height: 1.6em; }
+
+  /* Picture slots: click or drop a picture. */
+  .slots { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; margin-top: 10px; }
+  .slots.one { grid-template-columns: minmax(0, 1fr); }
+  .slot { position: relative; border: 1px dashed var(--frame); padding: 8px; min-height: 120px; display: grid;
+          align-content: center; justify-items: center; gap: 6px; text-align: center; cursor: pointer;
+          color: var(--muted); background: var(--field); }
+  .slot.over { border-color: var(--accent); border-style: solid; background: var(--raised); }
+  .slot:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .slot img { max-width: 100%; max-height: 120px; object-fit: contain; }
+  .slot .name { font-weight: 700; color: var(--fg); }
+  .slot .info { font-size: 11px; }
+  .slot .clear { position: absolute; top: 4px; right: 4px; padding: 0 7px; font-size: 12px; }
+
+  /* The right column. Here .stage is the column of boxes (view and checklist), not a preview frame. */
+  .stage { display: grid; gap: 10px; min-width: 0; padding: 0; min-height: 0; border: 0; border-radius: 0;
+           overflow: visible; background: none; place-items: initial; }
+  .view, .checks { background: var(--panel); border: 1px solid var(--frame); padding: 10px 12px; min-width: 0; }
+  .view-bar { display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: center; margin-bottom: 8px; color: var(--muted); }
+  .view-bar .size { margin-left: auto; font-family: var(--mono); font-size: 12px; font-variant-numeric: tabular-nums; }
+  /* The cover sits on a dark checker in both themes, like the other tools' previews. */
+  .canvas-wrap { border: 1px solid var(--line); overflow: hidden;
+                 background: repeating-conic-gradient(#2a2b33 0 25%, #23242b 0 50%) 0 0 / 16px 16px; }
+  #preview { display: block; width: 100%; height: auto; }
+  .checks h2 { margin: 0 0 6px; color: var(--accent); font-size: 12px; font-weight: 700; letter-spacing: .06em; }
+  .checks ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+  .checks li { display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: 6px; line-height: 1.6; }
+  .checks li::before { content: "・"; color: var(--muted); }
+  .checks li.ok::before { content: "✓"; color: var(--ok); }
+  .checks li.warn::before { content: "!"; color: var(--warn); font-weight: 700; text-align: center; }
+  .checks li.bad::before { content: "×"; color: var(--bad); font-weight: 700; text-align: center; }
+  /* Corners: boxes 6px, parts 4px, as in the shared block. */
+  .view, .checks { border-radius: 6px; }
+  .slot, .canvas-wrap { border-radius: 4px; }

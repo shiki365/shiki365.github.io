@@ -1,0 +1,118 @@
+  /* ---- This tool only (doujin printer finder): page-level tabs, the search panel with result cards,
+     the directory of printers and a printer's page. */
+  :root { --ok: #5fd08a; --bad: #ff7a7a; --soft: #cfccc4;
+          --good-line: #2f6b4a; --good-fg: #bfe8cf; --bad-line: #7a3a3a; --bad-fg: #f3c4c4; }
+  @media (prefers-color-scheme: light) { :root:not([data-theme=dark]) {
+    --ok: #1f7a45; --bad: #b3261e; --soft: #3a3833;
+    --good-line: #7fb592; --good-fg: #1f5c37; --bad-line: #d29a9a; --bad-fg: #8f2a1a; } }
+  :root[data-theme=light] { --ok: #1f7a45; --bad: #b3261e; --soft: #3a3833;
+    --good-line: #7fb592; --good-fg: #1f5c37; --bad-line: #d29a9a; --bad-fg: #8f2a1a; }
+
+  a { color: var(--link); }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  p, li, dd, dt, td, th { word-break: auto-phrase; text-wrap: pretty; }
+  /* No settings / preview columns here: main is a plain page, and the tabs sit at its top. */
+  main { display: block; padding: 16px 16px 40px; }
+  main > .tabbar { margin: 0 0 16px; position: static; background: none; border-radius: 0; }
+  main > .tabbar button { flex: none; padding: 8px 16px 10px; font-size: 13.5px; }
+  main > .tabbar button[aria-selected=true] { background: none; }
+
+  .list-view { display: grid; gap: 20px; grid-template-columns: minmax(300px, 360px) minmax(0, 1fr); align-items: start; }
+  @media (max-width: 900px) { .list-view { grid-template-columns: minmax(0, 1fr); } }
+  .row { grid-template-columns: 72px minmax(0, 1fr); }
+  .unit { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 6px; align-items: center; color: var(--muted); }
+  input[type=radio] { accent-color: var(--accent); width: 14px; height: 14px; margin: 0; flex: none; transform: translateY(2px); }
+  .choice { display: grid; gap: 6px; margin-top: 8px; }
+  .choice label { display: flex; gap: 7px; align-items: flex-start; cursor: pointer; }
+  .choice input[type=checkbox] { margin: 0; flex: none; transform: translateY(2px); }
+  .choice .text { min-width: 0; flex: 1; }
+  .choice .count { color: var(--muted); font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 11.5px; }
+  .choice label.zero .text { color: var(--muted); }
+  /* Links that look like buttons. */
+  .button { display: inline-block; background: var(--control); color: var(--fg); border: 1px solid var(--frame);
+            border-radius: 2px; padding: 5px 12px; font: inherit; font-size: 12px; cursor: pointer; text-decoration: none; }
+  .button:hover { background: var(--control-hover); border-color: var(--fg); }
+  .button.primary { background: var(--button); border-color: var(--button); color: var(--button-fg); font-weight: 700; }
+  .button.primary:hover { background: var(--button-hover); }
+  .buttons { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+  .jump { display: none; margin-top: 12px; }
+  @media (max-width: 900px) { .jump { display: inline-block; } }
+
+  /* Results. */
+  .results { min-width: 0; }
+  .summary { margin: 0; line-height: 1.7; }
+  .printer-list { list-style: none; margin: 12px 0 0; padding: 0; display: grid; gap: 10px; }
+  .card, .entry { background: var(--panel); border: 1px solid var(--frame); padding: 12px 14px; min-width: 0; }
+  .card.top { border-color: var(--accent); box-shadow: inset 2px 0 0 var(--accent); }
+  .card .head, .entry .head { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center; }
+  .entry .head { align-items: baseline; }
+  .card .name, .entry .name { font-size: 15px; font-weight: 700; color: var(--fg); text-decoration: none; }
+  .card .name:hover, .entry .name:hover { text-decoration: underline; }
+  .card .more, .entry .more { margin-left: auto; font-size: 12px; }
+  .rank { display: inline-block; padding: 0 8px; background: var(--button); color: var(--button-fg); font-size: 11px; font-weight: 700; }
+  .price { margin-top: 6px; color: var(--soft); }
+  .price b { color: var(--fg); font-size: 15px; }
+  .price a { color: var(--soft); }
+  .price.why { color: var(--muted); }
+  .chips { display: flex; flex-wrap: wrap; gap: 4px 6px; margin-top: 8px; }
+  .chips a, .chips span { font-size: 11px; color: var(--soft); border: 1px solid var(--line); padding: 1px 8px; text-decoration: none; }
+  .chips a:hover { color: var(--fg); border-color: var(--accent); }
+  .chips .want { border-color: var(--accent); color: var(--fg); }
+  .chips .good { border-color: var(--good-line); color: var(--good-fg); }
+  .chips .bad { border-color: var(--bad-line); color: var(--bad-fg); }
+  .results .note { margin-top: 18px; padding: 0; }
+  .note p { margin: 0 0 6px; }
+
+  /* All printers. */
+  #panel-all > .desc { margin: 0 0 14px; max-width: 920px; }
+  .directory { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr)); align-items: start; }
+  .entry .line { margin-top: 6px; color: var(--soft); font-size: 12px; }
+  .entry .line .k, .traits .k { color: var(--muted); margin-right: 6px; }
+  .traits { margin-top: 8px; font-size: 12px; }
+  .traits .chips { margin-top: 4px; }
+  .papers { margin-top: 8px; font-size: 12px; color: var(--soft); }
+  .papers summary { color: var(--soft); cursor: pointer; }
+  .papers ul { margin: 6px 0 0; padding-left: 1.2em; columns: 2; column-gap: 16px; }
+  .papers li { break-inside: avoid; }
+  @media (max-width: 480px) { .papers ul { columns: 1; } }
+
+  /* A printer's page. Section titles in amber, like the settings headings. */
+  .detail { max-width: 880px; }
+  .back { display: inline-block; color: var(--muted); text-decoration: none; }
+  .back:hover { color: var(--fg); text-decoration: underline; }
+  .detail h2 { margin: 10px 0 2px; font-size: 20px; }
+  .detail h3 { margin: 0 0 8px; color: var(--accent); font-size: 12px; font-weight: 700; letter-spacing: .06em; }
+  .detail section { background: var(--panel); border: 1px solid var(--frame); padding: 14px 16px; margin-top: 14px; min-width: 0; }
+  .detail .lead { margin: 6px 0 0; color: var(--muted); }
+  .fact-list { margin: 0; }
+  .fact { display: grid; grid-template-columns: 190px minmax(0, 1fr); gap: 2px 14px; padding: 7px 0; border-top: 1px solid var(--line-soft); }
+  .fact:first-child { border-top: 0; padding-top: 0; }
+  .fact dt { color: var(--muted); }
+  .fact dd { margin: 0; min-width: 0; }
+  @media (max-width: 640px) { .fact { grid-template-columns: minmax(0, 1fr); } }
+  .ans { display: inline-block; min-width: 4.5em; margin-right: 8px; font-weight: 700; }
+  .ans.yes { color: var(--ok); }
+  .ans.no { color: var(--bad); }
+  .ans.none { color: var(--muted); font-weight: 400; }
+  .quote { color: var(--soft); }
+  .quote::before { content: "「"; }
+  .quote::after { content: "」"; }
+  .src { white-space: nowrap; }
+  .table-wrap { overflow-x: auto; margin-top: 8px; }
+  table { border-collapse: collapse; width: 100%; font-size: 12px; }
+  th, td { text-align: left; padding: 6px 8px; border-top: 1px solid var(--line-soft); vertical-align: top; }
+  th { color: var(--muted); font-weight: 400; white-space: nowrap; }
+  td { white-space: nowrap; font-variant-numeric: tabular-nums; }
+  td:first-child { white-space: normal; min-width: 11em; }
+  .calc { display: grid; gap: 0 14px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+  .calc .row { grid-template-columns: 80px minmax(0, 1fr); }
+  .result { margin-top: 12px; font-size: 14px; }
+  .result b { font-size: 18px; }
+  .links { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+  .links a { word-break: break-all; }
+  .links .what { color: var(--muted); }
+  code { word-break: break-all; font-family: var(--mono); }
+  /* Corners: boxes 6px, parts 4px, as in the shared block. */
+  .card, .entry, .detail section { border-radius: 6px; }
+  .button { border-radius: 4px; }
+  .rank, .chips a, .chips span { border-radius: 3px; }
