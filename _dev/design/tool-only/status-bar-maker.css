@@ -1,0 +1,22 @@
+  /* ---- This tool only (status bar maker): decorations, bar list, characters, value testers. */
+  textarea { resize: vertical; min-height: 52px; line-height: 1.5; }
+  .frame-box iframe { pointer-events: none; }
+  .deco { border: 1px solid var(--line); padding: 8px 10px; margin-top: 8px; }
+  .deco:has(> .deco-head input:checked) { border-color: var(--frame); background: var(--raised); box-shadow: inset 2px 0 0 var(--accent); }
+  .deco-head { display: flex; gap: 8px; align-items: center; font-weight: 700; cursor: pointer; }
+  .deco-head small { flex: 1 1 0; min-width: 0; color: var(--muted); font-weight: 400; }
+  .deco .row { grid-template-columns: 84px minmax(0, 1fr); }
+  .bar-item { display: grid; grid-template-columns: 22px minmax(0, 1fr) 34px 34px 92px 22px; gap: 6px; align-items: center; margin-top: 6px; }
+  .bar-item .num { color: var(--muted); text-align: center; font-family: var(--mono); font-variant-numeric: tabular-nums; }
+  .bar-item input[type=color] { height: 26px; padding: 1px; }
+  .bar-head { color: var(--muted); font-size: 11px; }
+  .char { border: 1px solid var(--line); padding: 8px 10px; margin-top: 8px; display: grid; gap: 6px; }
+  .char-top { display: grid; grid-template-columns: minmax(0, 1fr) 40px auto; gap: 6px; align-items: center; }
+  .char-top input[type=color] { height: 26px; }
+  .char .btns button { padding: 3px 8px; font-size: 11.5px; }
+  .char .warn { color: var(--warn); font-size: 12px; }
+  .test-row + .test-row { margin-top: 4px; }
+  .test-row { display: grid; grid-template-columns: 70px minmax(0, 1fr) 54px 58px; gap: 8px; align-items: center; }
+  .test-row output { text-align: right; font-family: var(--mono); font-size: 11.5px; font-variant-numeric: tabular-nums; }
+  /* Corners: boxes 6px, parts 4px, as in the shared block. */
+  .deco, .char { border-radius: 4px; }

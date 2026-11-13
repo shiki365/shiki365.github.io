@@ -1,0 +1,139 @@
+  /* ---- This tool only (scenario text maker): one settings form (no tabs), and a stack of cards on the right
+     (script, results with a CCFOLIA message-box sample, export). The sample keeps CCFOLIA's own colors. */
+  :root { --note-line: #3f4470; --note-bg: #1f2135; --note-fg: #c9ccff; --warn-line: #6b5230; --warn-bg: #2a2218; }
+  @media (prefers-color-scheme: light) { :root:not([data-theme=dark]) {
+    --note-line: #b9b7ae; --note-bg: #f4f3ee; --note-fg: #1d1c19; --warn-line: #d9b98a; --warn-bg: #fbf1e2; } }
+  :root[data-theme=light] { --note-line: #b9b7ae; --note-bg: #f4f3ee; --note-fg: #1d1c19; --warn-line: #d9b98a; --warn-bg: #fbf1e2; }
+
+  .stack { display: grid; gap: 16px; min-width: 0; }
+  .card { background: var(--panel); border: 1px solid var(--frame); padding: 12px 14px; display: grid;
+          grid-template-columns: minmax(0, 1fr); gap: 10px; min-width: 0; }
+  .card-head { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; }
+  /* Card titles look like the section names on the left: the mark, then the name. */
+  .card-head h2 { margin: 0; color: var(--fg); font-size: 12px; font-weight: 700; letter-spacing: .08em; }
+  .card-head h2::before { content: ""; display: inline-block; width: 6px; height: 6px; margin: 0 9px 0 2px;
+    background: var(--accent); transform: rotate(45deg); vertical-align: 1px; }
+  fieldset > .btns { margin-top: 8px; }
+  .card .note { padding-bottom: 0; }
+  .note .warn { color: var(--warn); }
+  .summary { color: var(--muted); font-size: 12px; }
+  .summary b { color: var(--fg); }
+  input[type=radio] { accent-color: var(--accent); }
+  textarea#script { min-height: 220px; resize: vertical; line-height: 1.7; font-size: 12.5px; font-family: var(--mono); }
+
+  /* Choice blocks: the chosen one gets the amber edge. */
+  .mode { display: grid; gap: 6px; margin-top: 10px; }
+  .mode label { display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: 6px; align-items: start; padding: 8px 10px;
+                border: 1px solid var(--line); cursor: pointer; }
+  .mode label:has(input:checked) { border-color: var(--frame); background: var(--raised); box-shadow: inset 2px 0 0 var(--accent); }
+  .mode input { margin: 2px 0 0; }
+  .mode b { display: block; color: var(--fg); }
+  .mode span { color: var(--muted); font-size: 12px; line-height: 1.6; }
+
+  /* Speakers and the image shelf. Thumbnails of transparent images sit on a dark checker in both themes. */
+  .speakers { display: grid; gap: 8px; margin-top: 10px; }
+  .speaker { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 10px; padding: 10px; border: 1px solid var(--line); background: var(--raised); }
+  .speaker .thumb { width: 64px; height: 84px; background: var(--field); border: 1px dashed var(--frame);
+                    display: grid; place-items: center; overflow: hidden; color: var(--muted); font-size: 11px; text-align: center; }
+  .speaker .thumb img { width: 100%; height: 100%; object-fit: contain; object-position: center bottom; }
+  .speaker .fields { display: grid; gap: 6px; min-width: 0; }
+  .speaker .fields label { display: grid; gap: 2px; color: var(--muted); font-size: 11px; }
+  .speaker .thumb.over, .face .thumb.over { border-color: var(--accent); border-style: solid; }
+  .speaker .img-note { color: var(--muted); font-size: 11px; }
+  .speaker .img-note.warn { color: var(--warn); }
+  .img-row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .img-row select { flex: 1 1 8em; width: auto; min-width: 0; }
+  .faces { display: grid; gap: 6px; margin-top: 4px; padding-top: 8px; border-top: 1px dashed var(--line); }
+  .face { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 8px; align-items: center; }
+  .face .thumb { width: 40px; height: 52px; font-size: 10px; }
+  .faces > button { justify-self: start; }
+  .face-tools { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .face-tools select { width: auto; max-width: 100%; }
+  .face-tools select:disabled { opacity: .5; }
+  .drop { margin-top: 10px; border: 1px dashed var(--frame); padding: 18px 12px; text-align: center;
+          color: var(--muted); font-size: 12px; line-height: 1.7; cursor: pointer; }
+  .drop span { font-size: 11px; }
+  .drop:hover, .drop.over { border-color: var(--accent); border-style: solid; color: var(--fg); background: var(--raised); }
+  .drop:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 8px; margin-top: 10px; }
+  .gallery .desc { grid-column: 1 / -1; margin: 0; }
+  .imgcell { display: grid; gap: 4px; padding: 6px; border: 1px solid var(--line); background: var(--raised); min-width: 0; }
+  .imgcell img, .imgcell .noimg { width: 100%; height: 72px; object-fit: contain;
+          background: repeating-conic-gradient(#1f2029 0% 25%, #16171d 0% 50%) 50% / 12px 12px; }
+  .imgcell .noimg { display: grid; place-items: center; color: #ffb86b; font-size: 11px; }
+  .imgcell input[type=text] { padding: 2px 5px; font-size: 11px; min-height: 0; }
+  .imgcell .info { color: var(--muted); font-size: 10px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .imgcell .info.warn { color: var(--warn); }
+  .imgcell button { justify-self: start; }
+  .bundle { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; }
+
+  /* Notices. */
+  .unknown { border: 1px solid var(--warn-line); background: var(--warn-bg); padding: 8px 10px; color: var(--warn); font-size: 12px; line-height: 1.8; }
+  .unknown button { margin: 2px 4px 2px 0; }
+  .edited-note { border: 1px solid var(--note-line); background: var(--note-bg); padding: 8px 10px; color: var(--note-fg); font-size: 12px;
+                 display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; }
+
+  /* The sample is drawn at CCFOLIA's own size and scaled by app.v1.js: no padding. */
+  .preview-bar { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; justify-content: space-between; }
+  .preview-bar label { display: flex; flex-wrap: wrap; gap: 4px 8px; min-width: 0; align-items: center; color: var(--muted); font-size: 12px; }
+  .preview-bar select { width: auto; max-width: 100%; }
+  #pvInfo { color: var(--muted); font-size: 12px; line-height: 1.6; }
+  .stage { display: block; padding: 0; min-height: 110px;
+           background: radial-gradient(ellipse at 30% 20%, #6d7fa8, transparent 60%),
+                       radial-gradient(ellipse at 80% 90%, #a8735a, transparent 55%), #2d3348; }
+  .stage-in { position: absolute; left: 50%; top: 0; transform-origin: 50% 0; }
+  .stage-hint { position: absolute; inset: 0; display: grid; place-items: center; color: rgba(255, 255, 255, .78); font-size: 13px; }
+  .mbox { position: absolute; left: 24px; bottom: 24px; }
+  .mbox .portrait { position: absolute; left: 8px; bottom: 100%; height: auto; max-width: none; z-index: 0; }
+  .mbox .body { position: relative; z-index: 1; background: rgba(22, 22, 22, .84); color: #f5f5f5;
+                box-shadow: 0 3px 5px -1px rgba(0, 0, 0, .2), 0 6px 10px rgba(0, 0, 0, .14); }
+  .mbox .name { height: 48px; padding: 0 24px; display: flex; align-items: center; font-size: 14px; font-weight: 500; }
+  .mbox .name.empty { color: #9a9aa5; font-weight: 400; }
+  .mbox .name .btns { margin-left: auto; display: flex; gap: 18px; opacity: .65; font-size: 15px; }
+  .mbox .text { padding: 0 24px 16px; height: 80px; overflow: hidden; white-space: pre-wrap; line-height: 1.5; font-size: 16px; }
+  .logrow { display: grid; gap: 6px; }
+  .logrow .cap { color: var(--muted); font-size: 12px; }
+  .logitem { display: flex; gap: 10px; background: rgba(44, 44, 44, .87); color: #f5f5f5; border-radius: 6px; padding: 10px 12px; max-width: 380px; }
+  .logicon { flex: none; width: 40px; height: 40px; border-radius: 4px; object-fit: cover; object-position: 50% 0; background: #3a3a3a; }
+  .logname { display: block; font-size: 12px; color: #c7c7cf; }
+  .logtext { display: block; font-size: 13px; line-height: 1.5; max-height: 3em; overflow: hidden; white-space: pre-wrap; }
+
+  /* Results table and the editor for one row. */
+  .table-wrap { max-height: 420px; overflow: auto; border: 1px solid var(--line); }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th, td { padding: 6px 8px; border-bottom: 1px solid var(--line-soft); text-align: left; vertical-align: middle; }
+  th { white-space: nowrap; position: sticky; top: 0; background: var(--raised); color: var(--muted); font-weight: 400; z-index: 1; }
+  td.num { color: var(--muted); font-family: var(--mono); font-variant-numeric: tabular-nums; width: 3.5em; }
+  td.pic { width: 40px; }
+  td.pic img { width: 28px; height: 36px; object-fit: contain; display: block; }
+  td.title { white-space: nowrap; max-width: 12em; overflow: hidden; text-overflow: ellipsis; }
+  td.text { white-space: pre-wrap; word-break: break-all; }
+  tbody tr { cursor: pointer; }
+  tbody tr:hover { background: var(--control); }
+  tbody tr[aria-selected=true] { background: var(--pick); }
+  tbody tr[aria-selected=true] > td:first-child { box-shadow: inset 2px 0 0 var(--accent); }
+  .badge { display: inline-block; margin-left: 4px; padding: 0 5px; font-size: 10px; vertical-align: 1px; }
+  .badge.unknown-b { border: 1px solid var(--warn-line); color: var(--warn); }
+  .badge.narr { border: 1px solid var(--line); color: var(--muted); }
+  .badge.face { border: 1px solid var(--frame); color: var(--accent); }
+  .empty-list { color: var(--muted); padding: 14px; text-align: center; }
+  .batches { display: grid; gap: 6px; grid-template-columns: minmax(0, 1fr); }
+  details.batch { border: 1px solid var(--line); background: var(--raised); }
+  details.batch summary { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 8px 10px; cursor: pointer; }
+  details.batch summary .num { color: var(--muted); font-variant-numeric: tabular-nums; min-width: 1.5em; }
+  details.batch summary .label { color: var(--muted); font-size: 12px; flex: 1; min-width: 8em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  details.batch summary .btns { margin-left: auto; }
+  details.batch ol { margin: 0; padding: 4px 12px 10px 2.4em; color: var(--muted); font-size: 12px; line-height: 1.8; }
+  details.batch li b { color: var(--fg); font-weight: 500; }
+  details.batch li img { width: 16px; height: 22px; object-fit: contain; vertical-align: middle; margin-right: 4px; }
+  .editor { border: 1px solid var(--line); padding: 10px 12px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; background: var(--raised); }
+  .editor h3 { margin: 0; font-size: 12px; color: var(--muted); font-weight: 400; }
+  .editor .grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .editor .ed-image { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1fr); gap: 2px; }
+  .editor.over { border-color: var(--accent); }
+  .editor label { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2px; color: var(--muted); font-size: 11px; }
+  .editor textarea { min-height: 70px; resize: vertical; line-height: 1.6; }
+  @media (max-width: 560px) { .editor .grid { grid-template-columns: minmax(0, 1fr); } }
+  /* Corners: boxes 6px, parts 4px, as in the shared block. */
+  .card { border-radius: 6px; }
+  .mode label, .speaker, .drop, .imgcell, .unknown, .edited-note, .table-wrap, details.batch, .editor { border-radius: 4px; }

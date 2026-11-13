@@ -1,0 +1,25 @@
+  /* ---- This tool only (scene transition maker): one long settings form (no tabs), a 16:9 canvas preview. */
+  .hidden { display: none !important; }
+  textarea { resize: vertical; min-height: 52px; line-height: 1.5; }
+  .desc { min-height: 1.5em; }
+  .status { font-variant-numeric: tabular-nums; }
+  /* .note is also a short inline hint next to a checkbox here, not only the block of instructions. */
+  .row .note { padding: 0; font-size: 12px; }
+  /* The preview: 16:9, drawn on a canvas by app.v7.js. Its backgrounds keep their own class names
+     (scene / light / checker / custom), and "SCENE" sits behind the animation. */
+  .stage { display: block; aspect-ratio: 16 / 9; width: 100%; margin: 0 auto; padding: 0; min-height: 0; }
+  .stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; }
+  .stage.scene {
+    background:
+      repeating-linear-gradient(0deg, #ffffff14 0 1px, transparent 1px 40px),
+      repeating-linear-gradient(90deg, #ffffff14 0 1px, transparent 1px 40px),
+      linear-gradient(135deg, #3b5a6b, #6b4b5a 55%, #4a4b6b); }
+  .stage.scene::after { content: "SCENE"; position: absolute; inset: 0; display: grid; place-items: center;
+                        font-size: 44px; font-weight: 700; letter-spacing: .3em; color: #ffffff40;
+                        pointer-events: none; }
+  .stage.light { background: #f2f2f4; }
+  .stage.custom { background: #000 center / cover no-repeat; }
+  .stage.checker { background-color: #cfcfd6;
+    background-image: linear-gradient(45deg, #9a9aa5 25%, transparent 25% 75%, #9a9aa5 75%),
+                      linear-gradient(45deg, #9a9aa5 25%, transparent 25% 75%, #9a9aa5 75%);
+    background-size: 32px 32px; background-position: 0 0, 16px 16px; }

@@ -3,8 +3,9 @@
 <head>
 <meta charset="utf-8">
 <script src="i18n.v1.js"></script>
-<script src="lang.en.v1.js"></script>
-<script src="lang.ko.v1.js"></script>
+<script src="lang.en.v1.js?v=2"></script>
+<script src="lang.ko.v1.js?v=2"></script>
+<script src="theme.v1.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>shiki365 のツール置き場 | TRPG・マダミスのオンセ・配信で使える無料ツール</title>
 <meta name="description" content="TRPG やマダミスのオンラインセッション・配信で使う無料ツールの一覧です。場面転換のアニメーション、ココフォリアの前景に使う枠、OBS に映すステータスバー、Discord 連動のルームプレートなど。">
@@ -21,109 +22,149 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <style>
-  /* Same palette as the tools so moving between them feels like one site. */
+  /* The hub page (source: _dev/design/hub.css). "Verdigris", same look as the tools: ink-navy surfaces and paper-white text (dark), a character
+     sheet on paper (light), one verdigris signal color. The tools are cards with the picture on the left,
+     two to a row, so nine tools fit in about two screens. Colors are variables on :root. */
   :root {
     color-scheme: dark;
-    --bg: #15161a; --panel: #1e1f26; --line: #303240; --line-soft: #282a36;
-    --fg: #e7e7ea; --muted: #9a9aa5; --accent: #6b70ff; --link: #a8abff;
-    --button: #575cf5; /* darker than --accent so white text passes 4.5:1 */
+    --bg: #10141a; --panel: #171c24; --raised: #1e242e; --line: #2c3440; --line-soft: #222a35;
+    --frame: #6b7686;
+    --fg: #e9e6df; --soft: #cfcdc6; --muted: #9ba4ae; --accent: #5ccfc0; --link: #7fdccf;
+    --button: #5ccfc0; --button-fg: #06211d; --button-hover: #7adbce;
+    --label-line: #6e5524; --label-fg: #f0c879; --thumb-bg: #0c0f14;
+    --mono: Consolas, "BIZ UDGothic", ui-monospace, monospace;
   }
+  /* Light: follows the OS, unless a choice made with the switch (theme.v1.js) sets data-theme. */
+  @media (prefers-color-scheme: light) { :root:not([data-theme=dark]) {
+    color-scheme: light;
+    --bg: #f3f0e9; --panel: #fcfbf7; --raised: #efece4; --line: #d6d1c5; --line-soft: #e7e3d9;
+    --frame: #8b8778;
+    --fg: #1b1f24; --soft: #33373d; --muted: #585e66; --accent: #0e6a5c; --link: #0b5c50;
+    --button: #0e6a5c; --button-fg: #ffffff; --button-hover: #0a5448;
+    --label-line: #b08a3a; --label-fg: #6a4a00; --thumb-bg: #e7e3d9;
+  } }
+  :root[data-theme=light] {
+    color-scheme: light;
+    --bg: #f3f0e9; --panel: #fcfbf7; --raised: #efece4; --line: #d6d1c5; --line-soft: #e7e3d9;
+    --frame: #8b8778;
+    --fg: #1b1f24; --soft: #33373d; --muted: #585e66; --accent: #0e6a5c; --link: #0b5c50;
+    --button: #0e6a5c; --button-fg: #ffffff; --button-hover: #0a5448;
+    --label-line: #b08a3a; --label-fg: #6a4a00; --thumb-bg: #e7e3d9;
+  }
+
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
   @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
-  body { margin: 0; background: var(--bg); color: var(--fg); line-height: 1.8;
-         font-family: "Yu Gothic UI", "Meiryo", system-ui, sans-serif; font-size: 15px; }
-  a { color: var(--link); }
-  a:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
-  .wrap { max-width: 1080px; margin: 0 auto; padding-inline: 20px; }
+  body { margin: 0; background: var(--bg); color: var(--fg); line-height: 1.75;
+         font-family: "Yu Gothic UI", "Meiryo", system-ui, sans-serif; font-size: 14px; }
+  a { color: var(--link); text-underline-offset: 3px; }
+  a:focus-visible, summary:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .wrap { max-width: 1160px; margin: 0 auto; padding-inline: 20px; }
 
-  header { border-bottom: 1px solid var(--line); padding-block: 44px 32px;
-           background: radial-gradient(ellipse 60% 120% at 0% 0%, #23254a, transparent 70%); }
-  h1 { margin: 0 0 8px; font-size: 28px; line-height: 1.4; }
-  .lead { margin: 0; color: var(--muted); max-width: 46em; }
-  .lang-switch { margin: 0 0 14px; color: var(--muted); font-size: 13px; }
+  /* ---- Header */
+  header { border-bottom: 1px solid var(--line); padding-block: 16px 24px; }
+  .prefs { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 18px; margin: 0 0 22px; }
+  .lang-switch, .theme-switch { margin: 0; color: var(--muted); font-size: 12px; }
   .lang-switch a[aria-current] { color: var(--fg); font-weight: 700; text-decoration: none; }
-  .en-note { margin: 16px 0 0; color: var(--muted); font-size: 13px; line-height: 1.7; max-width: 44em; }
-  .jump { display: flex; flex-wrap: wrap; gap: 4px 18px; margin: 14px 0 0; padding: 0; list-style: none; font-size: 14px; }
-  /* Plain links, not X's widgets.js, so visiting the page loads nothing from X. */
-  .social { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 0; padding: 0; list-style: none; }
-  .social a { display: inline-flex; align-items: center; gap: 8px; padding: 4px 14px; border: 1px solid var(--line);
-              border-radius: 999px; background: var(--panel); color: var(--fg); font-size: 14px; text-decoration: none; }
-  .social a:hover { border-color: #464a6e; }
-  .social svg { width: 13px; height: 13px; fill: currentColor; flex: none; }
+  .theme-switch::before { content: "◐ " / ""; }
+  .theme-switch button { background: none; border: 0; padding: 0; font: inherit; color: var(--link);
+                         text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+  .theme-switch button:hover { color: var(--fg); }
+  .theme-switch button[aria-pressed=true] { color: var(--fg); font-weight: 700; text-decoration: none; }
+  h1 { margin: 0; font-size: 26px; line-height: 1.4; letter-spacing: .02em; }
+  /* The mark: a small die seen from a corner. */
+  h1::before { content: ""; display: inline-block; width: 12px; height: 12px; margin: 0 14px 0 4px;
+               background: var(--accent); transform: rotate(45deg); vertical-align: 3px; }
+  .lead { margin: 6px 0 0; color: var(--soft); max-width: 52em; }
+  .en-note { margin: 14px 0 0; color: var(--muted); font-size: 12.5px; line-height: 1.7; max-width: 64em; }
+  .jump { display: flex; flex-wrap: wrap; gap: 6px; margin: 16px 0 0; padding: 0; list-style: none; font-size: 13px; }
+  .jump a { display: block; padding: 3px 12px; border: 1px solid var(--frame); border-radius: 4px; background: var(--panel);
+            color: var(--fg); text-decoration: none; }
+  .jump a::after { content: " ↓"; color: var(--accent); }
+  .jump a:hover { border-color: var(--fg); }
+  .social { display: flex; flex-wrap: wrap; gap: 4px 18px; margin: 12px 0 0; padding: 0; list-style: none; }
+  .social a { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-size: 13px; text-decoration: none; }
+  .social a:hover { color: var(--fg); text-decoration: underline; }
+  .social svg { width: 12px; height: 12px; fill: currentColor; flex: none; }
 
-  main section { padding-block: 40px 4px; }
-  h2 { font-size: 19px; margin: 0 0 4px; line-height: 1.5; }
-  .section-note { margin: 0 0 16px; color: var(--muted); font-size: 14px; }
-  .badges { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 20px; padding: 0; list-style: none; }
-  .badges li { border: 1px solid var(--line); border-radius: 999px; padding: 1px 12px;
-               font-size: 13px; background: var(--panel); }
+  /* ---- Sections: the heading sits on a rule, like a section of a character sheet. */
+  main section { padding-block: 36px 0; }
+  h2 { display: flex; align-items: center; gap: 12px; margin: 0; font-size: 17px; line-height: 1.5; letter-spacing: .04em; }
+  h2::before { content: ""; flex: none; width: 8px; height: 8px; margin-left: 3px; background: var(--accent); transform: rotate(45deg); }
+  h2::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+  .section-note { margin: 6px 0 14px; color: var(--muted); font-size: 13px; }
+  h2 + .tools, h2 + .contact { margin-top: 14px; }
+  .badges { display: flex; flex-wrap: wrap; gap: 2px 18px; margin: 0 0 14px; padding: 0; list-style: none; font-size: 12.5px; color: var(--soft); }
+  .badges li::before { content: "✓ "; color: var(--accent); font-weight: 700; }
 
-  .tools { display: grid; gap: 20px; margin: 0; padding: 0; list-style: none;
-           grid-template-columns: repeat(auto-fill, minmax(min(100%, 310px), 1fr)); }
-  .tool { display: flex; flex-direction: column; background: var(--panel);
-          border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
-  .tool:hover { border-color: #464a6e; }
-  .thumb { display: block; aspect-ratio: 1200 / 630; background: #101116; border-bottom: 1px solid var(--line); }
+  /* ---- Tools: picture on the left, two cards to a row. */
+  .tools { display: grid; gap: 14px; margin: 0; padding: 0; list-style: none;
+           grid-template-columns: repeat(auto-fill, minmax(min(100%, 500px), 1fr)); }
+  .tool { display: grid; grid-template-columns: 184px minmax(0, 1fr); gap: 14px; padding: 14px;
+          background: var(--panel); border: 1px solid var(--frame); border-radius: 6px; }
+  .tool:hover { border-color: var(--fg); }
+  .thumb { display: block; aspect-ratio: 1200 / 630; align-self: start; overflow: hidden; background: var(--thumb-bg);
+           border: 1px solid var(--line); border-radius: 4px; }
   .thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
-  .tool-body { display: flex; flex-direction: column; gap: 10px; flex: 1; padding: 16px 18px 18px; }
-  h3 { margin: 0; font-size: 19px; line-height: 1.4; }
+  .tool-body { display: flex; flex-direction: column; gap: 7px; min-width: 0; }
+  h3 { margin: 0; font-size: 16px; line-height: 1.45; }
   h3 a { color: var(--fg); text-decoration: none; }
-  h3 a:hover { text-decoration: underline; }
-  .label { display: inline-block; margin-left: 6px; padding: 0 8px; border: 1px solid #6b5a2e; border-radius: 999px;
-           color: #e3c77a; font-size: 12px; font-weight: 400; vertical-align: 3px; }
-  .when { margin: 0; color: var(--link); font-size: 14px; font-weight: 700; line-height: 1.6; }
-  .when span { display: inline-block; margin-right: 6px; padding: 0 7px; border-radius: 4px; vertical-align: 1px;
-               background: #2a2c4d; color: var(--fg); font-size: 11px; font-weight: 400; }
-  .desc { margin: 0; font-size: 14px; }
-  .spec { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 2px 12px; margin: 0;
-          padding: 8px 12px; border-radius: 8px; background: #191a20; font-size: 13px; line-height: 1.7; }
+  h3 a:hover { color: var(--link); text-decoration: underline; }
+  .label { display: inline-block; margin-left: 8px; padding: 0 6px; border: 1px solid var(--label-line); border-radius: 3px;
+           color: var(--label-fg); font-size: 11px; font-weight: 400; vertical-align: 2px; line-height: 1.6; }
+  .when { margin: 0; color: var(--fg); font-size: 13px; font-weight: 700; line-height: 1.6; }
+  .when span { display: block; color: var(--accent); font-size: 11px; font-weight: 700; letter-spacing: .08em; }
+  .desc { margin: 0; font-size: 13px; line-height: 1.7; color: var(--soft); }
+  .spec { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 1px 12px; margin: 2px 0 0; padding-top: 7px;
+          border-top: 1px solid var(--line); font-size: 12px; line-height: 1.6; }
   .spec dt { color: var(--muted); }
   .spec dd { margin: 0; }
-  .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin-top: auto; padding-top: 6px; }
-  .btn { display: inline-block; padding: 9px 20px; border-radius: 8px; background: var(--button);
-         color: #fff; font-weight: 700; text-decoration: none; }
-  .btn:hover { background: #4a4fe0; }
+  .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 16px; margin-top: auto; padding-top: 6px; }
+  .btn { display: inline-block; padding: 5px 16px; border-radius: 4px; background: var(--button); color: var(--button-fg);
+         font-weight: 700; font-size: 13px; text-decoration: none; }
+  .btn:hover { background: var(--button-hover); }
   .btn::after { content: " →"; }
-  .sub { color: var(--muted); font-size: 13px; }
+  .sub { color: var(--muted); font-size: 12px; }
   .sub:hover { color: var(--fg); }
 
-  .steps { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; counter-reset: step;
-           grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); }
-  .steps li { counter-increment: step; position: relative; padding: 14px 16px 14px 56px;
-              background: var(--panel); border: 1px solid var(--line); border-radius: 10px; }
-  .steps li::before { content: counter(step); position: absolute; left: 16px; top: 15px; width: 28px; height: 28px;
-                      display: grid; place-items: center; border-radius: 50%; background: var(--button);
-                      color: #fff; font-weight: 700; line-height: 1; }
+  /* ---- Steps, questions, contact */
+  .steps { display: grid; gap: 14px; margin: 0; padding: 0; list-style: none; counter-reset: step;
+           grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); }
+  .steps li { counter-increment: step; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 0 14px; align-content: start; padding: 12px 14px 14px;
+              background: var(--panel); border: 1px solid var(--frame); border-radius: 6px; }
+  .steps li::before { content: counter(step); grid-row: 1 / span 2; align-self: start; color: var(--accent);
+                      font-family: var(--mono); font-size: 30px; font-weight: 700; line-height: 1.1; }
   .steps b { display: block; line-height: 1.6; }
-  .steps span { color: var(--muted); font-size: 14px; }
+  .steps span { color: var(--muted); font-size: 13px; }
 
-  .faq { display: grid; gap: 8px; }
-  .faq details { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; }
-  .faq summary { cursor: pointer; padding: 12px 16px; font-weight: 700; }
-  .faq details[open] summary { border-bottom: 1px solid var(--line-soft); }
-  .faq details p { margin: 0; padding: 10px 16px 14px; color: var(--muted); font-size: 14px; }
-  .faq details p + p { padding-top: 0; }
+  .faq { display: grid; background: var(--panel); border: 1px solid var(--frame); border-radius: 6px; }
+  .faq details + details { border-top: 1px solid var(--line); }
+  .faq summary { cursor: pointer; padding: 9px 14px; font-weight: 700; list-style: none; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::before { content: "+"; display: inline-block; width: 1.3em; color: var(--accent); font-family: var(--mono); }
+  .faq details[open] summary::before { content: "−"; }
+  .faq summary:hover { color: var(--link); }
+  .faq details p { margin: 0; padding: 0 14px 10px calc(14px + 1.3em); color: var(--soft); font-size: 13px; }
 
-  .contact { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none;
+  .contact { display: grid; gap: 14px; margin: 0; padding: 0; list-style: none;
              grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); }
-  .contact li { display: flex; flex-direction: column; gap: 8px; padding: 16px 18px;
-                background: var(--panel); border: 1px solid var(--line); border-radius: 10px; }
-  .contact h3 { font-size: 16px; }
-  .contact p { margin: 0; color: var(--muted); font-size: 14px; }
+  .contact li { display: flex; flex-direction: column; gap: 6px; padding: 12px 14px 14px;
+                background: var(--panel); border: 1px solid var(--frame); border-radius: 6px; }
+  .contact h3 { font-size: 15px; }
+  .contact p { margin: 0; color: var(--muted); font-size: 13px; }
   .contact .btn { align-self: flex-start; margin-top: auto; }
-  .contact-foot { margin: 14px 0 0; color: var(--muted); font-size: 13px; }
+  .contact-foot { margin: 10px 0 0; color: var(--muted); font-size: 12.5px; }
 
-  footer { margin-top: 48px; border-top: 1px solid var(--line); padding-block: 20px 40px;
-           color: var(--muted); font-size: 13px; }
+  footer { margin-top: 48px; border-top: 1px solid var(--line); padding-block: 16px 36px; color: var(--muted); font-size: 12.5px; }
   footer p { margin: 0; }
 
-  @media (max-width: 480px) {
-    header { padding-block: 32px 24px; }
-    h1 { font-size: 23px; }
+  @media (max-width: 560px) {
+    .wrap { padding-inline: 14px; }
+    h1 { font-size: 22px; }
+    .tool { grid-template-columns: minmax(0, 1fr); gap: 10px; padding: 12px; }
   }
   @media (prefers-reduced-motion: no-preference) {
-    .tool, .btn { transition: border-color .15s, background-color .15s; }
+    .tool, .btn, .jump a { transition: border-color .12s, background-color .12s; }
   }
 </style>
 </head>
@@ -131,7 +172,10 @@
 
 <header>
   <div class="wrap">
-    <p class="lang-switch" data-lang-switch></p>
+    <div class="prefs">
+      <p class="lang-switch" data-lang-switch></p>
+      <p class="theme-switch" data-theme-switch></p>
+    </div>
     <h1>shiki365 のツール置き場</h1>
     <p class="lead">TRPG やマダミスのオンラインセッション・配信で使うツールを置いています。どれも無料です。</p>
     <ul class="jump" aria-label="このページの中の案内">
