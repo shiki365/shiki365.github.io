@@ -3,12 +3,14 @@
  * apply.js - put the shared look (tool.css) into a tool's page.
  *
  *   node _dev/design/apply.js <tool folder> [--extra <file.css>] [--version v1.2] [--date 2026-11-13]
+ *   node _dev/design/apply.js . --hub        (the hub page itself: the root of this repository)
  *
  * <tool folder> is the folder with the tool's index.html (for the scene transition maker: its docs/).
  *
  * What it does, every time:
  *   - replaces the first <style> block of index.html with tool.css, followed by the tool's own rules.
  *     Those come from --extra, or from tool-only/<repository name>.css when that file exists.
+ *     With --hub the look is hub.css instead of tool.css, and there are no tool-only rules.
  * Only when the page has no theme switch yet (first time):
  *   - copies theme.v1.js from the root of this repository and loads it after the dictionaries
  *   - wraps the language links in <div class="prefs"> and adds <p class="theme-switch" data-theme-switch>
@@ -29,7 +31,8 @@ const opt = name => { const i = args.indexOf("--" + name); return i < 0 ? null :
 const HERE = __dirname, HUB = path.resolve(HERE, "../..");
 const abs = path.resolve(dir);
 const repoName = path.basename(abs) === "docs" ? path.basename(path.dirname(abs)) : path.basename(abs);
-const extraFile = opt("extra") || [path.join(HERE, "tool-only", repoName + ".css")].find(f => fs.existsSync(f));
+const hub = args.includes("--hub");
+const extraFile = hub ? null : opt("extra") || [path.join(HERE, "tool-only", repoName + ".css")].find(f => fs.existsSync(f));
 
 const THEME_WORDS = {
   en: { "画面の明るさ": "Appearance", "自動": "Auto", "ダーク": "Dark", "ライト": "Light", "パソコンやスマホの設定に合わせる": "Follow your device's setting" },
@@ -43,7 +46,7 @@ const file = path.join(abs, "index.html");
 let html = fs.readFileSync(file, "utf8");
 const a = html.indexOf("<style>"), b = html.indexOf("</style>");
 if (a < 0 || b < 0) throw new Error("no <style> block in " + file);
-let css = fs.readFileSync(path.join(HERE, "tool.css"), "utf8").replace(/\s+$/, "");
+let css = fs.readFileSync(path.join(HERE, hub ? "hub.css" : "tool.css"), "utf8").replace(/\s+$/, "");
 if (extraFile) css += "\n\n" + fs.readFileSync(extraFile, "utf8").replace(/^\n+|\s+$/g, "");
 html = html.slice(0, a) + "<style>\n" + css + "\n</style>" + html.slice(b + 8);
 

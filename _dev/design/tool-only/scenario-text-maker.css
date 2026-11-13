@@ -113,7 +113,7 @@
   .badge.narr { border: 1px solid var(--line); color: var(--muted); }
   .badge.face { border: 1px solid var(--frame); color: var(--accent); }
   .empty-list { color: var(--muted); padding: 14px; text-align: center; }
-  .batches { display: grid; gap: 6px; }
+  .batches { display: grid; gap: 6px; grid-template-columns: minmax(0, 1fr); }
   details.batch { border: 1px solid var(--line); background: var(--raised); }
   details.batch summary { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 8px 10px; cursor: pointer; }
   details.batch summary .num { color: var(--muted); font-variant-numeric: tabular-nums; min-width: 1.5em; }

@@ -10,21 +10,21 @@
 
 - デザインは **「緑青（ろくしょう）」**（案を比べたときの名前は F 案）に決めました。決めるまでの経緯と、選ばなかった案は `_dev/design-proposals/` にあります。
 - ダークとライトの両方を持ち、ページ上部の「自動 / ダーク / ライト」で切り替えます（`theme.v1.js`）。
-- **まだどのページにも入っていません。** 置き場サイトと 6 つのツールの PR には、1 つ前に決めていた A+ 案（琥珀）が入っています。緑青への入れ替えは、下の表の順に進めます。
+- **緑青は、置き場サイトと 8 つのツールの PR に入れてあります**（2026-11-13）。どれも未マージで、公開中のページは元の見た目のままです。マージしたら、下の表の「今の状態」を「公開済み」に直してください。
 
-| 対象 | リポジトリ | PR | 今の状態 | 緑青にするには |
+| 対象 | リポジトリ | PR | 今の状態 | 入れ方 |
 | --- | --- | --- | --- | --- |
-| 置き場サイト | shiki365.github.io | #2 | A+ 案 | `index.html` の `<style>` を `hub.css` に入れ替える |
-| チャットウィンドウメーカー | chat-window-maker | #2 | A+ 案（v1.13） | `apply.js` |
-| メッセージボックスメーカー | message-box-maker | #1 | A+ 案（v1.4） | `apply.js` |
-| ステータスバーメーカー | status-bar-maker | #1 | A+ 案（v1.8） | `apply.js`（ツールだけの部分あり） |
-| 前景フレームメーカー | foreground-frame-maker | #1 | A+ 案（v2.4） | `apply.js`（ツールだけの部分あり） |
-| 場面転換素材メーカー | scene-transition-maker | #1 | A+ 案（v2.5） | `apply.js`（対象は `docs/`。ツールだけの部分あり） |
-| シナリオテキストメーカー | scenario-text-maker | #1 | A+ 案（v1.5） | `apply.js`（ツールだけの部分あり） |
-| 表紙入稿メーカー | cover-print-maker | なし | 元のまま（v1.0） | `apply.js`（切り替えボタンも入る。v1.1 に） |
-| 同人誌の印刷所さがし | doujin-printer-finder | なし | 元のまま（v1.0） | `apply.js`（切り替えボタンも入る。v1.1 に） |
+| 置き場サイト | shiki365.github.io | [#2](https://github.com/shiki365/shiki365.github.io/pull/2) | 緑青（`hub.css`） | `apply.js . --hub` |
+| チャットウィンドウメーカー | chat-window-maker | [#2](https://github.com/shiki365/chat-window-maker/pull/2) | 緑青（v1.13） | `apply.js` |
+| メッセージボックスメーカー | message-box-maker | [#1](https://github.com/shiki365/message-box-maker/pull/1) | 緑青（v1.4） | `apply.js` |
+| ステータスバーメーカー | status-bar-maker | [#1](https://github.com/shiki365/status-bar-maker/pull/1) | 緑青（v1.8） | `apply.js`（ツールだけの部分あり） |
+| 前景フレームメーカー | foreground-frame-maker | [#1](https://github.com/shiki365/foreground-frame-maker/pull/1) | 緑青（v2.4） | `apply.js`（ツールだけの部分あり） |
+| 場面転換素材メーカー | scene-transition-maker | [#1](https://github.com/shiki365/scene-transition-maker/pull/1) | 緑青（v2.5） | `apply.js`（対象は `docs/`。ツールだけの部分あり） |
+| シナリオテキストメーカー | scenario-text-maker | [#1](https://github.com/shiki365/scenario-text-maker/pull/1) | 緑青（v1.5） | `apply.js`（ツールだけの部分あり） |
+| 表紙入稿メーカー | cover-print-maker | [#1](https://github.com/shiki365/cover-print-maker/pull/1) | 緑青（v1.1。切り替えボタンも新しく入った） | `apply.js --version v1.1` |
+| 同人誌の印刷所さがし | doujin-printer-finder | [#1](https://github.com/shiki365/doujin-printer-finder/pull/1) | 緑青（v1.1。切り替えボタンも新しく入った） | `apply.js --version v1.1` |
 
-どの PR も、作業用のブランチは `claude/awesome-carson-brtset` です。7 つの PR は未マージで、公開中のページは元の見た目のままです。
+どの PR も、作業用のブランチは `claude/awesome-carson-brtset` です。9 つの PR はすべて未マージです。
 
 ## デザインの決まり
 
@@ -153,6 +153,7 @@ node _dev\design\apply.js ..\cover-print-maker --version v1.1
 
 - `<style>` を、`tool.css` ＋ `tool-only/<リポジトリ名>.css`（あれば）に入れ替えます。何度実行しても同じ結果になります。
 - 切り替えボタンがまだ無いツールには、`theme.v1.js`、ボタンの置き場所、辞書の 5 語も入れます。
+- 置き場サイト自身（このリポジトリの直下の `index.html`）は、`node _dev\design\apply.js . --hub` で `hub.css` を入れます。
 - `--version` を付けると、フッターの版と最終更新を書き換えます（日付は `--date 2026-11-13` で指定、省くと今日）。
 - HTML のほかの部分と、ツールの JS には触れません。
 
@@ -168,17 +169,16 @@ node _dev\design\apply.js ..\cover-print-maker --version v1.1
 | 前景フレームメーカー | キャンバスのプレビュー、色の選び方、素材と差分の一覧 | `same-png.js`（20 ファイル） | プレビューは枠の画像そのもの。大きさは `app.v3.js` が決める |
 | 場面転換素材メーカー | タブのない設定、16:9 のプレビューと背景 | `same-animation.js`（55 ファイル、約 2 分） | 対象は `docs/`。背景のクラスは `scene` / `light` / `checker` / `custom` |
 | シナリオテキストメーカー | 右側のカード、話し手、画像の置き場、一覧と手直し | `same-roomdata.js`、`page-scenario-text.js` | JSZip を cdnjs から読む。届かない環境では `JSZIP` を指定 |
-| 表紙入稿メーカー | 絵の枠、キャンバス、確認の一覧 | まだ無い（下の「残っていること」） | `../doujin-printer-finder/` の JS を読むので、2 つを隣に置いて開く |
-| 同人誌の印刷所さがし | ページ全体のタブ、結果のカード、一覧、印刷所のページ | まだ無い（下の「残っていること」） | `main` が 2 つある（一覧と、印刷所のページ） |
+| 表紙入稿メーカー | 絵の枠、キャンバス、確認の一覧 | `same-cover.js`（53 の状態と、書き出すファイル 6 つ。CMYK の ICC プロファイルが要る） | `../doujin-printer-finder/` の JS を読むので、2 つを隣に置いて開く。確認の一覧の背の色の色番号とプレビューのキャンバスは、箱の幅で値が変わるので比べから外してある |
+| 同人誌の印刷所さがし | ページ全体のタブ、結果のカード、一覧、印刷所のページ | `same-finder.js`（71 の状態。22 社すべての個別ページも） | `main` が 2 つある（一覧と、印刷所のページ）。文字は `textContent` で比べる（`innerText` は見た目で変わる） |
 
 ### 残っていること
 
-- **緑青への入れ替えそのもの。** 上の表の 9 つすべてです。`tool-only/` の 6 つは、A+ 案のときに書いたものを緑青の変数に書き換え、箱の角を足したものです。試しに各ツールのコピーへ入れて、`page.js` が通ること（エラー・はみ出し・コントラストが 0）と、見た目が大きく崩れていないことまでは確かめました。本物のリポジトリにはまだ入れていません。入れるときに、ツールごとの部品を 1 画面ずつ目で見て、形を整えてください。
-- **「元と同じ」の確かめは、入れ替えたあとにもう一度通すこと。** A+ 案のときは全ツールで通っています。スタイルしか変えないので結果は変わらないはずですが、確かめてから PR を更新します。
-- **表紙入稿メーカーの確かめ**: 書き出す PDF と「刷り上がりの見え方」には CMYK の ICC プロファイルが要ります（テストでは Ghostscript の `default_cmyk.icc` が使えます。Ubuntu では `libgs-common` に入っています）。ガイド画像（PNG）はプロファイルなしで書き出せます。元と入れ替え後で、書き出したファイルが同じことを比べるスクリプトを足します。
-- **同人誌の印刷所さがしの確かめ**: 書き出すファイルが無いので、条件を変えたときの結果の一覧（社名と値段の並び）が、元と入れ替え後で同じことを比べるスクリプトを足します。
-- **置き場サイト**: `index.html` の `<style>` を `hub.css` に入れ替え、README の配色の説明を緑青に直します。
-- 各ツールの `ogp.png` と置き場サイトの `_dev/ogp.html`（SNS のカード画像）は、前の配色のままです。
+- **マージして公開すること。** 9 つの PR は、なるべく同じ日にまとめてマージしてください。表紙入稿メーカーと同人誌の印刷所さがしはデータを分け合っているので、特に 2 つは一緒に。マージしたら、上の表の「今の状態」を直します。
+- **目で確かめること（機械では測れないもの）**: Windows の Yu Gothic UI での文字の詰まり具合、Firefox と Safari でのプルダウンの矢印と色の欄、スマホの実機でのスライダー。ツールごとの部品は、緑青を入れた状態でダークとライトを見て大きな崩れがないことまで確かめました。細かい整えは、実機で見てから。
+- **ヘッドレスでは試していないこと**: 画像・フォントのファイル選択、ドラッグ＆ドロップ、PC のフォント一覧、プロジェクトファイルの読み込み。どれも JS は変えていません。
+- 各ツールの `ogp.png` と置き場サイトの `_dev/ogp.html`（SNS のカード画像）は、前の配色のままです。作り直すかは別に決めてください。
+- 選ばなかった案のフォルダ（`_dev/design-proposals/` の `a/` `a-frame-2px/` `b/` `c/` など）を残すか消すか。公開はされないので、残しても害はありません。
 
 ## 確かめ方
 
@@ -210,6 +210,9 @@ node _dev\design\check\same-css.js          # CSS を作るツール
 node _dev\design\check\same-png.js          # 前景フレームメーカー
 node _dev\design\check\same-animation.js    # 場面転換素材メーカー（URL は docs/）
 node _dev\design\check\same-roomdata.js     # シナリオテキストメーカー
+node _dev\design\check\same-finder.js       # 同人誌の印刷所さがし（ファイルは作らないので、出る結果を比べる）
+$env:ICC = "C:\path\to\JapanColor2001Coated.icc"   # 表紙入稿メーカーは CMYK のプロファイルが要る
+node _dev\design\check\same-cover.js        # 表紙入稿メーカー（絵はスクリプトが python3 と Pillow で作る）
 ```
 
 `$env:SCHEME = "light"` を付けると、OS がライトの状態で同じことを確かめます。各スクリプトの使い方は、ファイルの先頭に書いてあります。
