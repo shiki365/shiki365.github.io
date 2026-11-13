@@ -34,6 +34,7 @@ async function run(browser, url) {
   if (await pg.$("[data-bind='source.room']")) {
     await openTabWith("[data-bind='source.room']");
     await pg.fill("[data-bind='source.room']", "https://ccfolia.com/rooms/abcDEF123"); await pg.press("[data-bind='source.room']", "Tab");
+    await pg.waitForTimeout(200);   // the CSS box is rewritten on the next frame
     out.css.room = await css();
   }
   // Character list (status bar maker): add one and fill it in.
@@ -44,6 +45,7 @@ async function run(browser, url) {
     const inputs = await last.$$("input[type=text]");
     await inputs[0].fill("テスト キャラ"); await inputs[0].press("Tab");
     if (inputs[1]) { await inputs[1].fill("abcDEF123"); await inputs[1].press("Tab"); }
+    await pg.waitForTimeout(200);
     out.css.char = await css();
   }
 
