@@ -33,12 +33,25 @@
 </head>
 <body>
 <div class="wrap">
-  <h1>デザイン一新の案（3 方向 ＋ A に枠を足した版）</h1>
+  <h1>デザイン一新の案（3 方向 ＋ A に枠を足した版 ＋ F 案）</h1>
   <p class="lead">置き場サイトのトップと、チャットウィンドウメーカーの画面を、方向の違う 3 つの案で作りました。どれも本物のファイルのコピーで、変えたのは <code>&lt;style&gt;</code> だけです。チャットウィンドウメーカーはそのまま動きます（書き出す CSS は元と同じです）。</p>
   <p class="lead">A 案・A+ 案・C 案には、ダークとライトの 2 種類があります。ふだんは OS の設定（ダークモード・ライトモード）に合わせて自動で切り替わり、URL の末尾に <code>?theme=light</code> <code>?theme=dark</code> を付けると OS に関係なく選べます（下のリンクは付けてあります）。</p>
   <p class="lead">言語は各画面の右上、または URL の末尾に <code>?lang=en</code> <code>?lang=ko</code> で切り替えられます（<code>?lang=en&amp;theme=light</code> のように並べても使えます）。見方と細かい決まりは <a href="README.md">README.md</a> にあります。</p>
 
   <div class="grid">
+    <article>
+      <h2>F 案　緑青（ろくしょう）<small>2026-11-13 に追加・一から組み直した案・ダークとライト</small></h2>
+      <p>夜の卓（ダーク）と、キャラクターシートの紙（ライト）。墨色の地に紙色の文字、差し色は緑青 1 色です。見出しはシートの区切りのように罫線の上に置き、プルダウンの矢印や色の欄まで形を揃えました。警告の橙と差し色が別の色なので、注意書きが見出しに紛れません。置き場サイトは、絵を左に置いたカードを 2 列に並べています。明るさは、画面右上の「自動 / ダーク / ライト」で切り替えます。</p>
+      <div class="shots">
+        <a href="f/hub/"><img src="shots/f-hub.jpg" alt="F 案の置き場サイト" width="1280" height="900" loading="lazy"></a>
+        <a href="f/chat-window/"><img src="shots/f-chat-window.jpg" alt="F 案のチャットウィンドウメーカー" width="1280" height="900" loading="lazy"></a>
+        <a href="f/hub/"><img src="shots/f-hub-light.jpg" alt="F 案の置き場サイト（ライト）" width="1280" height="900" loading="lazy"></a>
+        <a href="f/chat-window/"><img src="shots/f-chat-window-light.jpg" alt="F 案のチャットウィンドウメーカー（ライト）" width="1280" height="900" loading="lazy"></a>
+      </div>
+      <ul class="links"><li><a href="f/hub/">置き場サイト</a></li><li><a href="f/chat-window/">チャットウィンドウメーカー</a></li></ul>
+      <dl><dt>地</dt><dd>ダーク #10141a / ライト #f3f0e9</dd><dt>差し色</dt><dd>緑青 #5ccfc0（ライトは #0e6a5c）</dd><dt>角</dt><dd>部品 4px、箱 6px</dd></dl>
+    </article>
+
     <article>
       <h2>A 案　計器盤<small>暗い・密度高め・線で区切る</small></h2>
       <p>カードをやめて、細い線と見出しの帯で区切る「道具の画面」。行を詰めて、設定が一度に多く見えます。色は琥珀 1 色だけで、数字は等幅。長時間 OBS の設定を詰める人向け。</p>
