@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="ja" data-langs="ja en ko">
+<head>
+<meta charset="utf-8">
+<script src="../i18n.v1.js"></script>
+<script src="lang.en.v1.js?v=1"></script>
+<script src="lang.ko.v1.js?v=1"></script>
+<script src="../theme.v1.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>同人誌づくりのツール | shiki365 のツール置き場</title>
+<meta name="description" content="同人誌の印刷所選びと、表紙の入稿データづくりに使う無料ツールの一覧です。印刷所 22 社を条件と値段で比べる「同人誌の印刷所さがし」と、表紙の絵から入稿用の CMYK の PDF を作る「表紙入稿メーカー」。">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="shiki365 のツール置き場">
+<meta property="og:title" content="同人誌づくりのツール | shiki365 のツール置き場">
+<meta property="og:description" content="同人誌の印刷所選びと、表紙の入稿データづくりのツールを置いています。どれも無料・登録不要です。">
+<meta property="og:url" content="https://shiki365.github.io/doujin/">
+<meta property="og:image" content="https://shiki365.github.io/doujin/ogp.png?v=1">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="shiki365 のツール置き場（同人誌づくり） － 表紙入稿メーカーと同人誌の印刷所さがしの見本">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<style>
+  /* The hub pages (source: _dev/design/hub.css; the same <style> in index.html and doujin/index.html). "Verdigris", same look
+     as the tools: ink-navy surfaces and paper-white text (dark), a character sheet on paper (light), one verdigris signal color.
+     One page per genre (TRPG at /, doujinshi at /doujin/), switched by the tabs under the title. The tools are cards with
+     the picture on the left, two to a row. Colors are variables on :root. */
+  :root {
+    color-scheme: dark;
+    --bg: #10141a; --panel: #171c24; --raised: #1e242e; --line: #2c3440; --line-soft: #222a35;
+    --frame: #6b7686;
+    --fg: #e9e6df; --soft: #cfcdc6; --muted: #9ba4ae; --accent: #5ccfc0; --link: #7fdccf;
+    --button: #5ccfc0; --button-fg: #06211d; --button-hover: #7adbce;
+    --label-line: #6e5524; --label-fg: #f0c879; --thumb-bg: #0c0f14;
+    --mono: Consolas, "BIZ UDGothic", ui-monospace, monospace;
+  }
+  /* Light: follows the OS, unless a choice made with the switch (theme.v1.js) sets data-theme. */
+  @media (prefers-color-scheme: light) { :root:not([data-theme=dark]) {
+    color-scheme: light;
+    --bg: #f3f0e9; --panel: #fcfbf7; --raised: #efece4; --line: #d6d1c5; --line-soft: #e7e3d9;
+    --frame: #8b8778;
+    --fg: #1b1f24; --soft: #33373d; --muted: #585e66; --accent: #0e6a5c; --link: #0b5c50;
+    --button: #0e6a5c; --button-fg: #ffffff; --button-hover: #0a5448;
+    --label-line: #b08a3a; --label-fg: #6a4a00; --thumb-bg: #e7e3d9;
+  } }
+  :root[data-theme=light] {
+    color-scheme: light;
+    --bg: #f3f0e9; --panel: #fcfbf7; --raised: #efece4; --line: #d6d1c5; --line-soft: #e7e3d9;
+    --frame: #8b8778;
+    --fg: #1b1f24; --soft: #33373d; --muted: #585e66; --accent: #0e6a5c; --link: #0b5c50;
+    --button: #0e6a5c; --button-fg: #ffffff; --button-hover: #0a5448;
+    --label-line: #b08a3a; --label-fg: #6a4a00; --thumb-bg: #e7e3d9;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body { margin: 0; background: var(--bg); color: var(--fg); line-height: 1.75;
+         font-family: "Yu Gothic UI", "Meiryo", system-ui, sans-serif; font-size: 14px; }
+  a { color: var(--link); text-underline-offset: 3px; }
+  a:focus-visible, summary:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .wrap { max-width: 1160px; margin: 0 auto; padding-inline: 20px; }
+
+  /* ---- Header */
+  header { border-bottom: 1px solid var(--line); padding-block: 16px 24px; }
+  header.has-genres { padding-bottom: 0; }
+  .prefs { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 18px; margin: 0 0 22px; }
+  .lang-switch, .theme-switch { margin: 0; color: var(--muted); font-size: 12px; }
+  .lang-switch a[aria-current] { color: var(--fg); font-weight: 700; text-decoration: none; }
+  .theme-switch::before { content: "◐ " / ""; }
+  .theme-switch button { background: none; border: 0; padding: 0; font: inherit; color: var(--link);
+                         text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+  .theme-switch button:hover { color: var(--fg); }
+  .theme-switch button[aria-pressed=true] { color: var(--fg); font-weight: 700; text-decoration: none; }
+  h1 { margin: 0; font-size: 26px; line-height: 1.4; letter-spacing: .02em; }
+  /* The mark: a small die seen from a corner. */
+  h1::before { content: ""; display: inline-block; width: 12px; height: 12px; margin: 0 14px 0 4px;
+               background: var(--accent); transform: rotate(45deg); vertical-align: 3px; }
+  /* The page's own introduction opens <main>, under the genre tabs. */
+  .intro { padding-top: 24px; }
+  .lead { margin: 0; color: var(--soft); max-width: 52em; }
+  .en-note { margin: 14px 0 0; color: var(--muted); font-size: 12.5px; line-height: 1.7; max-width: 64em; }
+  .jump { display: flex; flex-wrap: wrap; gap: 6px; margin: 16px 0 0; padding: 0; list-style: none; font-size: 13px; }
+  .jump a { display: block; padding: 3px 12px; border: 1px solid var(--frame); border-radius: 4px; background: var(--panel);
+            color: var(--fg); text-decoration: none; }
+  .jump a::after { content: " ↓"; color: var(--accent); }
+  .jump a:hover { border-color: var(--fg); }
+  .social { display: flex; flex-wrap: wrap; gap: 4px 18px; margin: 12px 0 0; padding: 0; list-style: none; }
+  .social a { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-size: 13px; text-decoration: none; }
+  .social a:hover { color: var(--fg); text-decoration: underline; }
+  .social svg { width: 12px; height: 12px; fill: currentColor; flex: none; }
+  /* Genre tabs: plain links to the hub's pages, standing on the header's bottom rule. The current page's tab opens into
+     the page. The marks: a die seen from a corner (TRPG, as in the title) and a bookmark ribbon (doujinshi). */
+  .genres { display: flex; flex-wrap: wrap; gap: 4px; margin: 20px 0 0; }
+  .genres a { display: inline-flex; align-items: center; gap: 10px; margin-bottom: -1px; padding: 9px 18px 10px;
+              border: 1px solid transparent; border-bottom: 0; border-radius: 6px 6px 0 0;
+              color: var(--muted); font-size: 15px; font-weight: 700; line-height: 1.5; text-decoration: none; }
+  .genres a:hover { color: var(--fg); }
+  .genres a[aria-current=page] { border-color: var(--line); background: var(--bg); color: var(--fg); box-shadow: inset 0 3px 0 var(--accent); }
+  .gmark { flex: none; width: 10px; height: 10px; background: currentColor; }
+  .gmark.die { transform: rotate(45deg); }
+  .gmark.book { height: 14px; clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 74%, 0 100%); }
+  .genres a[aria-current=page] .gmark { background: var(--accent); }
+
+  /* ---- Sections: the heading sits on a rule, like a section of a character sheet. */
+  main section { padding-block: 36px 0; }
+  h2 { display: flex; align-items: center; gap: 12px; margin: 0; font-size: 17px; line-height: 1.5; letter-spacing: .04em; }
+  h2::before { content: ""; flex: none; width: 8px; height: 8px; margin-left: 3px; background: var(--accent); transform: rotate(45deg); }
+  h2::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+  .section-note { margin: 6px 0 14px; color: var(--muted); font-size: 13px; }
+  h2 + .tools, h2 + .contact { margin-top: 14px; }
+  .badges { display: flex; flex-wrap: wrap; gap: 2px 18px; margin: 10px 0 0; padding: 0; list-style: none; font-size: 12.5px; color: var(--soft); }
+  .badges li::before { content: "✓ "; color: var(--accent); font-weight: 700; }
+  .badges .badges-pre { color: var(--muted); }
+  .badges .badges-pre::before { content: none; }
+
+  /* ---- Tools: picture on the left, two cards to a row. */
+  .tools { display: grid; gap: 14px; margin: 0; padding: 0; list-style: none;
+           grid-template-columns: repeat(auto-fill, minmax(min(100%, 500px), 1fr)); }
+  .tool { display: grid; grid-template-columns: 184px minmax(0, 1fr); gap: 14px; padding: 14px;
+          background: var(--panel); border: 1px solid var(--frame); border-radius: 6px; }
+  .tool:hover { border-color: var(--fg); }
+  .thumb { display: block; aspect-ratio: 1200 / 630; align-self: start; overflow: hidden; background: var(--thumb-bg);
+           border: 1px solid var(--line); border-radius: 4px; }
+  .thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .tool-body { display: flex; flex-direction: column; gap: 7px; min-width: 0; }
+  h3 { margin: 0; font-size: 16px; line-height: 1.45; }
+  h3 a { color: var(--fg); text-decoration: none; }
+  h3 a:hover { color: var(--link); text-decoration: underline; }
+  .label { display: inline-block; margin-left: 8px; padding: 0 6px; border: 1px solid var(--label-line); border-radius: 3px;
+           color: var(--label-fg); font-size: 11px; font-weight: 400; vertical-align: 2px; line-height: 1.6; }
+  .when { margin: 0; color: var(--fg); font-size: 13px; font-weight: 700; line-height: 1.6; }
+  .when span { display: block; color: var(--accent); font-size: 11px; font-weight: 700; letter-spacing: .08em; }
+  .desc { margin: 0; font-size: 13px; line-height: 1.7; color: var(--soft); }
+  .spec { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 1px 12px; margin: 2px 0 0; padding-top: 7px;
+          border-top: 1px solid var(--line); font-size: 12px; line-height: 1.6; }
+  .spec dt { color: var(--muted); }
+  .spec dd { margin: 0; }
+  .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 16px; margin-top: auto; padding-top: 6px; }
+  .btn { display: inline-block; padding: 5px 16px; border-radius: 4px; background: var(--button); color: var(--button-fg);
+         font-weight: 700; font-size: 13px; text-decoration: none; }
+  .btn:hover { background: var(--button-hover); }
+  .btn::after { content: " →"; }
+  .sub { color: var(--muted); font-size: 12px; }
+  .sub:hover { color: var(--fg); }
+
+  /* ---- Steps, questions, contact */
+  .steps { display: grid; gap: 14px; margin: 0; padding: 0; list-style: none; counter-reset: step;
+           grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); }
+  .steps li { counter-increment: step; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 0 14px; align-content: start; padding: 12px 14px 14px;
+              background: var(--panel); border: 1px solid var(--frame); border-radius: 6px; }
+  .steps li::before { content: counter(step); grid-row: 1 / span 2; align-self: start; color: var(--accent);
+                      font-family: var(--mono); font-size: 30px; font-weight: 700; line-height: 1.1; }
+  .steps b { display: block; line-height: 1.6; }
+  .steps span { color: var(--muted); font-size: 13px; }
+
+  .faq { display: grid; background: var(--panel); border: 1px solid var(--frame); border-radius: 6px; }
+  .faq details + details { border-top: 1px solid var(--line); }
+  .faq summary { cursor: pointer; padding: 9px 14px; font-weight: 700; list-style: none; }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::before { content: "+"; display: inline-block; width: 1.3em; color: var(--accent); font-family: var(--mono); }
+  .faq details[open] summary::before { content: "−"; }
+  .faq summary:hover { color: var(--link); }
+  .faq details p { margin: 0; padding: 0 14px 10px calc(14px + 1.3em); color: var(--soft); font-size: 13px; }
+
+  .contact { display: grid; gap: 14px; margin: 0; padding: 0; list-style: none;
+             grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); }
+  .contact li { display: flex; flex-direction: column; gap: 6px; padding: 12px 14px 14px;
+                background: var(--panel); border: 1px solid var(--frame); border-radius: 6px; }
+  .contact h3 { font-size: 15px; }
+  .contact p { margin: 0; color: var(--muted); font-size: 13px; }
+  .contact .btn { align-self: flex-start; margin-top: auto; }
+  .contact-foot { margin: 10px 0 0; color: var(--muted); font-size: 12.5px; }
+
+  footer { margin-top: 48px; border-top: 1px solid var(--line); padding-block: 16px 36px; color: var(--muted); font-size: 12.5px; }
+  footer p { margin: 0; }
+
+  @media (max-width: 560px) {
+    .wrap { padding-inline: 14px; }
+    h1 { font-size: 22px; }
+    .genres a { flex: 1 1 0; min-width: 0; gap: 8px; padding: 8px 10px 9px; font-size: 14px; }
+    .tool { grid-template-columns: minmax(0, 1fr); gap: 10px; padding: 12px; }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .tool, .btn, .jump a, .genres a { transition: border-color .12s, background-color .12s; }
+  }
+</style>
+</head>
+<body>
+
+<header class="has-genres">
+  <div class="wrap">
+    <div class="prefs">
+      <p class="lang-switch" data-lang-switch></p>
+      <p class="theme-switch" data-theme-switch></p>
+    </div>
+    <h1>shiki365 のツール置き場</h1>
+    <ul class="social" aria-label="X（旧 Twitter）">
+      <li><a href="https://x.com/intent/tweet?text=%E5%90%8C%E4%BA%BA%E8%AA%8C%E3%81%A5%E3%81%8F%E3%82%8A%E3%81%AE%E3%83%84%E3%83%BC%E3%83%AB%EF%BD%9Cshiki365%20%E3%81%AE%E3%83%84%E3%83%BC%E3%83%AB%E7%BD%AE%E3%81%8D%E5%A0%B4&amp;url=https%3A%2F%2Fshiki365.github.io%2Fdoujin%2F&amp;hashtags=%E5%90%8C%E4%BA%BA%E8%AA%8C&amp;via=shiki36512" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>このページを X で共有</a></li>
+      <li><a href="https://x.com/intent/follow?screen_name=shiki36512" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>@shiki36512 をフォロー</a></li>
+    </ul>
+    <nav class="genres" aria-label="ジャンル">
+      <a href="../"><span class="gmark die" aria-hidden="true"></span>TRPG・マダミス</a>
+      <a href="./" aria-current="page"><span class="gmark book" aria-hidden="true"></span>同人誌づくり</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="intro">
+    <p class="lead">同人誌の印刷所選びと、入稿データづくりのツールを置いています。どれも無料です。</p>
+    <ul class="badges" aria-label="ブラウザで使うツールに共通">
+      <li>無料</li>
+      <li>会員登録なし</li>
+      <li>インストールなし</li>
+      <li>画像や入力内容はどこにも送られません</li>
+    </ul>
+    <ul class="jump" aria-label="このページの中の案内">
+      <li><a href="#print">印刷所選びと入稿</a></li>
+      <li><a href="#steps">使い方</a></li>
+      <li><a href="#faq">よくある質問</a></li>
+      <li><a href="#contact">不具合の報告・感想</a></li>
+    </ul>
+    <p class="en-note" lang="en" data-lang-only="ja">Free tools for making doujinshi (printed self-published books): a finder that compares 22 Japanese printers by your conditions and a rough price, and a maker that turns your cover art into a print-ready CMYK PDF with bleed and spine. No sign-up, no install, and nothing you make is uploaded. This page and both tools are also in English and Korean (see the language links at the top). The TRPG and murder-mystery tools are on the first tab.</p>
+  </div>
+
+  <section id="print" aria-labelledby="print-title">
+    <h2 id="print-title">印刷所選びと入稿</h2>
+    <p class="section-note">印刷所を条件と値段で比べて選び、表紙の絵を入稿できるデータにします。</p>
+
+    <ul class="tools">
+      <li class="tool">
+        <a class="thumb" href="https://shiki365.github.io/doujin-printer-finder/" tabindex="-1" aria-hidden="true">
+          <img src="../thumbs/doujin-printer-finder.webp" alt="" width="640" height="336" decoding="async">
+        </a>
+        <div class="tool-body">
+          <h3><a href="https://shiki365.github.io/doujin-printer-finder/">同人誌の印刷所さがし</a></h3>
+          <p class="when"><span>こんなときに</span>同人誌をどこの印刷所で刷るか、条件と値段で比べて決めたい</p>
+          <p class="desc">同人誌の印刷所 22&nbsp;社を、判型・部数・予算と、入稿・支払い・納品の条件で絞り込み、基本のセットの値段の目安が安い順に並べます。各社の情報は公式ページで確かめたものだけで、根拠のページを添えています。印刷所ごとの紹介ページから、表紙入稿メーカーをその印刷所の設定で開けます。</p>
+          <dl class="spec">
+            <dt>わかること</dt><dd>条件に合う印刷所と値段の目安、各社の原稿の決まりと背幅</dd>
+            <dt>使う場所</dt><dd>印刷所を選ぶとき</dd>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="https://shiki365.github.io/doujin-printer-finder/">ツールを開く</a>
+            <a class="sub" href="https://github.com/shiki365/doujin-printer-finder">ソースコード（GitHub）</a>
+          </div>
+        </div>
+      </li>
+
+      <li class="tool">
+        <a class="thumb" href="https://shiki365.github.io/cover-print-maker/" tabindex="-1" aria-hidden="true">
+          <img src="../thumbs/cover-print-maker.webp" alt="" width="640" height="336" decoding="async">
+        </a>
+        <div class="tool-body">
+          <h3><a href="https://shiki365.github.io/cover-print-maker/">表紙入稿メーカー</a></h3>
+          <p class="when"><span>こんなときに</span>同人誌の表紙の絵を、印刷所に入稿できるデータにしたい</p>
+          <p class="desc">表紙の絵から、表4・背・表1 を 1&nbsp;枚につないだ入稿用の表紙データ（塗り足しつき・CMYK の PDF）を作ります。印刷所 22&nbsp;社の塗り足しと背幅の計算に対応し、描く人に渡すガイド画像も書き出せます。色の変換には、自分で用意した ICC プロファイルを使います。</p>
+          <dl class="spec">
+            <dt>作れるもの</dt><dd>入稿用の PDF（CMYK）、描く人用のガイド画像（PNG）</dd>
+            <dt>使う場所</dt><dd>同人誌の印刷所への入稿</dd>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="https://shiki365.github.io/cover-print-maker/">ツールを開く</a>
+            <a class="sub" href="https://github.com/shiki365/cover-print-maker">ソースコード（GitHub）</a>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <section id="steps" aria-labelledby="steps-title">
+    <h2 id="steps-title">使い方</h2>
+    <p class="section-note">2 つのツールは、印刷所のページでつながっています。印刷所が決まっているなら、表紙入稿メーカーから始めても同じです。</p>
+    <ol class="steps">
+      <li><b>印刷所さがしで、印刷所を選ぶ</b><span>判型・部数・予算と、入稿・支払い・納品の条件で絞り込めます。</span></li>
+      <li><b>印刷所のページから、表紙入稿メーカーを開く</b><span>その印刷所・判型・ページ数の設定で始まります。</span></li>
+      <li><b>表紙の絵を入れて、入稿用の PDF を書き出す</b><span>色の変換には、自分で用意した ICC プロファイルを使います。</span></li>
+    </ol>
+  </section>
+
+  <section id="faq" aria-labelledby="faq-title">
+    <h2 id="faq-title">よくある質問</h2>
+    <p class="section-note">質問を押すと答えが開きます。</p>
+    <div class="faq">
+      <details>
+        <summary>お金はかかりますか？</summary>
+        <p>かかりません。どちらのツールも無料で、会員登録やインストールもいりません。</p>
+      </details>
+      <details>
+        <summary>印刷所の値段や決まりは、いつの情報ですか？</summary>
+        <p>各社の公式ページで確かめた情報です。印刷所ごとのページに、確かめた日と根拠のページを載せています。値段や原稿の決まりは変わることがあるので、入稿の前に、印刷所の公式ページでも確かめてください。</p>
+      </details>
+      <details>
+        <summary>読み込んだ絵や入力した内容は、どこかに送られますか？</summary>
+        <p>送られません。処理はすべて、お使いのブラウザの中だけで行われます。</p>
+      </details>
+      <details>
+        <summary>作りかけの表紙は残りますか？</summary>
+        <p>表紙入稿メーカーは、設定と読み込んだ絵・ICC プロファイルを、ブラウザに自動で保存します。次に同じブラウザで開くと続きから始まります。</p>
+      </details>
+      <details>
+        <summary>ICC プロファイルは、どこで手に入りますか？</summary>
+        <p>日本の印刷所の多くが使う Japan Color 2001 Coated は、Adobe が無料で配っています。入手先は、表紙入稿メーカーの「書き出し」の画面に書いてあります。印刷所が別のプロファイルを指定しているときは、そちらを使ってください。</p>
+      </details>
+      <details>
+        <summary>印刷所の公式のツールですか？</summary>
+        <p>いいえ。個人が作った非公式のツールで、どの印刷所とも関係ありません。入稿の決まりは印刷所ごとに違うので、最後は印刷所の案内に従ってください。</p>
+      </details>
+      <details>
+        <summary>不具合を見つけたとき、要望があるときは？</summary>
+        <p data-i18n>このページのいちばん下の「<a href="#contact">不具合の報告・感想</a>」から送れます。どれも匿名で、Google アカウントもいりません。</p>
+      </details>
+    </div>
+  </section>
+
+  <section id="contact" aria-labelledby="contact-title">
+    <h2 id="contact-title">不具合の報告・感想</h2>
+    <p class="section-note">どれも匿名で送れます。Google アカウントもいりません。</p>
+    <ul class="contact">
+      <li>
+        <h3>ブラウザのツールの不具合</h3>
+        <p>同人誌の印刷所さがし・表紙入稿メーカーで、うまく動かないところを見つけたときに。</p>
+        <a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLSdXyHj5EYg-6JEV71orw61fyTTml3Cy9D-BP_EuuMHX6oUNcQ/viewform">報告フォームを開く</a>
+      </li>
+      <li>
+        <h3>感想・要望</h3>
+        <p>「こんな機能がほしい」「こう使っています」など、気軽にどうぞ。マシュマロで届きます。</p>
+        <a class="btn" href="https://marshmallow-qa.com/jisg2c3imbza76d">マシュマロを開く</a>
+      </li>
+    </ul>
+    <p class="contact-foot">個別のお返事はお約束できませんが、すべて目を通しています。GitHub を使っている方は、各ツールのリポジトリの Issues でも受け付けています。</p>
+  </section>
+
+  <section id="support" aria-labelledby="support-title">
+    <h2 id="support-title">開発を応援する</h2>
+    <ul class="contact">
+      <li>
+        <h3>BOOTH で支援を受け付けています</h3>
+        <p>ツールはこれからも無料で使えます。「役に立った」と思っていただけたら、応援してもらえるとうれしいです。</p>
+        <a class="btn" href="https://sabunomisogi.booth.pm/items/8891048">BOOTH で見る</a>
+      </li>
+    </ul>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p data-i18n>掲載しているツールは、いずれも個人が作った<strong>非公式</strong>のツールです。</p>
+    <p>© 2026 shiki365（鯖の禊） ・ <a href="https://x.com/shiki36512">X</a> ・ <a href="https://github.com/shiki365">GitHub</a> ・<a href="https://sabunomisogi.booth.pm/">BOOTH</a> ・ <a href="https://sabunomisogi.booth.pm/items/8891048">開発を応援する</a></p>
+  </div>
+</footer>
+
+</body>
+</html>

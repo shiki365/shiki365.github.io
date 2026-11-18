@@ -6,7 +6,8 @@
  *
  * Reads <folder>/index.html, every *.js in <folder> except i18n.v1.js and lang.*.js, the scripts
  * index.html loads from another folder (<script src="../other-tool/data.v1.js">: data shared with
- * another tool, translated with this page's dictionaries), and the dictionaries
+ * another tool, translated with this page's dictionaries; again not i18n.v1.js and lang.*.js, so the
+ * hub's doujin/ page can load ../i18n.v1.js), and the dictionaries
  * <folder>/lang.<code>.v1.js. Prints, for each language, the keys the page has
  * but the dictionary lacks (MISSING) and the dictionary keys nothing uses (UNUSED).
  * --keys prints every key instead, one JSON string per line (a start for a new dictionary).
@@ -174,6 +175,7 @@ for (const m of html.matchAll(/<script\b[^>]*\bsrc="([^"]+)"/g)) {
   const src = m[1].split(/[?#]/)[0];
   if (/^([a-z]+:|\/)/i.test(src)) continue;
   const file = path.relative(dir, path.resolve(dir, src));
+  if (path.basename(file) === "i18n.v1.js" || /^lang\./.test(path.basename(file))) continue;
   if (file.startsWith("..") && fs.existsSync(path.join(dir, file)) && !scripts.includes(file)) scripts.push(file);
 }
 for (const file of scripts) {

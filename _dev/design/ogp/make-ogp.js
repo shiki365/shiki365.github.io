@@ -10,6 +10,7 @@
  *   <tool>/ogp.png   (scene transition maker: docs/ogp.png)
  *   shiki365.github.io/thumbs/<tool>.webp   (640x336, for the cards of the hub page)
  *   shiki365.github.io/ogp.png              (made last, from four of the thumbnails)
+ *   shiki365.github.io/doujin/ogp.png       ("hub-doujin": the doujin page, cut out of the two doujin tools' cards)
  * The printer finder's card is a drawn sample without printer names or prices (on purpose: prices change).
  * Needs Node, Playwright (npm i playwright), python3 with Pillow, and Japanese fonts with a bold weight
  * (Yu Gothic UI on Windows; on Linux: fonts-noto-cjk). Previews use Google Fonts, so it needs the network.
@@ -77,6 +78,8 @@ const CARD_CSS = `
   body.hub .tagline { font-size: 28px; }
   body.hub .shots { flex: none; height: 196px; margin-top: 40px; }
   body.hub .shot .cap { font-size: 17px; }
+  /* hub with two pictures (the doujin page): taller pictures */
+  body.hub.two .shots { height: 262px; margin-top: 36px; }
 `;
 const SCENE = "radial-gradient(ellipse at 30% 20%, #6d7fa8, transparent 60%), radial-gradient(ellipse at 80% 90%, #a8735a, transparent 55%)";
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
@@ -88,9 +91,27 @@ function cardHtml(c) {
   const foot = `<div class="foot"><span>${c.foot}</span><span class="url">${esc(c.url)}</span></div>`;
   let body;
   if (c.layout === "side") body = `<body class="side"><div class="text">${head}${foot}</div><div class="right">${c.right}</div></body>`;
-  else if (c.layout === "hub") body = `<body class="hub">${head}${shotsHtml(c.shots)}</body>`;
+  else if (c.layout === "hub") body = `<body class="hub${c.two ? " two" : ""}">${head}${shotsHtml(c.shots)}</body>`;
   else body = `<body>${head}<div class="rule"></div>${shotsHtml(c.shots)}${foot}</body>`;
   return `<!doctype html><html lang="ja"><head><meta charset="utf-8"><style>${CARD_CSS}</style></head>${body}</html>`;
+}
+
+// The doujin page's card (shiki365.github.io/doujin/ogp.png, "hub-doujin"): the pictures of the two doujin tools, cut out
+// of their own cards. In the side layout the right column is x 600-1144 of the 1200x630 image; boxes are [left, top, right, bottom].
+const HUB_DOUJIN = {
+  layout: "hub", two: true, kicker: "同人誌づくり向け", title: "shiki365 のツール置き場",
+  tagline: "印刷所選びから、表紙の入稿データづくりまで。どれも無料",
+  cuts: [
+    { tool: "cover-print-maker", box: [601, 144, 1143, 527], cap: "表紙入稿メーカー" },                         // the preview, inside its frame
+    { tool: "doujin-printer-finder", box: [600, 101, 1144, 409], cap: "同人誌の印刷所さがし", bg: "#10141a" },  // the first two sample results
+  ],
+};
+// A part of a PNG as a data URL (Pillow, as in thumb()).
+function cutOut(src, box) {
+  const out = path.join(tmp, "cut-" + box.join("-") + ".png");
+  execFileSync("python3", ["-I", "-c", "import sys\nfrom PIL import Image\nImage.open(sys.argv[1]).crop(tuple(int(v) for v in sys.argv[3:7])).save(sys.argv[2])",
+    src, out, ...box.map(String)]);
+  return dataUrl(fs.readFileSync(out));
 }
 
 // ---------------------------------------------------------------- helpers for the tools
@@ -319,6 +340,13 @@ im.resize((640, 336), Image.Resampling.LANCZOS).save(sys.argv[2], "WEBP", qualit
     await render(browser, { layout: "hub", kicker: "TRPG・マダミスのオンセ・配信向け", title: "shiki365 のツール置き場",
       tagline: "ブラウザで作る素材から、Discord 連動の OBS 用ソフトまで。どれも無料", shots }, path.join(HUB, "ogp.png"));
     console.log("hub -> shiki365.github.io/ogp.png", Math.round(fs.statSync(path.join(HUB, "ogp.png")).size / 1024) + " KB");
+  }
+  if (!wanted.length || wanted.includes("hub-doujin")) {
+    // Uses the two doujin tools' ogp.png as they are on disk (made above when they were asked for too).
+    const shots = HUB_DOUJIN.cuts.map(c => ({ src: cutOut(OUT(c.tool), c.box), cap: c.cap, contain: true, bg: c.bg }));
+    const file = path.join(HUB, "doujin", "ogp.png");
+    await render(browser, { ...HUB_DOUJIN, shots }, file);
+    console.log("hub-doujin -> shiki365.github.io/doujin/ogp.png", Math.round(fs.statSync(file).size / 1024) + " KB");
   }
   await browser.close();
   server.close();

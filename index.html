@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <script src="i18n.v1.js"></script>
-<script src="lang.en.v1.js?v=2"></script>
-<script src="lang.ko.v1.js?v=2"></script>
+<script src="lang.en.v1.js?v=3"></script>
+<script src="lang.ko.v1.js?v=3"></script>
 <script src="theme.v1.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>shiki365 のツール置き場 | TRPG・マダミスのオンセ・配信で使える無料ツール</title>
@@ -22,9 +22,10 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <style>
-  /* The hub page (source: _dev/design/hub.css). "Verdigris", same look as the tools: ink-navy surfaces and paper-white text (dark), a character
-     sheet on paper (light), one verdigris signal color. The tools are cards with the picture on the left,
-     two to a row, so nine tools fit in about two screens. Colors are variables on :root. */
+  /* The hub pages (source: _dev/design/hub.css; the same <style> in index.html and doujin/index.html). "Verdigris", same look
+     as the tools: ink-navy surfaces and paper-white text (dark), a character sheet on paper (light), one verdigris signal color.
+     One page per genre (TRPG at /, doujinshi at /doujin/), switched by the tabs under the title. The tools are cards with
+     the picture on the left, two to a row. Colors are variables on :root. */
   :root {
     color-scheme: dark;
     --bg: #10141a; --panel: #171c24; --raised: #1e242e; --line: #2c3440; --line-soft: #222a35;
@@ -63,6 +64,7 @@
 
   /* ---- Header */
   header { border-bottom: 1px solid var(--line); padding-block: 16px 24px; }
+  header.has-genres { padding-bottom: 0; }
   .prefs { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 18px; margin: 0 0 22px; }
   .lang-switch, .theme-switch { margin: 0; color: var(--muted); font-size: 12px; }
   .lang-switch a[aria-current] { color: var(--fg); font-weight: 700; text-decoration: none; }
@@ -75,7 +77,9 @@
   /* The mark: a small die seen from a corner. */
   h1::before { content: ""; display: inline-block; width: 12px; height: 12px; margin: 0 14px 0 4px;
                background: var(--accent); transform: rotate(45deg); vertical-align: 3px; }
-  .lead { margin: 6px 0 0; color: var(--soft); max-width: 52em; }
+  /* The page's own introduction opens <main>, under the genre tabs. */
+  .intro { padding-top: 24px; }
+  .lead { margin: 0; color: var(--soft); max-width: 52em; }
   .en-note { margin: 14px 0 0; color: var(--muted); font-size: 12.5px; line-height: 1.7; max-width: 64em; }
   .jump { display: flex; flex-wrap: wrap; gap: 6px; margin: 16px 0 0; padding: 0; list-style: none; font-size: 13px; }
   .jump a { display: block; padding: 3px 12px; border: 1px solid var(--frame); border-radius: 4px; background: var(--panel);
@@ -86,6 +90,18 @@
   .social a { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-size: 13px; text-decoration: none; }
   .social a:hover { color: var(--fg); text-decoration: underline; }
   .social svg { width: 12px; height: 12px; fill: currentColor; flex: none; }
+  /* Genre tabs: plain links to the hub's pages, standing on the header's bottom rule. The current page's tab opens into
+     the page. The marks: a die seen from a corner (TRPG, as in the title) and a bookmark ribbon (doujinshi). */
+  .genres { display: flex; flex-wrap: wrap; gap: 4px; margin: 20px 0 0; }
+  .genres a { display: inline-flex; align-items: center; gap: 10px; margin-bottom: -1px; padding: 9px 18px 10px;
+              border: 1px solid transparent; border-bottom: 0; border-radius: 6px 6px 0 0;
+              color: var(--muted); font-size: 15px; font-weight: 700; line-height: 1.5; text-decoration: none; }
+  .genres a:hover { color: var(--fg); }
+  .genres a[aria-current=page] { border-color: var(--line); background: var(--bg); color: var(--fg); box-shadow: inset 0 3px 0 var(--accent); }
+  .gmark { flex: none; width: 10px; height: 10px; background: currentColor; }
+  .gmark.die { transform: rotate(45deg); }
+  .gmark.book { height: 14px; clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 74%, 0 100%); }
+  .genres a[aria-current=page] .gmark { background: var(--accent); }
 
   /* ---- Sections: the heading sits on a rule, like a section of a character sheet. */
   main section { padding-block: 36px 0; }
@@ -94,8 +110,10 @@
   h2::after { content: ""; flex: 1; height: 1px; background: var(--line); }
   .section-note { margin: 6px 0 14px; color: var(--muted); font-size: 13px; }
   h2 + .tools, h2 + .contact { margin-top: 14px; }
-  .badges { display: flex; flex-wrap: wrap; gap: 2px 18px; margin: 0 0 14px; padding: 0; list-style: none; font-size: 12.5px; color: var(--soft); }
+  .badges { display: flex; flex-wrap: wrap; gap: 2px 18px; margin: 10px 0 0; padding: 0; list-style: none; font-size: 12.5px; color: var(--soft); }
   .badges li::before { content: "✓ "; color: var(--accent); font-weight: 700; }
+  .badges .badges-pre { color: var(--muted); }
+  .badges .badges-pre::before { content: none; }
 
   /* ---- Tools: picture on the left, two cards to a row. */
   .tools { display: grid; gap: 14px; margin: 0; padding: 0; list-style: none;
@@ -161,47 +179,57 @@
   @media (max-width: 560px) {
     .wrap { padding-inline: 14px; }
     h1 { font-size: 22px; }
+    .genres a { flex: 1 1 0; min-width: 0; gap: 8px; padding: 8px 10px 9px; font-size: 14px; }
     .tool { grid-template-columns: minmax(0, 1fr); gap: 10px; padding: 12px; }
   }
   @media (prefers-reduced-motion: no-preference) {
-    .tool, .btn, .jump a { transition: border-color .12s, background-color .12s; }
+    .tool, .btn, .jump a, .genres a { transition: border-color .12s, background-color .12s; }
   }
 </style>
 </head>
 <body>
 
-<header>
+<header class="has-genres">
   <div class="wrap">
     <div class="prefs">
       <p class="lang-switch" data-lang-switch></p>
       <p class="theme-switch" data-theme-switch></p>
     </div>
     <h1>shiki365 のツール置き場</h1>
-    <p class="lead">TRPG やマダミスのオンラインセッション・配信で使うツールを置いています。どれも無料です。</p>
-    <ul class="jump" aria-label="このページの中の案内">
-      <li><a href="#browser-tools">ブラウザで使うツール</a></li>
-      <li><a href="#download-tools">ダウンロードして使うツール</a></li>
-      <li><a href="#faq">よくある質問</a></li>
-      <li><a href="#contact">不具合の報告・感想</a></li>
-    </ul>
     <ul class="social" aria-label="X（旧 Twitter）">
       <li><a href="https://x.com/intent/tweet?text=shiki365%20%E3%81%AE%E3%83%84%E3%83%BC%E3%83%AB%E7%BD%AE%E3%81%8D%E5%A0%B4%EF%BD%9CTRPG%E3%83%BB%E3%83%9E%E3%83%80%E3%83%9F%E3%82%B9%E3%81%AE%E3%82%AA%E3%83%B3%E3%82%BB%E3%83%BB%E9%85%8D%E4%BF%A1%E3%81%A7%E4%BD%BF%E3%81%88%E3%82%8B%E7%84%A1%E6%96%99%E3%83%84%E3%83%BC%E3%83%AB&amp;url=https%3A%2F%2Fshiki365.github.io%2F&amp;hashtags=%E3%82%B3%E3%82%B3%E3%83%95%E3%82%A9%E3%83%AA%E3%82%A2%2CTRPG%E9%85%8D%E4%BF%A1&amp;via=shiki36512" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>このページを X で共有</a></li>
       <li><a href="https://x.com/intent/follow?screen_name=shiki36512" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>@shiki36512 をフォロー</a></li>
     </ul>
-    <p class="en-note" lang="en" data-lang-only="ja">Free tools for CCFOLIA and online TRPG / murder-mystery streaming: scene-transition animations, foreground frames, and OBS status bars, chat windows and message boxes, plus makers for CCFOLIA scenario texts with portraits and for NPC pieces with stats and portraits. The browser tools need no sign-up and no install, and nothing you make is uploaded; the last one is a small app you download to link OBS with Discord. This page and all the browser tools are also in English and Korean (see the language links at the top).</p>
+    <nav class="genres" aria-label="ジャンル">
+      <a href="./" aria-current="page"><span class="gmark die" aria-hidden="true"></span>TRPG・マダミス</a>
+      <a href="doujin/"><span class="gmark book" aria-hidden="true"></span>同人誌づくり</a>
+    </nav>
   </div>
 </header>
 
 <main class="wrap">
-  <section id="browser-tools" aria-labelledby="browser-tools-title">
-    <h2 id="browser-tools-title">ブラウザで使うツール</h2>
-    <p class="section-note">ページを開けばすぐに使えます。新しいものから並べています。</p>
+  <div class="intro">
+    <p class="lead">TRPG やマダミスのオンラインセッション・配信で使うツールを置いています。どれも無料です。</p>
     <ul class="badges" aria-label="ブラウザで使うツールに共通">
+      <li class="badges-pre" aria-hidden="true">ブラウザのツールは</li>
       <li>無料</li>
       <li>会員登録なし</li>
       <li>インストールなし</li>
       <li>画像や入力内容はどこにも送られません</li>
     </ul>
+    <ul class="jump" aria-label="このページの中の案内">
+      <li><a href="#room">ルームを作る</a></li>
+      <li><a href="#assets">盤面の素材を作る</a></li>
+      <li><a href="#stream">配信画面に映す</a></li>
+      <li><a href="#faq">よくある質問</a></li>
+      <li><a href="#contact">不具合の報告・感想</a></li>
+    </ul>
+    <p class="en-note" lang="en" data-lang-only="ja">Free tools for CCFOLIA and online TRPG / murder-mystery streaming: makers for CCFOLIA room data (NPC pieces with stats and portraits, scenario texts with portraits), foreground frames and scene-transition animations, and OBS status bars, chat windows and message boxes, plus a small app you download to link OBS with Discord. The browser tools need no sign-up and no install, and nothing you make is uploaded. Tools for making doujinshi (printed self-published books) are on the second tab. This page and all the browser tools are also in English and Korean (see the language links at the top).</p>
+  </div>
+
+  <section id="room" aria-labelledby="room-title">
+    <h2 id="room-title">ルームを作る</h2>
+    <p class="section-note">シナリオの NPC や台詞を、ココフォリアに読み込めるルームデータ（ZIP）にまとめて作ります。</p>
 
     <ul class="tools">
       <li class="tool">
@@ -224,44 +252,6 @@
       </li>
 
       <li class="tool">
-        <a class="thumb" href="https://shiki365.github.io/doujin-printer-finder/" tabindex="-1" aria-hidden="true">
-          <img src="thumbs/doujin-printer-finder.webp" alt="" width="640" height="336" decoding="async">
-        </a>
-        <div class="tool-body">
-          <h3><a href="https://shiki365.github.io/doujin-printer-finder/">同人誌の印刷所さがし</a></h3>
-          <p class="when"><span>こんなときに</span>同人誌をどこの印刷所で刷るか、条件と値段で比べて決めたい</p>
-          <p class="desc">同人誌の印刷所 22&nbsp;社を、判型・部数・予算と、入稿・支払い・納品の条件で絞り込み、基本のセットの値段の目安が安い順に並べます。各社の情報は公式ページで確かめたものだけで、根拠のページを添えています。印刷所ごとの紹介ページから、表紙入稿メーカーをその印刷所の設定で開けます。</p>
-          <dl class="spec">
-            <dt>わかること</dt><dd>条件に合う印刷所と値段の目安、各社の原稿の決まりと背幅</dd>
-            <dt>使う場所</dt><dd>印刷所を選ぶとき</dd>
-          </dl>
-          <div class="actions">
-            <a class="btn" href="https://shiki365.github.io/doujin-printer-finder/">ツールを開く</a>
-            <a class="sub" href="https://github.com/shiki365/doujin-printer-finder">ソースコード（GitHub）</a>
-          </div>
-        </div>
-      </li>
-
-      <li class="tool">
-        <a class="thumb" href="https://shiki365.github.io/cover-print-maker/" tabindex="-1" aria-hidden="true">
-          <img src="thumbs/cover-print-maker.webp" alt="" width="640" height="336" decoding="async">
-        </a>
-        <div class="tool-body">
-          <h3><a href="https://shiki365.github.io/cover-print-maker/">表紙入稿メーカー</a></h3>
-          <p class="when"><span>こんなときに</span>同人誌の表紙の絵を、印刷所に入稿できるデータにしたい</p>
-          <p class="desc">表紙の絵から、表4・背・表1 を 1&nbsp;枚につないだ入稿用の表紙データ（塗り足しつき・CMYK の PDF）を作ります。印刷所 22&nbsp;社の塗り足しと背幅の計算に対応し、描く人に渡すガイド画像も書き出せます。色の変換には、自分で用意した ICC プロファイルを使います。</p>
-          <dl class="spec">
-            <dt>作れるもの</dt><dd>入稿用の PDF（CMYK）、描く人用のガイド画像（PNG）</dd>
-            <dt>使う場所</dt><dd>同人誌の印刷所への入稿</dd>
-          </dl>
-          <div class="actions">
-            <a class="btn" href="https://shiki365.github.io/cover-print-maker/">ツールを開く</a>
-            <a class="sub" href="https://github.com/shiki365/cover-print-maker">ソースコード（GitHub）</a>
-          </div>
-        </div>
-      </li>
-
-      <li class="tool">
         <a class="thumb" href="https://shiki365.github.io/scenario-text-maker/" tabindex="-1" aria-hidden="true">
           <img src="thumbs/scenario-text-maker.webp" alt="" width="640" height="336" decoding="async">
         </a>
@@ -279,7 +269,59 @@
           </div>
         </div>
       </li>
+    </ul>
+  </section>
 
+  <section id="assets" aria-labelledby="assets-title">
+    <h2 id="assets-title">盤面の素材を作る</h2>
+    <p class="section-note">盤面に重ねる枠や、場面を切り替える動く画像を作ります。</p>
+
+    <ul class="tools">
+      <li class="tool">
+        <a class="thumb" href="https://shiki365.github.io/foreground-frame-maker/" tabindex="-1" aria-hidden="true">
+          <img src="thumbs/foreground-frame-maker.webp" alt="" width="640" height="336" decoding="async">
+        </a>
+        <div class="tool-body">
+          <h3><a href="https://shiki365.github.io/foreground-frame-maker/">前景フレームメーカー</a></h3>
+          <p class="when"><span>こんなときに</span>盤面のまわりに、シナリオに合う枠をつけたい</p>
+          <p class="desc">ココフォリアの前景に使う「枠」画像を作ります。角の形・色・蔦や花などの飾りを組み合わせてデザインし、天気や時間帯などの差分もまとめて書き出せます。</p>
+          <dl class="spec">
+            <dt>作れるもの</dt><dd>PNG 画像（窓の部分が透明）。差分は ZIP でまとめて</dd>
+            <dt>使う場所</dt><dd>ココフォリアの前景</dd>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="https://shiki365.github.io/foreground-frame-maker/">ツールを開く</a>
+            <a class="sub" href="https://github.com/shiki365/foreground-frame-maker">ソースコード（GitHub）</a>
+          </div>
+        </div>
+      </li>
+
+      <li class="tool">
+        <a class="thumb" href="https://shiki365.github.io/scene-transition-maker/" tabindex="-1" aria-hidden="true">
+          <img src="thumbs/scene-transition-maker.webp" alt="" width="640" height="336" decoding="async">
+        </a>
+        <div class="tool-body">
+          <h3><a href="https://shiki365.github.io/scene-transition-maker/">場面転換素材メーカー</a></h3>
+          <p class="when"><span>こんなときに</span>暗転やワイプで、場面を切り替える演出を入れたい</p>
+          <p class="desc">暗転・ワイプ・アイリスから、血のしたたり・星形・水玉・サイバー系・異空間まで 53 種類の場面転換アニメーションを作ります。背景が透明なまま動くので、セッション画面の上に重ねて使えます。</p>
+          <dl class="spec">
+            <dt>作れるもの</dt><dd>動く WebP（軽い）・APNG（動く PNG 画像）</dd>
+            <dt>使う場所</dt><dd>ココフォリアなど、オンラインセッションの画面</dd>
+          </dl>
+          <div class="actions">
+            <a class="btn" href="https://shiki365.github.io/scene-transition-maker/">ツールを開く</a>
+            <a class="sub" href="https://github.com/shiki365/scene-transition-maker">ソースコード（GitHub）</a>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <section id="stream" aria-labelledby="stream-title">
+    <h2 id="stream-title">配信画面に映す</h2>
+    <p class="section-note">ココフォリアの画面や Discord の通話を、OBS の配信画面に好きなデザインで映します。</p>
+
+    <ul class="tools">
       <li class="tool">
         <a class="thumb" href="https://shiki365.github.io/message-box-maker/" tabindex="-1" aria-hidden="true">
           <img src="thumbs/message-box-maker.webp" alt="" width="640" height="336" decoding="async">
@@ -338,56 +380,11 @@
       </li>
 
       <li class="tool">
-        <a class="thumb" href="https://shiki365.github.io/foreground-frame-maker/" tabindex="-1" aria-hidden="true">
-          <img src="thumbs/foreground-frame-maker.webp" alt="" width="640" height="336" decoding="async">
-        </a>
-        <div class="tool-body">
-          <h3><a href="https://shiki365.github.io/foreground-frame-maker/">前景フレームメーカー</a></h3>
-          <p class="when"><span>こんなときに</span>盤面のまわりに、シナリオに合う枠をつけたい</p>
-          <p class="desc">ココフォリアの前景に使う「枠」画像を作ります。角の形・色・蔦や花などの飾りを組み合わせてデザインし、天気や時間帯などの差分もまとめて書き出せます。</p>
-          <dl class="spec">
-            <dt>作れるもの</dt><dd>PNG 画像（窓の部分が透明）。差分は ZIP でまとめて</dd>
-            <dt>使う場所</dt><dd>ココフォリアの前景</dd>
-          </dl>
-          <div class="actions">
-            <a class="btn" href="https://shiki365.github.io/foreground-frame-maker/">ツールを開く</a>
-            <a class="sub" href="https://github.com/shiki365/foreground-frame-maker">ソースコード（GitHub）</a>
-          </div>
-        </div>
-      </li>
-
-      <li class="tool">
-        <a class="thumb" href="https://shiki365.github.io/scene-transition-maker/" tabindex="-1" aria-hidden="true">
-          <img src="thumbs/scene-transition-maker.webp" alt="" width="640" height="336" decoding="async">
-        </a>
-        <div class="tool-body">
-          <h3><a href="https://shiki365.github.io/scene-transition-maker/">場面転換素材メーカー</a></h3>
-          <p class="when"><span>こんなときに</span>暗転やワイプで、場面を切り替える演出を入れたい</p>
-          <p class="desc">暗転・ワイプ・アイリスから、血のしたたり・星形・水玉・サイバー系・異空間まで 53 種類の場面転換アニメーションを作ります。背景が透明なまま動くので、セッション画面の上に重ねて使えます。</p>
-          <dl class="spec">
-            <dt>作れるもの</dt><dd>動く WebP（軽い）・APNG（動く PNG 画像）</dd>
-            <dt>使う場所</dt><dd>ココフォリアなど、オンラインセッションの画面</dd>
-          </dl>
-          <div class="actions">
-            <a class="btn" href="https://shiki365.github.io/scene-transition-maker/">ツールを開く</a>
-            <a class="sub" href="https://github.com/shiki365/scene-transition-maker">ソースコード（GitHub）</a>
-          </div>
-        </div>
-      </li>
-    </ul>
-  </section>
-
-  <section id="download-tools" aria-labelledby="download-tools-title">
-    <h2 id="download-tools-title">ダウンロードして使うツール</h2>
-    <p class="section-note">パソコンに入れて動かすソフトです。BOOTH で無料配布しています。</p>
-
-    <ul class="tools">
-      <li class="tool">
         <a class="thumb" href="https://sabunomisogi.booth.pm/items/8756779" tabindex="-1" aria-hidden="true">
           <img src="thumbs/zaishitsutou.webp" alt="" width="640" height="336" decoding="async">
         </a>
         <div class="tool-body">
-          <h3><a href="https://sabunomisogi.booth.pm/items/8756779">在室灯</a><span class="label">ベータ版</span><span class="label" data-lang-only="en ko">日本語のみ</span></h3>
+          <h3><a href="https://sabunomisogi.booth.pm/items/8756779">在室灯</a><span class="label">ダウンロード</span><span class="label">ベータ版</span><span class="label" data-lang-only="en ko">日本語のみ</span></h3>
           <p class="when"><span>こんなときに</span>配信画面に、誰がどの部屋（通話）にいるかを出したい</p>
           <p class="desc">Discord のボイスチャンネルに誰がいるかを、OBS の配信画面に自動で表示します。通話の部屋を移動すると、画面の名前も一緒に動きます。表示名は PC 名にでき、GM や見学者は盤面から隠せます。</p>
           <dl class="spec">

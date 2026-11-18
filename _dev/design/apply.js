@@ -3,7 +3,7 @@
  * apply.js - put the shared look (tool.css) into a tool's page.
  *
  *   node _dev/design/apply.js <tool folder> [--extra <file.css>] [--version v1.2] [--date 2026-11-13]
- *   node _dev/design/apply.js . --hub        (the hub page itself: the root of this repository)
+ *   node _dev/design/apply.js . --hub        (the hub's pages: index.html at the root of this repository, and doujin/index.html)
  *
  * <tool folder> is the folder with the tool's index.html (for the scene transition maker: its docs/).
  *
@@ -84,8 +84,18 @@ if (version) {
 
 fs.writeFileSync(file, html);
 
+// ---- the hub's other pages (doujin/) carry the same <style>, so --hub on the hub's root updates them too
+const subPages = hub && abs === HUB ? ["doujin"].map(d => path.join(HUB, d, "index.html")).filter(f => fs.existsSync(f)) : [];
+for (const f of subPages) {
+  const page = fs.readFileSync(f, "utf8");
+  const s = page.indexOf("<style>"), e = page.indexOf("</style>");
+  if (s < 0 || e < 0) throw new Error("no <style> block in " + f);
+  fs.writeFileSync(f, page.slice(0, s) + "<style>\n" + css + "\n</style>" + page.slice(e + 8));
+}
+
 // ---- report
 const same = name => fs.existsSync(path.join(abs, name)) && fs.readFileSync(path.join(abs, name)).equals(fs.readFileSync(path.join(HUB, name)));
 console.log(`${repoName}: style replaced (${extraFile ? "with tool-only rules from " + path.basename(extraFile) : "no tool-only rules"})`
-  + (firstTime ? ", theme switch added" : "") + (version ? `, version ${version}` : ""));
+  + (firstTime ? ", theme switch added" : "") + (version ? `, version ${version}` : "")
+  + (subPages.length ? `; also in ${subPages.map(f => path.relative(HUB, f).replace(/\\/g, "/")).join(", ")}` : ""));
 for (const name of ["theme.v1.js", "i18n.v1.js"]) if (!same(name)) console.log(`  note: ${name} differs from the one in the hub repository (or is missing)`);

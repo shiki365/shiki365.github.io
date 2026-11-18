@@ -1,6 +1,7 @@
-  /* The hub page (source: _dev/design/hub.css). "Verdigris", same look as the tools: ink-navy surfaces and paper-white text (dark), a character
-     sheet on paper (light), one verdigris signal color. The tools are cards with the picture on the left,
-     two to a row, so nine tools fit in about two screens. Colors are variables on :root. */
+  /* The hub pages (source: _dev/design/hub.css; the same <style> in index.html and doujin/index.html). "Verdigris", same look
+     as the tools: ink-navy surfaces and paper-white text (dark), a character sheet on paper (light), one verdigris signal color.
+     One page per genre (TRPG at /, doujinshi at /doujin/), switched by the tabs under the title. The tools are cards with
+     the picture on the left, two to a row. Colors are variables on :root. */
   :root {
     color-scheme: dark;
     --bg: #10141a; --panel: #171c24; --raised: #1e242e; --line: #2c3440; --line-soft: #222a35;
@@ -39,6 +40,7 @@
 
   /* ---- Header */
   header { border-bottom: 1px solid var(--line); padding-block: 16px 24px; }
+  header.has-genres { padding-bottom: 0; }
   .prefs { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 18px; margin: 0 0 22px; }
   .lang-switch, .theme-switch { margin: 0; color: var(--muted); font-size: 12px; }
   .lang-switch a[aria-current] { color: var(--fg); font-weight: 700; text-decoration: none; }
@@ -51,7 +53,9 @@
   /* The mark: a small die seen from a corner. */
   h1::before { content: ""; display: inline-block; width: 12px; height: 12px; margin: 0 14px 0 4px;
                background: var(--accent); transform: rotate(45deg); vertical-align: 3px; }
-  .lead { margin: 6px 0 0; color: var(--soft); max-width: 52em; }
+  /* The page's own introduction opens <main>, under the genre tabs. */
+  .intro { padding-top: 24px; }
+  .lead { margin: 0; color: var(--soft); max-width: 52em; }
   .en-note { margin: 14px 0 0; color: var(--muted); font-size: 12.5px; line-height: 1.7; max-width: 64em; }
   .jump { display: flex; flex-wrap: wrap; gap: 6px; margin: 16px 0 0; padding: 0; list-style: none; font-size: 13px; }
   .jump a { display: block; padding: 3px 12px; border: 1px solid var(--frame); border-radius: 4px; background: var(--panel);
@@ -62,6 +66,18 @@
   .social a { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-size: 13px; text-decoration: none; }
   .social a:hover { color: var(--fg); text-decoration: underline; }
   .social svg { width: 12px; height: 12px; fill: currentColor; flex: none; }
+  /* Genre tabs: plain links to the hub's pages, standing on the header's bottom rule. The current page's tab opens into
+     the page. The marks: a die seen from a corner (TRPG, as in the title) and a bookmark ribbon (doujinshi). */
+  .genres { display: flex; flex-wrap: wrap; gap: 4px; margin: 20px 0 0; }
+  .genres a { display: inline-flex; align-items: center; gap: 10px; margin-bottom: -1px; padding: 9px 18px 10px;
+              border: 1px solid transparent; border-bottom: 0; border-radius: 6px 6px 0 0;
+              color: var(--muted); font-size: 15px; font-weight: 700; line-height: 1.5; text-decoration: none; }
+  .genres a:hover { color: var(--fg); }
+  .genres a[aria-current=page] { border-color: var(--line); background: var(--bg); color: var(--fg); box-shadow: inset 0 3px 0 var(--accent); }
+  .gmark { flex: none; width: 10px; height: 10px; background: currentColor; }
+  .gmark.die { transform: rotate(45deg); }
+  .gmark.book { height: 14px; clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 74%, 0 100%); }
+  .genres a[aria-current=page] .gmark { background: var(--accent); }
 
   /* ---- Sections: the heading sits on a rule, like a section of a character sheet. */
   main section { padding-block: 36px 0; }
@@ -70,8 +86,10 @@
   h2::after { content: ""; flex: 1; height: 1px; background: var(--line); }
   .section-note { margin: 6px 0 14px; color: var(--muted); font-size: 13px; }
   h2 + .tools, h2 + .contact { margin-top: 14px; }
-  .badges { display: flex; flex-wrap: wrap; gap: 2px 18px; margin: 0 0 14px; padding: 0; list-style: none; font-size: 12.5px; color: var(--soft); }
+  .badges { display: flex; flex-wrap: wrap; gap: 2px 18px; margin: 10px 0 0; padding: 0; list-style: none; font-size: 12.5px; color: var(--soft); }
   .badges li::before { content: "✓ "; color: var(--accent); font-weight: 700; }
+  .badges .badges-pre { color: var(--muted); }
+  .badges .badges-pre::before { content: none; }
 
   /* ---- Tools: picture on the left, two cards to a row. */
   .tools { display: grid; gap: 14px; margin: 0; padding: 0; list-style: none;
@@ -137,8 +155,9 @@
   @media (max-width: 560px) {
     .wrap { padding-inline: 14px; }
     h1 { font-size: 22px; }
+    .genres a { flex: 1 1 0; min-width: 0; gap: 8px; padding: 8px 10px 9px; font-size: 14px; }
     .tool { grid-template-columns: minmax(0, 1fr); gap: 10px; padding: 12px; }
   }
   @media (prefers-reduced-motion: no-preference) {
-    .tool, .btn, .jump a { transition: border-color .12s, background-color .12s; }
+    .tool, .btn, .jump a, .genres a { transition: border-color .12s, background-color .12s; }
   }
