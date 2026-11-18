@@ -38,6 +38,12 @@ I18n.add("en", {
   "ルームデータ（ZIP）": "Room data (ZIP)",
   "ココフォリアのルーム設定（GM）": "CCFOLIA's room settings (GM)",
 
+  "キャラクター一括メーカー": "Character Batch Maker",
+  "シナリオの NPC を、ステータスと立ち絵つきの駒にして、ココフォリアにまとめて入れたい": "Putting a scenario's NPCs into CCFOLIA all at once, as pieces with stats and portraits",
+  "シナリオの NPC のデータを貼ると、ココフォリアの駒をまとめて作ります。技能値の書き方がシナリオごとに違っても、PDF からのコピーで崩れていても読み取ります。ステータス・チャットパレット・立ち絵（表情の差分も）つきで、画像は駒と同じ名前にするだけで自動で付きます。できた ZIP を、ルームデータとして読み込むだけです。":
+    "Paste a scenario's NPC data and it makes CCFOLIA pieces in one go. It reads the stats however each scenario writes them, even when a copy from a PDF has broken them up. Pieces come with stats, a chat palette and portraits (with expressions); pictures attach by themselves when they have the piece's name. Just import the ZIP as room data.",
+  "ルームデータ（ZIP）、立ち絵の素材（ZIP）": "Room data (ZIP), portrait assets (ZIP)",
+
   "メッセージボックスメーカー": "Message Box Maker",
   "配信画面に、立ち絵つきの台詞をノベルゲームのように出したい": "Showing lines with portraits on stream, like a visual novel",
   "ココフォリアで発言するとルーム画面の下に出る、立ち絵つきのメッセージボックスを、OBS に好きなデザインで映すための CSS を作ります。ルームの盤面や駒は消えて、メッセージボックスだけが映ります。ひな形 7 種（ノベルゲーム・古い紙・SF など）から、箱・名前の札・文字・立ち絵の置き方を選び、プレビューで発言を送って確かめてからコピーできます。":
@@ -88,8 +94,8 @@ I18n.add("en", {
   "変えた結果は、その場でプレビューに出ます。（シナリオテキストメーカーは、台本を貼って、話し手ごとに立ち絵を登録します）":
     "Every change shows in the preview at once. (In the Scenario Text Maker, paste a script and register a portrait for each speaker.)",
   "保存して、ココフォリアや OBS に入れる": "Save it and put it into CCFOLIA or OBS",
-  "設定のしかたは、各ツールの画面の下に書いてあります。（シナリオテキストメーカーは、書き出した ZIP を、ココフォリアのルームデータとして読み込みます）":
-    "Each tool explains the setup at the bottom of its page. (The Scenario Text Maker's ZIP is imported into CCFOLIA as room data.)",
+  "設定のしかたは、各ツールの画面の下に書いてあります。（シナリオテキストメーカーとキャラクター一括メーカーは、書き出した ZIP を、ココフォリアのルームデータとして読み込みます）":
+    "Each tool explains the setup at the bottom of its page. (The ZIPs from the Scenario Text Maker and Character Batch Maker are imported into CCFOLIA as room data.)",
 
   "質問を押すと答えが開きます。": "Click a question to see the answer.",
   "お金はかかりますか？": "Does it cost anything?",
@@ -102,23 +108,23 @@ I18n.add("en", {
   "読み込んだ画像や入力した内容は、どこかに送られますか？": "Are my images or input sent anywhere?",
   "ブラウザで使うツールでは、送られません。処理はすべて、お使いのブラウザの中だけで行われます。": "Not with the browser tools. Everything happens inside your own browser.",
   "作りかけのデザインは残りますか？": "Is my unfinished work kept?",
-  "前景フレームメーカー・ステータスバーメーカー・シナリオテキストメーカーは、作業中の内容をブラウザに自動で保存します。次に同じブラウザで開くと続きから始まります。":
-    "The Foreground Frame Maker, Status Bar Maker and Scenario Text Maker save your work in the browser automatically, so you carry on where you left off when you open them again in the same browser.",
+  "前景フレームメーカー・ステータスバーメーカー・シナリオテキストメーカー・キャラクター一括メーカーは、作業中の内容をブラウザに自動で保存します。次に同じブラウザで開くと続きから始まります。":
+    "The Foreground Frame Maker, Status Bar Maker, Scenario Text Maker and Character Batch Maker save your work in the browser automatically, so you carry on where you left off when you open them again in the same browser.",
   "別のパソコンやブラウザで続けたいときは、ツールの中でプロジェクトファイルを保存し、移った先で読み込んでください。":
     "To continue on another computer or browser, save a project file in the tool and open it there.",
   "スマホでも使えますか？": "Can I use them on a phone?",
   "ブラウザで使うツールは設定の項目が多いため、画面の広いパソコンでの利用をおすすめします。": "The browser tools have many settings, so a computer with a wide screen is recommended.",
   "ココフォリアや Discord の公式ツールですか？": "Are these official CCFOLIA or Discord tools?",
-  "いいえ。個人が作った非公式のツールで、ココフォリアや Discord をはじめ、いずれのサービスとも関係ありません。ココフォリアの画面の作りが変わると、ステータスバー・チャットウィンドウ・メッセージボックスの表示が崩れることがあります。シナリオテキストメーカーは、ココフォリアのルームデータの形が変わると、読み込めなくなることがあります。":
-    "No. They are unofficial tools made by one person, not connected with CCFOLIA, Discord or any other service. If CCFOLIA's page changes, the status bars, chat windows and message boxes may break; if its room data format changes, the Scenario Text Maker's files may stop importing.",
+  "いいえ。個人が作った非公式のツールで、ココフォリアや Discord をはじめ、いずれのサービスとも関係ありません。ココフォリアの画面の作りが変わると、ステータスバー・チャットウィンドウ・メッセージボックスの表示が崩れることがあります。シナリオテキストメーカーとキャラクター一括メーカーは、ココフォリアのルームデータの形が変わると、読み込めなくなることがあります。":
+    "No. They are unofficial tools made by one person, not connected with CCFOLIA, Discord or any other service. If CCFOLIA's page changes, the status bars, chat windows and message boxes may break; if its room data format changes, the files from the Scenario Text Maker and Character Batch Maker may stop importing.",
   "不具合を見つけたとき、要望があるときは？": "I found a bug, or I have a request.",
   "このページのいちばん下の「<a href=\"#contact\">不具合の報告・感想</a>」から送れます。どれも匿名で、Google アカウントもいりません。":
     "Use \"<a href=\"#contact\">Bug reports and feedback</a>\" at the bottom of this page. Everything is anonymous, and no Google account is needed.",
 
   "どれも匿名で送れます。Google アカウントもいりません。": "Everything is anonymous, and no Google account is needed. The forms are in Japanese, but you are welcome to write in English.",
   "ブラウザのツールの不具合": "Browser tool bugs",
-  "メッセージボックスメーカー・ステータスバーメーカー・チャットウィンドウメーカー・前景フレームメーカー・場面転換素材メーカー・シナリオテキストメーカーで、うまく動かないところを見つけたときに。":
-    "When something does not work in the Message Box Maker, Status Bar Maker, Chat Window Maker, Foreground Frame Maker, Scene Transition Maker or Scenario Text Maker. Translation errors too.",
+  "メッセージボックスメーカー・ステータスバーメーカー・チャットウィンドウメーカー・前景フレームメーカー・場面転換素材メーカー・シナリオテキストメーカー・キャラクター一括メーカーで、うまく動かないところを見つけたときに。":
+    "When something does not work in the Message Box Maker, Status Bar Maker, Chat Window Maker, Foreground Frame Maker, Scene Transition Maker, Scenario Text Maker or Character Batch Maker. Translation errors too.",
   "報告フォームを開く": "Open the report form",
   "在室灯の不具合・動作報告": "Zaishitsutou bugs and reports",
   "うまく動いた報告も大歓迎です。どの環境で動いたかが分かるだけで、とても助かります。": "\"It works\" reports are very welcome too. Just knowing which setup it ran on helps a lot.",

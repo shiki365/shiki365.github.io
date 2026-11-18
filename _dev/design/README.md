@@ -173,6 +173,7 @@ node _dev\design\apply.js ..\cover-print-maker --version v1.1
 | シナリオテキストメーカー | 右側のカード、話し手、画像の置き場、一覧と手直し | `same-roomdata.js`、`page-scenario-text.js` | JSZip を cdnjs から読む。届かない環境では `JSZIP` を指定 |
 | 表紙入稿メーカー | 絵の枠、キャンバス、確認の一覧 | `same-cover.js`（53 の状態と、書き出すファイル 6 つ。CMYK の ICC プロファイルが要る） | `../doujin-printer-finder/` の JS を読むので、2 つを隣に置いて開く。確認の一覧の背の色の色番号とプレビューのキャンバスは、箱の幅で値が変わるので比べから外してある |
 | 同人誌の印刷所さがし | ページ全体のタブ、結果のカード、一覧、印刷所のページ | `same-finder.js`（71 の状態。22 社すべての個別ページも） | `main` が 2 つある（一覧と、印刷所のページ）。文字は `textContent` で比べる（`innerText` は見た目で変わる） |
+| キャラクター一括メーカー（公開済み v1.4。手元は `kokofolia-characters`） | 右側のカード、画像の置き場、ココフォリアの盤面の見本、読み取りの表示、ラベルの一覧、一覧と手直し | Node の `_dev/test.js` と `_dev/test-samples.js`（JS は変えていないので ZIP は同じ） | フォルダ名がリポジトリ名と違うので `apply.js ..\kokofolia-characters --extra _dev\design\tool-only\character-batch-maker.css` |
 
 ### 残っていること
 
