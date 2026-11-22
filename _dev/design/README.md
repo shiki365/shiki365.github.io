@@ -24,6 +24,7 @@
 | シナリオテキストメーカー | scenario-text-maker | [#1](https://github.com/shiki365/scenario-text-maker/pull/1) | 公開済み（v1.5） | `apply.js`（ツールだけの部分あり） |
 | 表紙入稿メーカー | cover-print-maker | [#1](https://github.com/shiki365/cover-print-maker/pull/1) | 公開済み（v1.1。切り替えボタンも新しく入った） | `apply.js --version v1.1` |
 | 同人誌の印刷所さがし | doujin-printer-finder | [#1](https://github.com/shiki365/doujin-printer-finder/pull/1) | 公開済み（v1.1。切り替えボタンも新しく入った） | `apply.js --version v1.1` |
+| シーンメーカー | scene-maker（まだ作っていない。手元は `kokofolia-scenes`） | — | **未公開**（v1.0。2026-11-17 に緑青と切り替えボタンを入れた） | `apply.js ..\kokofolia-scenes --extra _dev\design\tool-only\scene-maker.css`（フォルダ名がリポジトリ名と違うため） |
 
 どの PR も、作業用のブランチは `claude/awesome-carson-brtset` でした。9 つともマージ済みです。
 
@@ -173,6 +174,7 @@ node _dev\design\apply.js ..\cover-print-maker --version v1.1
 | シナリオテキストメーカー | 右側のカード、話し手、画像の置き場、一覧と手直し | `same-roomdata.js`、`page-scenario-text.js` | JSZip を cdnjs から読む。届かない環境では `JSZIP` を指定 |
 | 表紙入稿メーカー | 絵の枠、キャンバス、確認の一覧 | `same-cover.js`（53 の状態と、書き出すファイル 6 つ。CMYK の ICC プロファイルが要る） | `../doujin-printer-finder/` の JS を読むので、2 つを隣に置いて開く。確認の一覧の背の色の色番号とプレビューのキャンバスは、箱の幅で値が変わるので比べから外してある |
 | 同人誌の印刷所さがし | ページ全体のタブ、結果のカード、一覧、印刷所のページ | `same-finder.js`（71 の状態。22 社すべての個別ページも） | `main` が 2 つある（一覧と、印刷所のページ）。文字は `textContent` で比べる（`innerText` は見た目で変わる） |
+| シーンメーカー | 置き場、落とす枠、シーン一覧と盤面の見本（ココフォリアの色のまま）、手直し欄、書き出しの 2 択 | 比べるスクリプトは無い。JS は変えていないので、手元の `media/ui-test.js` で 3 言語の操作と ZIP を確かめた | Playwright の無い PC では、`page.js` の `audit()` を組み込みブラウザで iframe に流して測った（明るさ 4 通り × 1280 / 375 × 3 言語、すべて 0）。カード画像は手元の `media/make-ogp.js`（Edge）で作った |
 | キャラクター一括メーカー（公開済み v1.4。手元は `kokofolia-characters`） | 右側のカード、画像の置き場、ココフォリアの盤面の見本、読み取りの表示、ラベルの一覧、一覧と手直し | Node の `_dev/test.js` と `_dev/test-samples.js`（JS は変えていないので ZIP は同じ） | フォルダ名がリポジトリ名と違うので `apply.js ..\kokofolia-characters --extra _dev\design\tool-only\character-batch-maker.css` |
 
 ### 残っていること

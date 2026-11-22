@@ -1,0 +1,131 @@
+  /* ---- This tool only (scene maker): one settings form (no tabs) with the image shelf, and a stack of cards on
+     the right (scenes, export, notes). The scene list and the board are samples of CCFOLIA's own screen, so they
+     keep CCFOLIA's colors in both themes. Thumbnails of transparent images sit on a dark checker in both themes. */
+  .panel > fieldset:first-child { border-top-color: transparent; margin-top: 8px; }
+  .inline { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; min-width: 0; }
+  .inline select { flex: 1 1 8em; width: auto; min-width: 0; }
+  .inline input[type=number] { width: 5.5em; }
+  .inline input[type=color] { width: 44px; flex: none; }
+  .grp { display: inline-flex; align-items: center; gap: 6px; } /* a label, its number and unit wrap together */
+
+  .stack { display: grid; gap: 16px; min-width: 0; }
+  .card { background: var(--panel); border: 1px solid var(--frame); border-radius: 6px; padding: 12px 14px; display: grid;
+          grid-template-columns: minmax(0, 1fr); gap: 10px; min-width: 0; }
+  .card-head { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; }
+  /* Card titles look like the section names on the left: the mark, then the name. */
+  .card-head h2, .card > h2 { margin: 0; color: var(--fg); font-size: 12px; font-weight: 700; letter-spacing: .08em; }
+  .card-head h2::before, .card > h2::before { content: ""; display: inline-block; width: 6px; height: 6px; margin: 0 9px 0 2px;
+    background: var(--accent); transform: rotate(45deg); vertical-align: 1px; }
+  .card .note { padding-bottom: 0; }
+  .note .warn { color: var(--warn); }
+  .summary { color: var(--muted); font-size: 12px; margin: 0; line-height: 1.7; }
+  .summary .warn { color: var(--warn); }
+  .cols { display: grid; grid-template-columns: minmax(220px, 300px) minmax(0, 1fr); gap: 14px; align-items: start; }
+  @media (max-width: 1100px) { .cols { grid-template-columns: minmax(0, 1fr); } }
+
+  /* The image shelf and the drop areas. */
+  .drop { margin-top: 10px; border: 1px dashed var(--frame); border-radius: 4px; padding: 18px 12px; text-align: center;
+          color: var(--muted); font-size: 12px; line-height: 1.7; cursor: pointer; }
+  .drop b { color: var(--fg); }
+  .drop span { font-size: 11px; }
+  .drop.sub { padding: 10px 12px; }
+  .drop:hover, .drop.over { border-color: var(--accent); border-style: solid; color: var(--fg); background: var(--raised); }
+  .drop:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 8px; margin-top: 10px; }
+  .gallery .desc { grid-column: 1 / -1; margin: 0; }
+  .imgcell { display: grid; gap: 4px; padding: 6px; border: 1px solid var(--line); border-radius: 4px; background: var(--raised);
+             min-width: 0; align-content: start; }
+  .imgcell img, .imgcell .noimg { width: 100%; height: 64px; object-fit: contain; border-radius: 2px;
+          background: repeating-conic-gradient(#1f2029 0% 25%, #16171d 0% 50%) 50% / 12px 12px; }
+  .imgcell .noimg { display: grid; place-items: center; color: #ffb86b; font-size: 11px; } /* on the dark checker in both themes */
+  .imgcell input[type=text] { padding: 2px 5px; font-size: 11px; min-height: 0; }
+  .imgcell .info { color: var(--muted); font-size: 10px; line-height: 1.5; }
+  .imgcell .info.warn { color: var(--warn); }
+
+  /* The scene list, drawn like CCFOLIA's (1.37.6): a 60 x 52 thumbnail, the underlined 13 px title, a 12 px caption. */
+  .scene-list { max-height: 460px; overflow: auto; background: #212121; border-radius: 4px; padding: 1px; min-height: 56px; }
+  .scene { display: flex; align-items: center; margin: 1px; background: #2a2a2a; color: #fff; cursor: pointer;
+           box-shadow: 0 2px 1px -1px rgba(0,0,0,.2), 0 1px 1px rgba(0,0,0,.14), 0 1px 3px rgba(0,0,0,.12); }
+  .scene[aria-selected=true] { outline: 1px solid #fff; }
+  .scene:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+  .scene.over { box-shadow: 0 -2px 0 var(--accent); }
+  .scene .pic { width: 60px; height: 52px; flex: none; background: #000 50% / cover no-repeat; }
+  .scene .txt { flex: 1 1 auto; width: 1px; padding: 6px 4px 6px 12px; display: flex; flex-direction: column; }
+  .scene .ttl { font-size: 13px; line-height: 1.6; text-decoration: underline; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .scene .cap { font-size: 12px; line-height: 1.4; color: rgba(255,255,255,.7); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .scene .mv { display: flex; flex: none; padding-right: 4px; }
+  .scene .mv button { background: none; border: 0; border-radius: 0; color: rgba(255,255,255,.7); padding: 4px 5px; font-size: 12px; min-height: 0; }
+  .scene .mv button:hover:not(:disabled) { color: #fff; background: rgba(255,255,255,.08); }
+  .empty-list { color: #9a9aa5; padding: 16px; text-align: center; font-size: 12px; }
+
+  /* The board sample: the field at CCFOLIA's proportions (app.v1.js sizes .board to fit the stage). */
+  .stage { display: block; height: 300px; min-height: 0; padding: 0; background: #2a2a2a; cursor: grab; touch-action: none; }
+  .stage.panning { cursor: grabbing; }
+  .board { position: absolute; z-index: 0; outline: 4px solid rgba(0,0,0,.2); }
+  /* Zoom and move the sample (markers may sit outside the field). Over the CCFOLIA sample: same colors in both themes. */
+  .aid-grid { position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background-image: linear-gradient(rgba(255,255,255,.16) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.16) 1px, transparent 1px); }
+  .aid-grid.fine { background-image: linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px); }
+  .view-ctl { position: absolute; top: 6px; right: 6px; z-index: 2; display: flex; gap: 3px; align-items: center; padding: 3px;
+    border-radius: 4px; background: rgba(16,16,20,.78); cursor: default; }
+  .view-ctl button { min-height: 24px; padding: 0 8px; font-size: 12px; }
+  .view-ctl button[aria-pressed=true] { background: var(--button); border-color: var(--button); color: var(--button-fg); }
+  .view-ctl output { min-width: 3.6em; text-align: center; color: #e9e9ee; font-family: var(--mono); font-size: 11px; }
+  .board img { position: absolute; left: 0; top: 0; width: 100%; height: 100%; display: block; }
+  .board .grid { position: absolute; inset: 0; pointer-events: none; }
+  .board .blank { position: absolute; inset: 0; display: grid; place-items: center; color: rgba(255,255,255,.62); font-size: 12px; }
+  .stage-note { color: var(--muted); font-size: 11px; margin: 0; line-height: 1.6; }
+  .stage-note b { color: var(--fg); }
+
+  /* The editor for the selected scene. */
+  .editor { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; min-width: 0; }
+  .editor .f { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2px; color: var(--muted); font-size: 11px; min-width: 0; }
+  .editor .f .inline { color: var(--fg); font-size: 13px; }
+  .editor .two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .editor textarea { min-height: 54px; resize: vertical; line-height: 1.6; }
+  .editor .warnline { color: var(--warn); font-size: 11px; line-height: 1.6; }
+  @media (max-width: 560px) { .editor .two { grid-template-columns: minmax(0, 1fr); } }
+
+  /* Export choices: the chosen one gets the signal edge. */
+  .mode { display: grid; gap: 6px; }
+  .mode label { display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: 6px; align-items: start; padding: 8px 10px;
+                border: 1px solid var(--line); border-radius: 4px; cursor: pointer; }
+  .mode label:has(input:checked) { border-color: var(--frame); background: var(--raised); box-shadow: inset 2px 0 0 var(--accent); }
+  .mode input { margin: 2px 0 0; }
+  .mode b { display: block; color: var(--fg); }
+  .mode span { color: var(--muted); font-size: 12px; line-height: 1.6; }
+  .mode .warn { color: var(--warn); }
+
+  /* Marker panels on the board sample. The other list (shared or this scene's) is drawn faded and cannot be grabbed. */
+  .board .mk { position: absolute; box-sizing: border-box; transform-origin: 50% 50%; touch-action: none; }
+  .board .mk.edit { cursor: move; }
+  .board .mk.edit:hover { outline: 1px dashed rgba(255,255,255,.7); }
+  .board .mk.other { opacity: .45; pointer-events: none; }
+  .board .mk.empty { background: rgba(255,255,255,.12); border: 1px dashed rgba(255,255,255,.55); }
+  .board .mk.sel { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .board .mk:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .board .mk-h { position: absolute; right: -6px; bottom: -6px; width: 12px; height: 12px; background: var(--accent);
+                 border: 1px solid #000; border-radius: 2px; cursor: nwse-resize; }
+
+  /* The marker list and the editor of one marker. */
+  .markers { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; padding: 10px; border: 1px solid var(--line); border-radius: 4px; background: var(--raised); }
+  .mk-head { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; justify-content: space-between; }
+  .mk-title { color: var(--fg); font-size: 12px; font-weight: 700; letter-spacing: .08em; }
+  .mk-list { display: grid; gap: 4px; max-height: 200px; overflow: auto; }
+  .mk-list .desc { margin: 0; }
+  .mk-row { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; gap: 8px; align-items: center; padding: 4px 6px;
+            border: 1px solid var(--line); border-radius: 4px; background: var(--panel); cursor: pointer; }
+  .mk-row:hover { background: var(--control); }
+  .mk-row[aria-selected=true] { background: var(--pick); box-shadow: inset 2px 0 0 var(--accent); }
+  .mk-row:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .mk-pic { width: 32px; height: 24px; border-radius: 2px; background: repeating-conic-gradient(#1f2029 0% 25%, #16171d 0% 50%) 50% / 8px 8px;
+            background-size: contain, 8px 8px; background-repeat: no-repeat, repeat; background-position: center; }
+  .mk-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .mk-where { color: var(--muted); font-family: var(--mono); font-size: 11px; }
+  .mk-detail { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; padding-top: 8px; border-top: 1px dashed var(--line); }
+
+  /* Templates. */
+  .tpl-list { display: grid; gap: 4px; margin-top: 8px; }
+  .tpl-list .desc { margin: 0; }
+  .tpl-row { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 5px; align-items: center; }
+  .tpl-row input[type=text] { min-height: 26px; padding: 2px 7px; }

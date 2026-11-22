@@ -262,6 +262,67 @@ after: SHORT_PORTRAIT });
       foot: "ルームデータ（ZIP）を読み込むだけ・<b>無料</b>・登録不要", url: "shiki365.github.io/scenario-text-maker",
       shots: [{ src: script, cap: "台本を貼る", contain: true, bg: "#0c0f14" }, { src: sample, cap: "送ると立ち絵が出る", onscene: true }] };
   },
+  "scene-maker": async (b, base) => {
+    // Four drawn backgrounds and a gold frame, put in through the file inputs as a user would.
+    // The same steps are in the tool's media/make-ogp.js (made there with the local Edge; v1.1 card on 2026-11-18).
+    const pg = await openTool(b, base + "scene-maker/", 1100);
+    const r = await pg.evaluate(`(async () => {
+      const wait = ms => new Promise(r => setTimeout(r, ms));
+      const draw = (name, paint) => new Promise(res => { const c = document.createElement("canvas"); c.width = 1600; c.height = 900;
+        paint(c.getContext("2d"), 1600, 900); c.toBlob(b => res(new File([b], name + ".png", { type: "image/png" })), "image/png"); });
+      const sky = (x, w, h, top, bottom) => { const g = x.createLinearGradient(0, 0, 0, h); g.addColorStop(0, top); g.addColorStop(1, bottom); x.fillStyle = g; x.fillRect(0, 0, w, h); };
+      const files = [
+        await draw("森の小道", (x, w, h) => { sky(x, w, h, "#2f5d50", "#0e2620"); x.fillStyle = "#0a1a15";
+          for (let i = 0; i < 14; i++) { const tx = i * 125 + 20; x.beginPath(); x.moveTo(tx, h); x.lineTo(tx + 60, 260 + (i % 3) * 60); x.lineTo(tx + 120, h); x.fill(); }
+          x.fillStyle = "#8a7a52"; x.beginPath(); x.moveTo(700, h); x.quadraticCurveTo(800, 560, 830, 480); x.quadraticCurveTo(860, 560, 980, h); x.fill(); }),
+        await draw("古い洋館", (x, w, h) => { sky(x, w, h, "#3b3355", "#120f1c"); x.fillStyle = "#f2e6b8"; x.beginPath(); x.arc(1280, 170, 60, 0, 7); x.fill();
+          x.fillStyle = "#0b0912"; x.fillRect(420, 330, 760, 570); x.beginPath(); x.moveTo(380, 340); x.lineTo(800, 150); x.lineTo(1220, 340); x.fill();
+          x.fillStyle = "#e6b45a"; for (const [a, b] of [[510, 430], [650, 430], [880, 430], [1020, 430], [510, 600], [1020, 600]]) x.fillRect(a, b, 70, 100); }),
+        await draw("夜の街", (x, w, h) => { sky(x, w, h, "#1d2b4a", "#06080f"); for (let i = 0; i < 16; i++) { const bh = 250 + ((i * 97) % 380);
+          x.fillStyle = "#0b1020"; x.fillRect(i * 100, h - bh, 90, bh); x.fillStyle = "#ffd77a";
+          for (let k = 0; k < 6; k++) if ((i + k) % 3) x.fillRect(i * 100 + 16 + (k % 2) * 34, h - bh + 30 + Math.floor(k / 2) * 60, 18, 26); } }),
+        await draw("夕暮れの神社", (x, w, h) => { sky(x, w, h, "#d0784a", "#3a1d2e"); x.fillStyle = "#2a0f12";
+          x.fillRect(560, 300, 40, 600); x.fillRect(1000, 300, 40, 600); x.fillRect(470, 270, 660, 46); x.fillRect(520, 360, 560, 30);
+          x.fillStyle = "#1a0a0c"; x.fillRect(0, 820, w, 80); }),
+      ];
+      const put = (sel, list) => { const dt = new DataTransfer(); list.forEach(f => dt.items.add(f)); const el = document.querySelector(sel); el.files = dt.files; el.dispatchEvent(new Event("change")); };
+      put("#sceneFiles", files); await wait(2500);
+      const frame = await new Promise(res => { const c = document.createElement("canvas"); c.width = 1600; c.height = 900; const x = c.getContext("2d");
+        x.strokeStyle = "#c9a227"; x.lineWidth = 36; x.strokeRect(18, 18, 1564, 864); x.strokeStyle = "#5a4410"; x.lineWidth = 6; x.strokeRect(48, 48, 1504, 804);
+        c.toBlob(b => res(new File([b], "金の枠.png", { type: "image/png" })), "image/png"); });
+      put("#shelfFiles", [frame]); await wait(1500);
+      const click = async (sel, i = 0) => { document.querySelectorAll(sel)[i].click(); await wait(350); };
+      const set = async (sel, v) => { const el = document.querySelector(sel); el.value = v; el.dispatchEvent(new Event("input")); el.dispatchEvent(new Event("change")); await wait(200); };
+      // The dice button for every scene, right of the field.
+      const dice = await new Promise(res => { const c = document.createElement("canvas"); c.width = 480; c.height = 240; const x = c.getContext("2d");
+        x.fillStyle = "#0e6a5c"; x.strokeStyle = "#7fdccf"; x.lineWidth = 10; x.beginPath(); x.roundRect(8, 8, 464, 224, 36); x.fill(); x.stroke();
+        x.fillStyle = "#f4f1e8"; x.beginPath(); x.roundRect(40, 50, 140, 140, 22); x.fill();
+        x.fillStyle = "#0e6a5c"; for (const [a, b] of [[75, 85], [145, 85], [110, 120], [75, 155], [145, 155]]) { x.beginPath(); x.arc(a, b, 13, 0, 7); x.fill(); }
+        x.fillStyle = "#f4f1e8"; x.font = "700 92px 'Yu Gothic UI', sans-serif"; x.textBaseline = "middle"; x.fillText("1D100", 200, 124);
+        c.toBlob(b => res(new File([b], "ダイス.png", { type: "image/png" })), "image/png"); });
+      await click('[data-mk-mode="common"]');
+      HTMLInputElement.prototype.click = function () { if (this.type !== "file") HTMLElement.prototype.click.call(this); };
+      await click("#mkAddFile");
+      put("#imageFile", [dice]); await wait(800);
+      await set("#mkW", 8); await set("#mkH", 4); await set("#mkX", 27); await set("#mkY", 6);
+      await set("#mkClick", "message"); await set("#mkClickValue", "1d100");
+      // Templates: a blackout at the end, a divider named for its part after the first scene.
+      await click(".scene", 3); await click(".tpl-row button", 2);
+      await click(".scene", 0); await click(".tpl-row button", 0);
+      await set("#edName", "|ーー戦闘時");
+      await click(".scene", 2);
+      await click("#viewAll"); await wait(300);
+      // The selection outline is for editing, not for the card.
+      const st = document.createElement("style"); st.textContent = ".board .mk.sel { outline: none !important; } .board .mk-h, .view-ctl { display: none !important; }"; document.head.append(st);
+      await wait(300);
+      const rect = sel => { const r = document.querySelector(sel).getBoundingClientRect(); return { x: r.left + scrollX, y: r.top + scrollY, width: r.width, height: r.height }; };
+      return { list: rect("#sceneList"), stage: rect("#stage") };
+    })()`);
+    const list = dataUrl(await pg.screenshot({ clip: r.list, fullPage: true })), stage = dataUrl(await pg.screenshot({ clip: r.stage, fullPage: true }));
+    return { kicker: "ココフォリアのシーン", title: "シーンメーカー", tagline: "背景の画像を入れるだけで、シーンをまとめて作成。枠もマーカーも全シーンに",
+      foot: "ルームデータ（ZIP）を読み込むだけ・<b>無料</b>・登録不要", url: "shiki365.github.io/scene-maker",
+      shots: [{ src: list, cap: "シーン一覧に並ぶ（区切り・暗転も）", contain: true, bg: "#212121" }, { src: stage, cap: "枠もマーカーも全シーンに", contain: true, bg: "#2a2a2a" }] };
+  },
   "cover-print-maker": async (b, base) => {
     const pg = await openTool(b, base + "cover-print-maker/");
     await pg.click("[data-tab=pics]");

@@ -90,8 +90,8 @@ I18n.add("en", {
   "変えた結果は、その場でプレビューに出ます。（シナリオテキストメーカーは、台本を貼って、話し手ごとに立ち絵を登録します）":
     "Every change shows in the preview at once. (In the Scenario Text Maker, paste a script and register a portrait for each speaker.)",
   "保存して、ココフォリアや OBS に入れる": "Save it and put it into CCFOLIA or OBS",
-  "設定のしかたは、各ツールの画面の下に書いてあります。（シナリオテキストメーカーとキャラクター一括メーカーは、書き出した ZIP を、ココフォリアのルームデータとして読み込みます）":
-    "Each tool explains the setup at the bottom of its page. (The ZIPs from the Scenario Text Maker and Character Batch Maker are imported into CCFOLIA as room data.)",
+  "設定のしかたは、各ツールの画面の下に書いてあります。（シナリオテキストメーカー・キャラクター一括メーカー・シーンメーカーは、書き出した ZIP を、ココフォリアのルームデータとして読み込みます）":
+    "Each tool explains the setup at the bottom of its page. (The ZIPs from the Scenario Text Maker, Character Batch Maker and Scene Maker are imported into CCFOLIA as room data.)",
 
   "質問を押すと答えが開きます。": "Click a question to see the answer.",
   "お金はかかりますか？": "Does it cost anything?",
@@ -104,8 +104,8 @@ I18n.add("en", {
   "読み込んだ画像や入力した内容は、どこかに送られますか？": "Are my images or input sent anywhere?",
   "ブラウザで使うツールでは、送られません。処理はすべて、お使いのブラウザの中だけで行われます。": "Not with the browser tools. Everything happens inside your own browser.",
   "作りかけのデザインは残りますか？": "Is my unfinished work kept?",
-  "前景フレームメーカー・ステータスバーメーカー・シナリオテキストメーカー・キャラクター一括メーカーは、作業中の内容をブラウザに自動で保存します。次に同じブラウザで開くと続きから始まります。":
-    "The Foreground Frame Maker, Status Bar Maker, Scenario Text Maker and Character Batch Maker save your work in the browser automatically, so you carry on where you left off when you open them again in the same browser.",
+  "前景フレームメーカー・ステータスバーメーカー・シナリオテキストメーカー・キャラクター一括メーカー・シーンメーカーは、作業中の内容をブラウザに自動で保存します。次に同じブラウザで開くと続きから始まります。":
+    "The Foreground Frame Maker, Status Bar Maker, Scenario Text Maker, Character Batch Maker and Scene Maker save your work in the browser automatically, so you carry on where you left off when you open them again in the same browser.",
   "別のパソコンやブラウザで続けたいときは、ツールの中でプロジェクトファイルを保存し、移った先で読み込んでください。":
     "To continue on another computer or browser, save a project file in the tool and open it there.",
   "スマホでも使えますか？": "Can I use them on a phone?",
@@ -119,8 +119,8 @@ I18n.add("en", {
 
   "どれも匿名で送れます。Google アカウントもいりません。": "Everything is anonymous, and no Google account is needed. The forms are in Japanese, but you are welcome to write in English.",
   "ブラウザのツールの不具合": "Browser tool bugs",
-  "メッセージボックスメーカー・ステータスバーメーカー・チャットウィンドウメーカー・前景フレームメーカー・場面転換素材メーカー・シナリオテキストメーカー・キャラクター一括メーカーで、うまく動かないところを見つけたときに。":
-    "When something does not work in the Message Box Maker, Status Bar Maker, Chat Window Maker, Foreground Frame Maker, Scene Transition Maker, Scenario Text Maker or Character Batch Maker. Translation errors too.",
+  "メッセージボックスメーカー・ステータスバーメーカー・チャットウィンドウメーカー・前景フレームメーカー・場面転換素材メーカー・シナリオテキストメーカー・キャラクター一括メーカー・シーンメーカーで、うまく動かないところを見つけたときに。":
+    "When something does not work in the Message Box Maker, Status Bar Maker, Chat Window Maker, Foreground Frame Maker, Scene Transition Maker, Scenario Text Maker, Character Batch Maker or Scene Maker. Translation errors too.",
   "報告フォームを開く": "Open the report form",
   "在室灯の不具合・動作報告": "Zaishitsutou bugs and reports",
   "うまく動いた報告も大歓迎です。どの環境で動いたかが分かるだけで、とても助かります。": "\"It works\" reports are very welcome too. Just knowing which setup it ran on helps a lot.",
@@ -152,7 +152,7 @@ I18n.add("en", {
   "ルームを作る": "Set up the room",
   "盤面の素材を作る": "Materials for the board",
   "配信画面に映す": "Show it on stream",
-  "シナリオの NPC や台詞を、ココフォリアに読み込めるルームデータ（ZIP）にまとめて作ります。": "Turn your scenario's NPCs and lines into room data (ZIP) that CCFOLIA can import.",
+  "シナリオの NPC や台詞、背景のシーンを、ココフォリアに読み込めるルームデータ（ZIP）にまとめて作ります。": "Turn your scenario's NPCs, lines and background scenes into room data (ZIP) that CCFOLIA can import.",
   "盤面に重ねる枠や、場面を切り替える動く画像を作ります。": "Frames to lay over the board, and animated images for scene changes.",
   "ココフォリアの画面や Discord の通話を、OBS の配信画面に好きなデザインで映します。": "Show CCFOLIA and your Discord call on your OBS stream, in a design of your choice.",
   "ダウンロード": "Download",
@@ -163,4 +163,8 @@ I18n.add("en", {
   "ダーク": "Dark",
   "ライト": "Light",
   "パソコンやスマホの設定に合わせる": "Follow your device's setting",
+  "シーンメーカー": "Scene Maker",
+  "シナリオの背景を何枚も、ココフォリアのシーンにまとめて入れたい": "Putting a scenario's many backgrounds into CCFOLIA as scenes all at once",
+  "背景の画像をまとめて入れると、ココフォリアのシーンを一括で作ります。全シーンに同じ枠（前景）やマーカーパネルを付けたり、区切りや暗転のシーンをテンプレートから足したり、フィールドの大きさを画像の形に合わせたりできます。できた ZIP を、ルームデータとして読み込むだけです。": "Drop in your background images and it makes CCFOLIA scenes in one go. You can put the same frame (foreground) and marker panels on every scene, add divider and blackout scenes from templates, and size each field to its image. Just import the ZIP as room data.",
+  "ルームデータ（ZIP）、素材（ZIP）": "Room data (ZIP), images (ZIP)",
 });
