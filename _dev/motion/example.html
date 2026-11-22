@@ -1,0 +1,65 @@
+<!doctype html>
+<!-- example.html - the smallest video made with kit.js (not part of any tool): copy it to start a new one.
+     A pointer presses a button in a simplified window; the camera moves closer; captions; the end card.
+       preview: open this file in a browser
+       video:   node _dev/motion/render.js _dev/motion/example.html --out example.mp4 --sheet -->
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>キットの見本</title>
+<style>
+  .win { background: var(--m-panel); border: 1px solid var(--m-line); border-radius: 22px; box-shadow: 0 34px 90px rgba(0,0,0,.55); }
+  .btn { display: grid; place-items: center; border-radius: 12px; background: var(--m-accent); color: #06211d; font-size: 34px; }
+  .btn.hover { background: #7adbce; box-shadow: 0 0 0 6px rgba(92,207,192,.25); }
+  .card { display: grid; place-items: center; border-radius: 14px; background: var(--m-raised); border: 1px solid var(--m-line); font-size: 40px; }
+</style>
+</head>
+<body>
+<script src="kit.js"></script>
+<script>
+"use strict";
+const M = Motion;
+const { el, put, k, ease } = M;
+
+// When things happen (seconds), in one place.
+const T = { click: 2.2, end: 5.0, dur: 7.5 };
+
+// 1. Build everything once: a world the camera moves, then the overlay (pointer), shade, captions, chip, end card.
+const world = M.layer();
+const over = M.layer();
+put(el(world, "win", "", 1400, 760), 260, 260);
+const btn = el(world, "btn", "まとめて作る", 360, 90);
+const cards = [0, 1, 2].map(i => el(world, "card", `シーン ${i + 1}`, 360, 200));
+
+const cam = M.camera(world, [[0, 960, 640, 1.0], [1.0, 960, 640, 1.0], [1.8, 960, 560, 1.35], [3.2, 960, 560, 1.35], [3.9, 960, 680, 1.0]]);
+const W = (x, y) => t => cam.toScreen(t, x, y);   // a world point, wherever the camera has moved it
+const pointer = M.cursor(over, {
+  start: [1500, 900],
+  moves: [{ a: 0.6, b: 1.9, to: W(960, 425) }, { a: 2.6, b: 3.2, to: W(1240, 560) }],
+  clicks: [T.click],
+});
+M.shade();
+const caps = M.captions(null, [
+  { a: 0, b: 2.6, main: "ボタンを<b>押すだけ</b>で", sub: "（最初のコマから出ている字幕）" },
+  { a: 2.6, b: T.end, main: "<b>3 つ</b>できあがり" },
+]);
+const chip = M.chip(null, "◆ キットの見本");
+const end = M.endCard(null, { title: "キットの見本", tagline: "ひとことで何のツールか", points: ["要点 1", "要点 2", "要点 3"], url: "shiki365.github.io", note: "無料・登録不要｜非公式のツールです" });
+
+// 2. Draw one moment from scratch.
+function render(t) {
+  cam.apply(t);
+  btn.classList.toggle("hover", t > 1.8 && t < 2.5);
+  put(btn, 780, 380, t >= T.click - 0.04 && t <= T.click + 0.12 ? 0.94 : 1);
+  cards.forEach((c, i) => { const a = T.click + 0.2 + i * 0.12, x = ease.back(k(t, a, a + 0.35)); put(c, 380 + i * 400, 620, x, k(t, a, a + 0.1)); });
+  pointer.render(t, 1 - k(t, T.end, T.end + 0.3));
+  caps(t);
+  M.show(chip, 1 - k(t, T.end, T.end + 0.3));
+  end(t, T.end);
+}
+
+// 3. Hand it to the kit (render.js waits for this).
+M.setup({ duration: T.dur, render });
+</script>
+</body>
+</html>
