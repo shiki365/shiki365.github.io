@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <script src="i18n.v1.js"></script>
-<script src="lang.en.v1.js?v=3"></script>
-<script src="lang.ko.v1.js?v=3"></script>
+<script src="lang.en.v1.js?v=4"></script>
+<script src="lang.ko.v1.js?v=4"></script>
 <script src="theme.v1.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>shiki365 のツール置き場 | TRPG・マダミスのオンセ・配信で使える無料ツール</title>
@@ -218,78 +218,13 @@
       <li>画像や入力内容はどこにも送られません</li>
     </ul>
     <ul class="jump" aria-label="このページの中の案内">
-      <li><a href="#room">ルームを作る</a></li>
       <li><a href="#assets">盤面の素材を作る</a></li>
       <li><a href="#stream">配信画面に映す</a></li>
       <li><a href="#faq">よくある質問</a></li>
       <li><a href="#contact">不具合の報告・感想</a></li>
     </ul>
-    <p class="en-note" lang="en" data-lang-only="ja">Free tools for CCFOLIA and online TRPG / murder-mystery streaming: makers for CCFOLIA room data (NPC pieces with stats and portraits, scenario texts with portraits, scenes from background images), foreground frames and scene-transition animations, and OBS status bars, chat windows and message boxes, plus a small app you download to link OBS with Discord. The browser tools need no sign-up and no install, and nothing you make is uploaded. Tools for making doujinshi (printed self-published books) are on the second tab. This page and all the browser tools are also in English and Korean (see the language links at the top).</p>
+    <p class="en-note" lang="en" data-lang-only="ja">Free tools for CCFOLIA and online TRPG / murder-mystery streaming: makers for foreground frames and scene-transition animations, and OBS status bars, chat windows and message boxes, plus a small app you download to link OBS with Discord. The browser tools need no sign-up and no install, and nothing you make is uploaded. Tools for making doujinshi (printed self-published books) are on the second tab. This page and all the browser tools are also in English and Korean (see the language links at the top).</p>
   </div>
-
-  <section id="room" aria-labelledby="room-title">
-    <h2 id="room-title">ルームを作る</h2>
-    <p class="section-note">シナリオの NPC や台詞、背景のシーンを、ココフォリアに読み込めるルームデータ（ZIP）にまとめて作ります。</p>
-
-    <ul class="tools">
-      <li class="tool">
-        <a class="thumb" href="https://shiki365.github.io/scene-maker/" tabindex="-1" aria-hidden="true">
-          <img src="thumbs/scene-maker.webp" alt="" width="640" height="336" decoding="async">
-        </a>
-        <div class="tool-body">
-          <h3><a href="https://shiki365.github.io/scene-maker/">シーンメーカー</a></h3>
-          <p class="when"><span>こんなときに</span>シナリオの背景を何枚も、ココフォリアのシーンにまとめて入れたい</p>
-          <p class="desc">背景の画像をまとめて入れると、ココフォリアのシーンを一括で作ります。全シーンに同じ枠（前景）やマーカーパネルを付けたり、区切りや暗転のシーンをテンプレートから足したり、フィールドの大きさを画像の形に合わせたりできます。できた ZIP を、ルームデータとして読み込むだけです。</p>
-          <dl class="spec">
-            <dt>作れるもの</dt><dd>ルームデータ（ZIP）、素材（ZIP）</dd>
-            <dt>使う場所</dt><dd>ココフォリアのルーム設定（GM）</dd>
-          </dl>
-          <div class="actions">
-            <a class="btn" href="https://shiki365.github.io/scene-maker/">ツールを開く</a>
-            <a class="sub" href="https://github.com/shiki365/scene-maker">ソースコード（GitHub）</a>
-          </div>
-        </div>
-      </li>
-
-      <li class="tool">
-        <a class="thumb" href="https://shiki365.github.io/character-batch-maker/" tabindex="-1" aria-hidden="true">
-          <img src="thumbs/character-batch-maker.webp" alt="" width="640" height="336" decoding="async">
-        </a>
-        <div class="tool-body">
-          <h3><a href="https://shiki365.github.io/character-batch-maker/">キャラクター一括メーカー</a></h3>
-          <p class="when"><span>こんなときに</span>シナリオの NPC を、ステータスと立ち絵つきの駒にして、ココフォリアにまとめて入れたい</p>
-          <p class="desc">シナリオの NPC のデータを貼ると、ココフォリアの駒をまとめて作ります。技能値の書き方がシナリオごとに違っても、PDF からのコピーで崩れていても読み取ります。ステータス・チャットパレット・立ち絵（表情の差分も）つきで、画像は駒と同じ名前にするだけで自動で付きます。できた ZIP を、ルームデータとして読み込むだけです。</p>
-          <dl class="spec">
-            <dt>作れるもの</dt><dd>ルームデータ（ZIP）、立ち絵の素材（ZIP）</dd>
-            <dt>使う場所</dt><dd>ココフォリアのルーム設定（GM）</dd>
-          </dl>
-          <div class="actions">
-            <a class="btn" href="https://shiki365.github.io/character-batch-maker/">ツールを開く</a>
-            <a class="sub" href="https://github.com/shiki365/character-batch-maker">ソースコード（GitHub）</a>
-          </div>
-        </div>
-      </li>
-
-      <li class="tool">
-        <a class="thumb" href="https://shiki365.github.io/scenario-text-maker/" tabindex="-1" aria-hidden="true">
-          <img src="thumbs/scenario-text-maker.webp" alt="" width="640" height="336" decoding="async">
-        </a>
-        <div class="tool-body">
-          <h3><a href="https://shiki365.github.io/scenario-text-maker/">シナリオテキストメーカー</a></h3>
-          <p class="when"><span>こんなときに</span>NPC の台詞や探索箇所の描写を、ココフォリアのシナリオテキストにまとめて入れたい</p>
-          <p class="desc">台本や描写の文章を貼ると、ココフォリアのシナリオテキストをまとめて作ります。台詞には話し手の立ち絵（表情の差分も）を、描写やハンドアウトには 1&nbsp;件ずつ好きな画像を付けられ、送るとメッセージボックスに画像が出ます。できた ZIP を、ルームデータとして読み込むだけです。</p>
-          <dl class="spec">
-            <dt>作れるもの</dt><dd>ルームデータ（ZIP）</dd>
-            <dt>使う場所</dt><dd>ココフォリアのルーム設定（GM）</dd>
-          </dl>
-          <div class="actions">
-            <a class="btn" href="https://shiki365.github.io/scenario-text-maker/">ツールを開く</a>
-            <a class="sub" href="https://github.com/shiki365/scenario-text-maker">ソースコード（GitHub）</a>
-          </div>
-        </div>
-      </li>
-    </ul>
-  </section>
 
   <section id="assets" aria-labelledby="assets-title">
     <h2 id="assets-title">盤面の素材を作る</h2>
@@ -425,8 +360,8 @@
     <p class="section-note">ブラウザで使うツールは、どれもだいたい同じ手順です。在室灯の使い方は、配布ファイルに入っている説明書（README）を見てください。</p>
     <ol class="steps">
       <li><b>ツールを開く</b><span>インストールも会員登録もいりません。</span></li>
-      <li><b>ひな形を選んで、色や形を変える</b><span>変えた結果は、その場でプレビューに出ます。（シナリオテキストメーカーは、台本を貼って、話し手ごとに立ち絵を登録します）</span></li>
-      <li><b>保存して、ココフォリアや OBS に入れる</b><span>設定のしかたは、各ツールの画面の下に書いてあります。（シナリオテキストメーカー・キャラクター一括メーカー・シーンメーカーは、書き出した ZIP を、ココフォリアのルームデータとして読み込みます）</span></li>
+      <li><b>ひな形を選んで、色や形を変える</b><span>変えた結果は、その場でプレビューに出ます。</span></li>
+      <li><b>保存して、ココフォリアや OBS に入れる</b><span>設定のしかたは、各ツールの画面の下に書いてあります。</span></li>
     </ol>
   </section>
 
@@ -449,7 +384,7 @@
       </details>
       <details>
         <summary>作りかけのデザインは残りますか？</summary>
-        <p>前景フレームメーカー・ステータスバーメーカー・シナリオテキストメーカー・キャラクター一括メーカー・シーンメーカーは、作業中の内容をブラウザに自動で保存します。次に同じブラウザで開くと続きから始まります。</p>
+        <p>前景フレームメーカー・ステータスバーメーカーは、作業中の内容をブラウザに自動で保存します。次に同じブラウザで開くと続きから始まります。</p>
         <p>別のパソコンやブラウザで続けたいときは、ツールの中でプロジェクトファイルを保存し、移った先で読み込んでください。</p>
       </details>
       <details>
@@ -458,11 +393,15 @@
       </details>
       <details>
         <summary>ココフォリアや Discord の公式ツールですか？</summary>
-        <p>いいえ。個人が作った非公式のツールで、ココフォリアや Discord をはじめ、いずれのサービスとも関係ありません。ココフォリアの画面の作りが変わると、ステータスバー・チャットウィンドウ・メッセージボックスの表示が崩れることがあります。シナリオテキストメーカーとキャラクター一括メーカーは、ココフォリアのルームデータの形が変わると、読み込めなくなることがあります。</p>
+        <p>いいえ。個人が作った非公式のツールで、ココフォリアや Discord をはじめ、いずれのサービスとも関係ありません。ココフォリアの画面の作りが変わると、ステータスバー・チャットウィンドウ・メッセージボックスの表示が崩れることがあります。</p>
       </details>
       <details>
         <summary>不具合を見つけたとき、要望があるときは？</summary>
         <p data-i18n>このページのいちばん下の「<a href="#contact">不具合の報告・感想</a>」から送れます。どれも匿名で、Google アカウントもいりません。</p>
+      </details>
+      <details>
+        <summary>シーンメーカー・キャラクター一括メーカー・シナリオテキストメーカーは、どうなりましたか？</summary>
+        <p>2026年11月30日（月）で公開を終了します（このページからのリンクは外しました）。ルームデータを ZIP で書き出す機能（ルームデータのエクスポート）はココフォリアの有料プラン（CCFOLIA PRO）の機能で、3 つのツールはそれと同じ形式のデータを無料で作れてしまうため、運営からのご連絡を受け、公式の有料機能に配慮して取り下げることにしました。これまでに作ったデータは、そのまま使えます。使ってくださった皆さま、ありがとうございました。</p>
       </details>
     </div>
   </section>
@@ -473,7 +412,7 @@
     <ul class="contact">
       <li>
         <h3>ブラウザのツールの不具合</h3>
-        <p>メッセージボックスメーカー・ステータスバーメーカー・チャットウィンドウメーカー・前景フレームメーカー・場面転換素材メーカー・シナリオテキストメーカー・キャラクター一括メーカー・シーンメーカーで、うまく動かないところを見つけたときに。</p>
+        <p>メッセージボックスメーカー・ステータスバーメーカー・チャットウィンドウメーカー・前景フレームメーカー・場面転換素材メーカーで、うまく動かないところを見つけたときに。</p>
         <a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLSdXyHj5EYg-6JEV71orw61fyTTml3Cy9D-BP_EuuMHX6oUNcQ/viewform">報告フォームを開く</a>
       </li>
       <li>

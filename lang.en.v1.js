@@ -28,19 +28,6 @@ I18n.add("en", {
   "ソースコード（GitHub）": "Source code (GitHub)",
   "BOOTH で見る": "See it on BOOTH",
 
-  "シナリオテキストメーカー": "Scenario Text Maker",
-  "NPC の台詞や探索箇所の描写を、ココフォリアのシナリオテキストにまとめて入れたい": "Putting NPC lines and location descriptions into CCFOLIA's scenario texts all at once",
-  "台本や描写の文章を貼ると、ココフォリアのシナリオテキストをまとめて作ります。台詞には話し手の立ち絵（表情の差分も）を、描写やハンドアウトには 1 件ずつ好きな画像を付けられ、送るとメッセージボックスに画像が出ます。できた ZIP を、ルームデータとして読み込むだけです。":
-    "Paste a script or descriptions and it makes CCFOLIA scenario texts in one go. Lines can carry the speaker's portrait (with expressions), and descriptions or handouts any picture you like, which shows in the message box when sent. Just import the ZIP as room data.",
-  "ルームデータ（ZIP）": "Room data (ZIP)",
-  "ココフォリアのルーム設定（GM）": "CCFOLIA's room settings (GM)",
-
-  "キャラクター一括メーカー": "Character Batch Maker",
-  "シナリオの NPC を、ステータスと立ち絵つきの駒にして、ココフォリアにまとめて入れたい": "Putting a scenario's NPCs into CCFOLIA all at once, as pieces with stats and portraits",
-  "シナリオの NPC のデータを貼ると、ココフォリアの駒をまとめて作ります。技能値の書き方がシナリオごとに違っても、PDF からのコピーで崩れていても読み取ります。ステータス・チャットパレット・立ち絵（表情の差分も）つきで、画像は駒と同じ名前にするだけで自動で付きます。できた ZIP を、ルームデータとして読み込むだけです。":
-    "Paste a scenario's NPC data and it makes CCFOLIA pieces in one go. It reads the stats however each scenario writes them, even when a copy from a PDF has broken them up. Pieces come with stats, a chat palette and portraits (with expressions); pictures attach by themselves when they have the piece's name. Just import the ZIP as room data.",
-  "ルームデータ（ZIP）、立ち絵の素材（ZIP）": "Room data (ZIP), portrait assets (ZIP)",
-
   "メッセージボックスメーカー": "Message Box Maker",
   "配信画面に、立ち絵つきの台詞をノベルゲームのように出したい": "Showing lines with portraits on stream, like a visual novel",
   "ココフォリアで発言するとルーム画面の下に出る、立ち絵つきのメッセージボックスを、OBS に好きなデザインで映すための CSS を作ります。ルームの盤面や駒は消えて、メッセージボックスだけが映ります。ひな形 7 種（ノベルゲーム・古い紙・SF など）から、箱・名前の札・文字・立ち絵の置き方を選び、プレビューで発言を送って確かめてからコピーできます。":
@@ -87,11 +74,11 @@ I18n.add("en", {
     "The browser tools all work in much the same way. For Zaishitsutou, see the README in the download.",
   "インストールも会員登録もいりません。": "No install and no sign-up.",
   "ひな形を選んで、色や形を変える": "Pick a template and change colors and shapes",
-  "変えた結果は、その場でプレビューに出ます。（シナリオテキストメーカーは、台本を貼って、話し手ごとに立ち絵を登録します）":
-    "Every change shows in the preview at once. (In the Scenario Text Maker, paste a script and register a portrait for each speaker.)",
+  "変えた結果は、その場でプレビューに出ます。":
+    "Every change shows in the preview at once.",
   "保存して、ココフォリアや OBS に入れる": "Save it and put it into CCFOLIA or OBS",
-  "設定のしかたは、各ツールの画面の下に書いてあります。（シナリオテキストメーカー・キャラクター一括メーカー・シーンメーカーは、書き出した ZIP を、ココフォリアのルームデータとして読み込みます）":
-    "Each tool explains the setup at the bottom of its page. (The ZIPs from the Scenario Text Maker, Character Batch Maker and Scene Maker are imported into CCFOLIA as room data.)",
+  "設定のしかたは、各ツールの画面の下に書いてあります。":
+    "Each tool explains the setup at the bottom of its page.",
 
   "質問を押すと答えが開きます。": "Click a question to see the answer.",
   "お金はかかりますか？": "Does it cost anything?",
@@ -104,23 +91,23 @@ I18n.add("en", {
   "読み込んだ画像や入力した内容は、どこかに送られますか？": "Are my images or input sent anywhere?",
   "ブラウザで使うツールでは、送られません。処理はすべて、お使いのブラウザの中だけで行われます。": "Not with the browser tools. Everything happens inside your own browser.",
   "作りかけのデザインは残りますか？": "Is my unfinished work kept?",
-  "前景フレームメーカー・ステータスバーメーカー・シナリオテキストメーカー・キャラクター一括メーカー・シーンメーカーは、作業中の内容をブラウザに自動で保存します。次に同じブラウザで開くと続きから始まります。":
-    "The Foreground Frame Maker, Status Bar Maker, Scenario Text Maker, Character Batch Maker and Scene Maker save your work in the browser automatically, so you carry on where you left off when you open them again in the same browser.",
+  "前景フレームメーカー・ステータスバーメーカーは、作業中の内容をブラウザに自動で保存します。次に同じブラウザで開くと続きから始まります。":
+    "The Foreground Frame Maker and Status Bar Maker save your work in the browser automatically, so you carry on where you left off when you open them again in the same browser.",
   "別のパソコンやブラウザで続けたいときは、ツールの中でプロジェクトファイルを保存し、移った先で読み込んでください。":
     "To continue on another computer or browser, save a project file in the tool and open it there.",
   "スマホでも使えますか？": "Can I use them on a phone?",
   "ブラウザで使うツールは設定の項目が多いため、画面の広いパソコンでの利用をおすすめします。": "The browser tools have many settings, so a computer with a wide screen is recommended.",
   "ココフォリアや Discord の公式ツールですか？": "Are these official CCFOLIA or Discord tools?",
-  "いいえ。個人が作った非公式のツールで、ココフォリアや Discord をはじめ、いずれのサービスとも関係ありません。ココフォリアの画面の作りが変わると、ステータスバー・チャットウィンドウ・メッセージボックスの表示が崩れることがあります。シナリオテキストメーカーとキャラクター一括メーカーは、ココフォリアのルームデータの形が変わると、読み込めなくなることがあります。":
-    "No. They are unofficial tools made by one person, not connected with CCFOLIA, Discord or any other service. If CCFOLIA's page changes, the status bars, chat windows and message boxes may break; if its room data format changes, the files from the Scenario Text Maker and Character Batch Maker may stop importing.",
+  "いいえ。個人が作った非公式のツールで、ココフォリアや Discord をはじめ、いずれのサービスとも関係ありません。ココフォリアの画面の作りが変わると、ステータスバー・チャットウィンドウ・メッセージボックスの表示が崩れることがあります。":
+    "No. They are unofficial tools made by one person, not connected with CCFOLIA, Discord or any other service. If CCFOLIA's page changes, the status bars, chat windows and message boxes may break.",
   "不具合を見つけたとき、要望があるときは？": "I found a bug, or I have a request.",
   "このページのいちばん下の「<a href=\"#contact\">不具合の報告・感想</a>」から送れます。どれも匿名で、Google アカウントもいりません。":
     "Use \"<a href=\"#contact\">Bug reports and feedback</a>\" at the bottom of this page. Everything is anonymous, and no Google account is needed.",
 
   "どれも匿名で送れます。Google アカウントもいりません。": "Everything is anonymous, and no Google account is needed. The forms are in Japanese, but you are welcome to write in English.",
   "ブラウザのツールの不具合": "Browser tool bugs",
-  "メッセージボックスメーカー・ステータスバーメーカー・チャットウィンドウメーカー・前景フレームメーカー・場面転換素材メーカー・シナリオテキストメーカー・キャラクター一括メーカー・シーンメーカーで、うまく動かないところを見つけたときに。":
-    "When something does not work in the Message Box Maker, Status Bar Maker, Chat Window Maker, Foreground Frame Maker, Scene Transition Maker, Scenario Text Maker, Character Batch Maker or Scene Maker. Translation errors too.",
+  "メッセージボックスメーカー・ステータスバーメーカー・チャットウィンドウメーカー・前景フレームメーカー・場面転換素材メーカーで、うまく動かないところを見つけたときに。":
+    "When something does not work in the Message Box Maker, Status Bar Maker, Chat Window Maker, Foreground Frame Maker or Scene Transition Maker. Translation errors too.",
   "報告フォームを開く": "Open the report form",
   "在室灯の不具合・動作報告": "Zaishitsutou bugs and reports",
   "うまく動いた報告も大歓迎です。どの環境で動いたかが分かるだけで、とても助かります。": "\"It works\" reports are very welcome too. Just knowing which setup it ran on helps a lot.",
@@ -149,10 +136,8 @@ I18n.add("en", {
   "TRPG・マダミス": "TRPG & murder mystery",
   "同人誌づくり": "Making doujinshi",
   "ブラウザのツールは": "Browser tools:",
-  "ルームを作る": "Set up the room",
   "盤面の素材を作る": "Materials for the board",
   "配信画面に映す": "Show it on stream",
-  "シナリオの NPC や台詞、背景のシーンを、ココフォリアに読み込めるルームデータ（ZIP）にまとめて作ります。": "Turn your scenario's NPCs, lines and background scenes into room data (ZIP) that CCFOLIA can import.",
   "盤面に重ねる枠や、場面を切り替える動く画像を作ります。": "Frames to lay over the board, and animated images for scene changes.",
   "ココフォリアの画面や Discord の通話を、OBS の配信画面に好きなデザインで映します。": "Show CCFOLIA and your Discord call on your OBS stream, in a design of your choice.",
   "ダウンロード": "Download",
@@ -163,8 +148,8 @@ I18n.add("en", {
   "ダーク": "Dark",
   "ライト": "Light",
   "パソコンやスマホの設定に合わせる": "Follow your device's setting",
-  "シーンメーカー": "Scene Maker",
-  "シナリオの背景を何枚も、ココフォリアのシーンにまとめて入れたい": "Putting a scenario's many backgrounds into CCFOLIA as scenes all at once",
-  "背景の画像をまとめて入れると、ココフォリアのシーンを一括で作ります。全シーンに同じ枠（前景）やマーカーパネルを付けたり、区切りや暗転のシーンをテンプレートから足したり、フィールドの大きさを画像の形に合わせたりできます。できた ZIP を、ルームデータとして読み込むだけです。": "Drop in your background images and it makes CCFOLIA scenes in one go. You can put the same frame (foreground) and marker panels on every scene, add divider and blackout scenes from templates, and size each field to its image. Just import the ZIP as room data.",
-  "ルームデータ（ZIP）、素材（ZIP）": "Room data (ZIP), images (ZIP)",
+  "シーンメーカー・キャラクター一括メーカー・シナリオテキストメーカーは、どうなりましたか？":
+    "What happened to the Scene Maker, Character Batch Maker and Scenario Text Maker?",
+  "2026年11月30日（月）で公開を終了します（このページからのリンクは外しました）。ルームデータを ZIP で書き出す機能（ルームデータのエクスポート）はココフォリアの有料プラン（CCFOLIA PRO）の機能で、3 つのツールはそれと同じ形式のデータを無料で作れてしまうため、運営からのご連絡を受け、公式の有料機能に配慮して取り下げることにしました。これまでに作ったデータは、そのまま使えます。使ってくださった皆さま、ありがとうございました。":
+    "They are available until November 30, 2026, and will then be withdrawn (the links on this page have been removed). Exporting room data as a ZIP (Export room data) is a feature of CCFOLIA's paid plan, CCFOLIA PRO. Because the three tools make data in the same format for free, they are being withdrawn at the request of the CCFOLIA team, out of respect for this official paid feature. Data you have already made can still be used as is. Thank you to everyone who used them.",
 });
